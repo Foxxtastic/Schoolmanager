@@ -1,3 +1,261 @@
+html, body, #root { 
+  height: 100%; margin: 0; 
+}
+
 .App {
   text-align: center;
+}
+
+table {
+  justify-self: center;
+  overflow: scroll;
+}
+
+table.datatable {
+  width: 90%;
+  background-color: #FFFFFF;
+  border-collapse: collapse;
+  border-width: 2px;
+  border-color: #7ea8f8;
+  border-style: solid;
+  color: #000000;
+}
+
+table.datatable thead {
+  background-color: #1abc9c;
+}
+
+table.datatable td, table.datatable th {
+  border-width: 2px;
+  border-color: #1abc9c;
+  border-style: solid;
+  padding: 5px;
+  text-align: left;
+  width: 1%;
+  white-space: nowrap;
+}
+
+#root {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 100px 60px 1fr;
+  grid-template-areas:
+    "navbar"
+    "main-header"
+    "maincontent";
+}
+
+.navbar { 
+  grid-area: navbar;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+}
+
+.navbar-items {
+  font-size: 2em;
+  font-weight: bold;
+  line-height: 100px;
+  margin-left: 3rem;
+}
+
+.navbar-items:hover {
+  cursor: pointer;
+  color: #d35400;
+  border-bottom: 3px solid #d35400;
+}
+
+.main-header {
+  grid-area: main-header;
+  font-size: 1.5em;
+  line-height: 60px;
+}
+
+.main-content {
+  grid-area: maincontent; 
+}
+
+.school {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 80px;
+  grid-template-areas:
+    "school-data"
+    "footer";
+}
+
+.school-data {
+  grid-area: datacontent;
+}
+
+.footer {
+  grid-area: footer;
+  line-height: 80px;
+}
+
+.button {
+  font-size: 1em;
+  padding: 3px;
+}
+
+.bg-lturquoise {
+  background-color: #1abc9c;
+}
+
+.bg-dturquoise {
+  background-color: #16a085;
+}
+
+.bg-yellow {
+  background-color: #f1c40f;
+}
+
+.bg-dyellow{
+  background-color: #f39c12;
+}
+
+.bg-lgreen {
+  background-color: #2ecc71;
+}
+
+.bg-dgreen {
+  background-color: #27ae60;
+}
+
+.bg-lorange {
+  background-color: #e67e22;
+}
+
+.bg-dorange {
+  background-color: #d35400;
+}
+
+.bg-lblue {
+  background-color: #3498db;
+}
+
+.bg-dblue {
+  background-color: #2980b9;
+}
+
+.bg-lred {
+  background-color: #e74c3c;
+}
+
+.bg-dred {
+  background-color: #c0392b;
+}
+
+.bg-lpurple {
+  background-color: #9b59b6;
+}
+
+.bg-dpurple {
+  background-color: #8e44ad;
+}
+
+.bg-lgray {
+  background-color: #ecf0f1;
+}
+
+.bg-mgray {
+  background-color: #bdc3c7;
+}
+
+.bg-lightmidnightblue {
+  background-color: #34495e;
+}
+
+.bg-midnightblue {
+  background-color: #2c3e50;
+}
+
+.bg-lconcrete {
+  background-color: #95a5a6;
+}
+
+.bg-dconcrete {
+  background-color: #7f8c8d;
+}
+
+.tx-lturquoise {
+  color: #1abc9c;
+}
+
+.tx-dturquoise {
+  color: #16a085;
+}
+
+.tx-yellow {
+  color: #f1c40f;
+}
+
+.tx-dyellow{
+  color: #f39c12;
+}
+
+.tx-lgreen {
+  color: #2ecc71;
+}
+
+.tx-dgreen {
+  color: #27ae60;
+}
+
+.tx-lorange {
+  color: #e67e22;
+}
+
+.tx-dorange {
+  color: #d35400;
+}
+
+.tx-lblue {
+  color: #3498db;
+}
+
+.tx-dblue {
+  color: #2980b9;
+}
+
+.tx-lred {
+  color: #e74c3c;
+}
+
+.tx-dred {
+  color: #c0392b;
+}
+
+.tx-lpurple {
+  color: #9b59b6;
+}
+
+.tx-dpurple {
+  color: #8e44ad;
+}
+
+.tx-lgray {
+  color: #ecf0f1;
+}
+
+.tx-mgray {
+  color: #bdc3c7;
+}
+
+.tx-lightmidnightblue {
+  color: #34495e;
+}
+
+.tx-midnightblue {
+  color: #2c3e50;
+}
+
+.tx-lconcrete {
+  color: #95a5a6;
+}
+
+.tx-dconcrete {
+  color: #7f8c8d;
 }
