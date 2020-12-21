@@ -12,7 +12,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      schools: undefined
+      schools: undefined,
+      loaded: false
     }
   }
 
@@ -22,14 +23,21 @@ class App extends Component {
     });
   }
 
+  setLoaded(statement) {
+    this.setState({
+      loaded: statement
+    });
+  }
+
   componentDidMount() {
     console.log('getting data...');
-    fetch('/api/school')
+    fetch('/api/schools')
       .then(res => res.json())
       .then(list => {
+        console.log("loading:");
+        this.setLoaded(true);
         console.log('schools: ', list);
         this.setSchools(list);
-        console.log(this.state.schools)
       });
   }
 
@@ -39,16 +47,16 @@ class App extends Component {
       <>
         <BrowserRouter>
           <Navbar
-            items={navbarItems} link={["/", "/api/school"]} />
+            items={navbarItems} links={["/", "/schools"]} />
           <Switch>
             <Route path="/" exact>
               <div> hello </div>
             </Route>
-            <Route path="/api/school" exact>
-              < MainHeader text="Schools" />
+            <Route path="/schools" exact>
+              <MainHeader text="Schools" />
               <div className="main-content bg-lgray">
                 {(this.state.schools !== undefined) &&
-                  < SchoolData data={this.state.schools} />}
+                  <SchoolData items={this.state.schools} />}
               </div>
             </Route>
           </Switch>

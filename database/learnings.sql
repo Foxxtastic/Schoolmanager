@@ -1,0 +1,2 @@
+-- How to rename:
+--exec sp_rename 'dbo.SCHOOL', 'School'

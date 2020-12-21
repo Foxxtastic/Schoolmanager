@@ -1,17 +1,34 @@
-import { CreateButton } from "./CreateButton";
+import { Button } from "./Button";
 import { DataTable } from "./DataTable";
 
-const header = ["Id", "Name", "Country", "City", "Address", ""]
+const headers = ["Id", "Name", "Country", "City", "Address", ""]
 
 export function SchoolData(props) {
 
-    const { data } = props;
+    const { items } = props;
+
+    const handleCreate = () => {
+
+    }
 
     return (
         <div className="school">
-            <DataTable header={header} data={data} />
+            <DataTable
+                headers={headers}
+                items={items}
+                getRowForItem={(item, idx) => (
+                    <tr key={idx}>
+                        <td>{item.Id}</td>
+                        <td>{item.Name}</td>
+                        <td>{item.Country}</td>
+                        <td>{item.City}</td>
+                        <td>{item.Address}</td>
+                        <td></td>
+                    </tr>
+                )}
+            />
             <div className="footer">
-                <CreateButton text="Create" />
+                <Button text="Create" handleClick={handleCreate} />
             </div>
         </div>
     );
