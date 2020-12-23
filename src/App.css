@@ -15,6 +15,15 @@ table {
   overflow: scroll;
 }
 
+label {
+  display: block;
+  padding: 5px;
+}
+
+.item {
+  padding: 1em 3em 0.5em 3em;
+}
+
 table.datatable {
   margin: 2em;
   width: 90%;
@@ -38,6 +47,16 @@ table.datatable td, table.datatable th {
   text-align: left;
   width: 1%;
   white-space: nowrap;
+}
+
+.popupform {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -100px;
+  min-width: 400px;
+  min-height: 400px;
 }
 
 #root {
@@ -81,18 +100,18 @@ table.datatable td, table.datatable th {
   grid-area: maincontent; 
 }
 
-.school {
+.component {
   height: 100%;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 80px;
   grid-template-areas:
-    "school-data"
+    "component-data"
     "footer";
 }
 
-.school-data {
-  grid-area: datacontent;
+.component-data {
+  grid-area: component-data;
 }
 
 .footer {
@@ -103,6 +122,10 @@ table.datatable td, table.datatable th {
 .button {
   font-size: 1em;
   padding: 3px;
+}
+
+.createitem {
+  margin: 5em;
 }
 
 .bg-lturquoise {

@@ -11,4 +11,14 @@ router.get('/', async (req, res, next) => {
     }
 });
 
+router.post('/', async (req, res) => {
+    try {
+        const schoolDto = req.body;
+        const school = await dataaccess.createSchool(schoolDto);
+        res.json(school);
+    } catch (error) {
+        next(error);
+    }
+});
+
 module.exports = router;

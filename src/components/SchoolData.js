@@ -1,20 +1,17 @@
+import { Link } from "react-router-dom";
 import { Button } from "./Button";
 import { DataTable } from "./DataTable";
 
-const headers = ["Id", "Name", "Country", "City", "Address", ""]
+const labels = ["Id", "Name", "Country", "City", "Address", ""]
 
 export function SchoolData(props) {
 
-    const { items } = props;
-
-    const handleCreate = () => {
-
-    }
+    const { items, linkToCreate } = props;
 
     return (
-        <div className="school">
-            <DataTable
-                headers={headers}
+        <div className="component">
+            <DataTable classtype="component-data"
+                headers={labels}
                 items={items}
                 getRowForItem={(item, idx) => (
                     <tr key={idx}>
@@ -28,7 +25,9 @@ export function SchoolData(props) {
                 )}
             />
             <div className="footer">
-                <Button text="Create" handleClick={handleCreate} />
+                <Link to={linkToCreate}>
+                    <Button text="Create" />
+                </Link>
             </div>
         </div>
     );

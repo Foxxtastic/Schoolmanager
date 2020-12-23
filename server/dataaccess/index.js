@@ -17,13 +17,14 @@ async function createSchool(schoolDto) {
         values (${schoolDto.Id}, ${schoolDto.Name}, ${schoolDto.Country}, ${schoolDto.City}, ${schoolDto.Address})`;
 
     result = await sql.query`
-        select top 1 Id, Name, Manufacturer
-        from dbo.Products
-        order by Id desc`;
+        select top 1 Idx, Id, Name, Country, City, Address
+        from dbo.Schools
+        order by Idx desc`;
 
     return result.recordset;
 }
 
 module.exports = {
-    listAllSchools
+    listAllSchools,
+    createSchool
 }
