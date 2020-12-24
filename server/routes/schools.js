@@ -21,4 +21,14 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.delete('/:idx', async (req, res) => {
+    const { idx } = req.params;
+    try {
+        await dataaccess.deleteByIdx(idx);
+    } catch (error) {
+        next(error);
+    }
+    res.sendStatus(200);
+});
+
 module.exports = router;

@@ -6,7 +6,7 @@ const labels = ["Id", "Name", "Country", "City", "Address", ""]
 
 export function SchoolData(props) {
 
-    const { items, linkToCreate } = props;
+    const { items, linkToCreate, handleSchoolDelete } = props;
 
     return (
         <div className="component">
@@ -20,7 +20,7 @@ export function SchoolData(props) {
                         <td>{item.Country}</td>
                         <td>{item.City}</td>
                         <td>{item.Address}</td>
-                        <td></td>
+                        <td><Button text="Delete" handleClick={() => handleSchoolDelete(item.Idx)} /></td>
                     </tr>
                 )}
             />

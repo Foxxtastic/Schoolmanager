@@ -4,7 +4,7 @@ const { databaseConnection } = require('../config');
 async function listAllSchools() {
     await sql.connect(databaseConnection);
     const result = await sql.query`
-        select Id, Name, Country, City, Address
+        select Idx, Id, Name, Country, City, Address
         from dbo.Schools`;
 
     return result.recordset;
@@ -24,7 +24,23 @@ async function createSchool(schoolDto) {
     return result.recordset;
 }
 
+async function deleteByIdx(schoolIdx) {
+    await sql.connect(databaseConnection);
+    const result = await sql.query`
+        delete
+        from dbo.Schools
+        where Idx = ${schoolIdx}`;
+
+    if (result.rowsAffected === 0) {
+        const error = new Error(`No Product with Idx = ${idx}!`);
+        error.status = 404;
+        throw error;
+    }
+
+    return result.rowsAffected;
+}
 module.exports = {
     listAllSchools,
-    createSchool
+    createSchool,
+    deleteByIdx
 }

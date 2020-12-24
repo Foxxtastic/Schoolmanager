@@ -40,7 +40,7 @@ class App extends Component {
 
   getData() {
     console.log('getting data...');
-    fetch('/api/schools')
+    fetch('/api/school')
       .then(res => res.json())
       .then(list => {
         console.log("loading:");
@@ -55,7 +55,7 @@ class App extends Component {
   }
 
   handleSchoolCreate = (newItem) => {
-    fetch('/api/schools', {
+    fetch('/api/school', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -65,8 +65,18 @@ class App extends Component {
       .then(res => res.json())
       .then(newSchool => {
         console.log('newSchool: ', newSchool);
+        this.getData();
       });
-    this.getData();
+  }
+
+  handleSchoolDelete = (idxtoDelete) => {
+    fetch(`/api/school/${idxtoDelete}`, {
+      method: 'DELETE'
+    })
+      .then(res => {
+        console.log('delete status code: ', res.status, res.statusText);
+        this.getData();
+      });
   }
 
   render() {
@@ -84,7 +94,7 @@ class App extends Component {
               <MainHeader text="Schools" />
               <div className="main-content bg-mgray">
                 {(this.state.schools !== undefined) &&
-                  <SchoolData items={this.state.schools} linkToCreate="/schools/create" />}
+                  <SchoolData items={this.state.schools} linkToCreate="/schools/create" handleSchoolDelete={this.handleSchoolDelete} />}
               </div>
             </Route>
             <Route path="/schools/create">
