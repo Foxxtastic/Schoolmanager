@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Button } from "./Button";
+import { ConfirmPopup } from "./ConfirmPopup";
 import { DataTable } from "./DataTable";
 
 const labels = ["EduId", "Name", "Country", "City", "Address", ""]
@@ -13,7 +14,9 @@ export function SchoolList(props) {
         isEditMode: false,
         rowKey: null
     });
-    const { afterUpdate, items, linkToCreate, onUpdate, onDelete } = props;
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [activeIdForDelete, setActiveIdForDelete] = useState(null);
+    const { afterUpdate, items, linkToCreate, onUpdate, onDelete, isLoading } = props;
 
     const handleModify = (id) => {
         setEditor({
@@ -40,8 +43,24 @@ export function SchoolList(props) {
             })
     }
 
+    const handleModalShown = (id) => {
+        setIsModalVisible(true);
+        setActiveIdForDelete(id);
+    }
+
+    const handleModalConfirm = () => {
+        onDelete(activeIdForDelete);
+        setIsModalVisible(false);
+    }
+
+    const handleModalCancel = () => {
+        setActiveIdForDelete(null);
+        setIsModalVisible(false);
+    }
+
     return (
-        <div className="component">
+        <div className={`component ${isLoading ? "loading" : ""}`} >
+            <ConfirmPopup text={"Are you sure?"} visible={isModalVisible} onConfirm={handleModalConfirm} onCancel={handleModalCancel} />
             <DataTable classtype="component-data"
                 headers={labels}
                 items={items}
@@ -80,8 +99,8 @@ export function SchoolList(props) {
                                     <Button text="Cancel" handleClick={() => handleCancel()} />
                                 </> :
                                 <>
-                                    <Button text="Modify" handleClick={() => handleModify(item.Id)} />
-                                    <Button text="Delete" handleClick={() => onDelete(item.Id)} />
+                                    <Button disabled={isLoading} text="Modify" handleClick={() => handleModify(item.Id)} />
+                                    <Button disabled={isLoading} text="Delete" handleClick={() => handleModalShown(item.Id)} />
                                 </>}
                         </td>
                     </tr>
@@ -92,6 +111,6 @@ export function SchoolList(props) {
                     <Button text="Create" />
                 </Link>
             </div>
-        </div>
+        </ div>
     );
 }

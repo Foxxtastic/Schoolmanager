@@ -20,6 +20,12 @@ label {
   padding: 5px;
 }
 
+.alert {
+  font-size: 1.5em;
+  color: #e74c3c;
+  margin-bottom: 1em;
+}
+
 .item {
   padding: 1em 3em 0.5em 3em;
 }
@@ -123,6 +129,10 @@ table.datatable td input {
   font-size: 1em;
   padding: 3px;
   margin-right: 10px;
+}
+
+.button:disabled {
+  background-color: #ecf0f1;
 }
 
 .createitem {
@@ -313,4 +323,31 @@ table.datatable td input {
   100% {
     border-top: solid rgba(142, 68, 173, 1.0);
   }
+}
+
+.confirmmenu {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 300px;
+  transform: translate(-50%, -50%);
+  border: solid 1px #bdc3c7;
+  background-color: #ecf0f1;
+}
+
+.confirmmenu-content {
+  padding: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.confirmmenu-content div {
+  text-align: center;
+}
+
+.hidden {
+  display: none;
 }

@@ -1,21 +1,12 @@
-import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
 export function GenericTextForm(props) {
 
     const { register, handleSubmit, errors } = useForm();
 
-    let btnRef = useRef(null);
-
-    const [isLoading, setIsLoading] = useState(false);
-
-    const { labels, onSubmit, onError } = props;
+    const { labels, isLoading, onSubmit, onError } = props;
 
     const onSubmiting = (data) => {
-        if (btnRef.current) {
-            btnRef.current.setAttribute("disabled", "disabled");
-        }
-        setIsLoading(true);
         onSubmit(data);
     }
 
@@ -31,7 +22,7 @@ export function GenericTextForm(props) {
                     )}
                 </div>
                 <div className="footer">
-                    <input ref={btnRef} type="submit" className="button" />
+                    <input disabled={isLoading} type="submit" className="button" />
                 </div>
             </form>
         </>

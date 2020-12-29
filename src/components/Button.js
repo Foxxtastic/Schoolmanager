@@ -1,8 +1,8 @@
 export function Button(props) {
 
-    const { text, handleClick } = props;
+    const { disabled, text, handleClick } = props;
 
     return (
-        <button className="button bg-lblue tx-yellow" onClick={handleClick}>{text}</button>
+        <button disabled={disabled} className="button bg-lblue tx-yellow" onClick={handleClick}>{text}</button>
     );
 }
