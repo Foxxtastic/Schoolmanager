@@ -9,4 +9,10 @@ VALUES ('031603','Neumann János Középiskola','Hungary','Eger','Rákóczi út 
 	   ('CH 23444','KV Luzern Berufsakademie / Höhere Fachschule für Wirtschaft, Marketing und Wirtschaftsinformatik','Schweiz','Luzern','Dreilindenstrasse 20'),
 	   ('AT 22222','Pädagogische Hochschule Steiermark Graz','Austria','Graz','Hasnerplatz 12'),
 	   ('UK 11223','Camphill School Aberdeen','United Kingdom','Aberdeen','Murtle House, Bieldside, AB15 9EP'),
-	   ('UK 22555','Stranraer Academy','United Kingdom','Stranraer','McMasters Road, DG9 8BY');
+	   ('UK 22555','Stranraer Academy','United Kingdom','Stranraer','McMasters Road, DG9 8BY'),
+	   ('PL 00992','Szkoła Języków i Zarządzania Nauczycielskie Kolegium Języków Obcych PROMAR','Poland','Rzeszów','Bohaterów 12'),
+	   ('IT 10200','CAVOUR','Italy','Firenze','V.LE Machiavelli, 31-33'),
+	   ('IT 11340','Centro Scolastico Dante Alighieri','Italy','Quarto','Via Campana 383'),
+	   ('01131710376','ALMA MATER STUDIORUM - Università di Bologna','Italy','Bologna','Via Zamboni, 33'),
+	   ('OX1 2JD','University of Oxford','United Kingdom','Oxford','Wellington Square'),
+	   ('BS 11000','University of Basel','Schweiz','Basel','Petersplatz 1');

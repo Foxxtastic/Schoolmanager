@@ -82,6 +82,7 @@ class App extends Component {
   }
 
   handleSchoolUpdate = (idToUpdate, school) => {
+    this.setIsloading(true);
     return fetch(`/api/school/${idToUpdate}`, {
       method: 'PUT',
       headers: {
@@ -92,7 +93,8 @@ class App extends Component {
       .then(res => res.json())
       .then(updatedSchool => {
         console.log('updatedSchool: ', updatedSchool);
-      });
+      })
+      .then(() => this.setIsloading(false));
   }
 
   handleSchoolDelete = (idToDelete) => {

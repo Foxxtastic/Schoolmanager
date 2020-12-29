@@ -95,8 +95,8 @@ export function SchoolList(props) {
                         <td>
                             {(editor.isEditMode && editor.rowKey === item.Id) ?
                                 <>
-                                    <Button text="Ok" handleClick={handleSubmit((formData) => onSubmit(item.Id, formData))} />
-                                    <Button text="Cancel" handleClick={() => handleCancel()} />
+                                    <Button disabled={isLoading} text="Ok" handleClick={handleSubmit((formData) => onSubmit(item.Id, formData))} />
+                                    <Button disabled={isLoading} text="Cancel" handleClick={() => handleCancel()} />
                                 </> :
                                 <>
                                     <Button disabled={isLoading} text="Modify" handleClick={() => handleModify(item.Id)} />
