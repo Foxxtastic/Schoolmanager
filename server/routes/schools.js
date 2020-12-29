@@ -2,7 +2,7 @@ const express = require('express');
 const dataaccess = require('../dataaccess/index');
 const router = express.Router();
 
-router.get('/', async (req, res, next) => {
+router.get('/', async (_req, res, next) => {
     try {
         const allSchools = await dataaccess.listAllSchools();
         res.json(allSchools);
@@ -11,7 +11,19 @@ router.get('/', async (req, res, next) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.get('/:id', async (req, res) => {
+    const { id } = req.params;
+    const school = await dataaccess.getSchoolById(id);
+
+    if (school === undefined) {
+        res.sendStatus(404);
+        return;
+    }
+
+    res.json(school);
+});
+
+router.post('/', async (req, res, next) => {
     try {
         const schoolDto = req.body;
         const school = await dataaccess.createSchool(schoolDto);
@@ -21,10 +33,23 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.delete('/:idx', async (req, res) => {
-    const { idx } = req.params;
+router.put('/:id', async (req, res, next) => {
+    const schoolDto = req.body;
+    const { id } = req.params;
+    const idAsNumber = parseInt(id, 10);
+
     try {
-        await dataaccess.deleteByIdx(idx);
+        const school = await dataaccess.updateSchool(idAsNumber, schoolDto);
+        res.json(school);
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.delete('/:id', async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        await dataaccess.deleteById(id);
     } catch (error) {
         next(error);
     }

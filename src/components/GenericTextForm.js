@@ -1,16 +1,27 @@
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
-export function CreateItem(props) {
+export function GenericTextForm(props) {
 
     const { register, handleSubmit, errors } = useForm();
-    const { labels, handleSchoolCreate } = props;
 
-    const onSubmit = (data) => handleSchoolCreate(data);
-    const onError = () => console.log(errors);
+    let btnRef = useRef(null);
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const { labels, onSubmit, onError } = props;
+
+    const onSubmiting = (data) => {
+        if (btnRef.current) {
+            btnRef.current.setAttribute("disabled", "disabled");
+        }
+        setIsLoading(true);
+        onSubmit(data);
+    }
 
     return (
         <>
-            <form className="component" onSubmit={handleSubmit(onSubmit, onError)}>
+            <form className={`component ${isLoading ? "loading" : ""}`} onSubmit={handleSubmit(onSubmiting, onError)}>
                 <div className="component-data createitem bg-lgray">
                     {labels.map((x, idx) =>
                         <div key={idx} className="item">
@@ -20,7 +31,7 @@ export function CreateItem(props) {
                     )}
                 </div>
                 <div className="footer">
-                    <input type="submit" className="button" />
+                    <input ref={btnRef} type="submit" className="button" />
                 </div>
             </form>
         </>

@@ -1,15 +1,16 @@
 import './cssreset.css';
 import './App.css';
-import { SchoolData } from './components/SchoolData';
+import { SchoolList } from './components/SchoolList';
 import { Navbar } from './components/Navbar';
 import { MainHeader } from './components/MainHeader';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import { Component } from 'react';
-import { CreateItem } from './components/CreateItem';
+import { GenericTextForm } from './components/GenericTextForm';
+import { history } from './history'
 
 const navbarItems = ["Home", "Schools"];
 
-const createSchoolLabels = ["Id", "Name", "Country", "City", "Address"];
+const createSchoolLabels = ["EduId", "Name", "Country", "City", "Address"];
 
 class App extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class App extends Component {
       schools: undefined,
       loaded: false
     }
+    this.getData = this.getData.bind(this);
   }
 
   setSchools(items) {
@@ -40,7 +42,7 @@ class App extends Component {
 
   getData() {
     console.log('getting data...');
-    fetch('/api/school')
+    return fetch('/api/school')
       .then(res => res.json())
       .then(list => {
         console.log("loading:");
@@ -65,12 +67,27 @@ class App extends Component {
       .then(res => res.json())
       .then(newSchool => {
         console.log('newSchool: ', newSchool);
-        this.getData();
+        return this.getData();
+      })
+      .then(() => history.push("/schools"))
+  }
+
+  handleSchoolUpdate = (idToUpdate, school) => {
+    return fetch(`/api/school/${idToUpdate}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(school)
+    })
+      .then(res => res.json())
+      .then(updatedSchool => {
+        console.log('updatedSchool: ', updatedSchool);
       });
   }
 
-  handleSchoolDelete = (idxtoDelete) => {
-    fetch(`/api/school/${idxtoDelete}`, {
+  handleSchoolDelete = (idToDelete) => {
+    fetch(`/api/school/${idToDelete}`, {
       method: 'DELETE'
     })
       .then(res => {
@@ -83,7 +100,7 @@ class App extends Component {
 
     return (
       <>
-        <BrowserRouter>
+        <Router history={history}>
           <Navbar
             items={navbarItems} links={["/", "/schools"]} />
           <Switch>
@@ -94,17 +111,23 @@ class App extends Component {
               <MainHeader text="Schools" />
               <div className="main-content bg-mgray">
                 {(this.state.schools !== undefined) &&
-                  <SchoolData items={this.state.schools} linkToCreate="/schools/create" handleSchoolDelete={this.handleSchoolDelete} />}
+                  <SchoolList
+                    afterUpdate={this.getData}
+                    items={this.state.schools}
+                    linkToCreate="/schools/create"
+                    onDelete={this.handleSchoolDelete}
+                    onUpdate={this.handleSchoolUpdate}
+                  />}
               </div>
             </Route>
             <Route path="/schools/create">
               <MainHeader text="Create new School" />
               <div className="main-content bg-mgray">
-                <CreateItem labels={createSchoolLabels} handleSchoolCreate={this.handleSchoolCreate} />
+                <GenericTextForm labels={createSchoolLabels} onSubmit={this.handleSchoolCreate} />
               </div>
             </Route>
           </Switch>
-        </BrowserRouter>
+        </Router>
       </>
     );
   }

@@ -17,8 +17,8 @@ IF (NOT EXISTS (SELECT *
                 AND  TABLE_NAME = 'Schools'))
 BEGIN
 	Create TABLE dbo.Schools (
-		idx int NOT NULL IDENTITY(1,1) PRIMARY KEY,
-		Id nvarchar(20) NOT NULL,
+		Id int NOT NULL IDENTITY(1,1) PRIMARY KEY,
+		EduId nvarchar(20) NOT NULL,
 		Name nvarchar(100) NOT NULL,
 		Country nvarchar(100) NOT NULL,
 		City nvarchar(100) NOT NULL,
