@@ -1,3 +1,4 @@
+import { Loader } from './Loader';
 import { useForm } from "react-hook-form";
 
 export function GenericTextForm(props) {
@@ -13,6 +14,8 @@ export function GenericTextForm(props) {
     return (
         <>
             <form className={`component ${isLoading ? "loading" : ""}`} onSubmit={handleSubmit(onSubmiting, onError)}>
+                <Loader isLoading={isLoading} />
+
                 <div className="component-data createitem bg-lgray">
                     {labels.map((x, idx) =>
                         <div key={idx} className="item">

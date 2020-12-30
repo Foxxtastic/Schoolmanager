@@ -18,37 +18,48 @@ export function SchoolList(props) {
     const [activeIdForDelete, setActiveIdForDelete] = useState(null);
     const { afterUpdate, items, linkToCreate, onUpdate, onDelete, isLoading } = props;
 
-    const handleModify = (id) => {
+    const openEditor = (id) => {
         setEditor({
             isEditMode: true,
             rowKey: id
         })
     }
 
-    const handleCancel = () => {
+    const closeEditor = () => {
         setEditor({
             isEditMode: false,
             rowKey: null
         })
     }
 
-    const onSubmit = (id, formData) => {
-        onUpdate(id, formData)
-            .then(() => {
-                setEditor({
-                    isEditMode: false,
-                    rowKey: null
-                });
-                afterUpdate();
-            })
+    const fireAfterUpdateEvent = () => {
+        if (afterUpdate !== undefined) {
+            afterUpdate();
+        }
     }
 
-    const handleModalShown = (id) => {
+    const onSubmit = (id, formData) => {
+        const closeEditorAfterUpdate = () => {
+            closeEditor();
+            fireAfterUpdateEvent();
+        }
+
+        if (onUpdate === undefined) {
+            closeEditorAfterUpdate();
+        }
+
+        onUpdate(id, formData)
+            .then(() => {
+                closeEditorAfterUpdate();
+            });
+    }
+
+    const handleDeleteModalShown = (id) => {
         setIsModalVisible(true);
         setActiveIdForDelete(id);
     }
 
-    const handleModalConfirm = () => {
+    const handleDeleteModalConfirm = () => {
         onDelete(activeIdForDelete);
         setIsModalVisible(false);
     }
@@ -60,51 +71,55 @@ export function SchoolList(props) {
 
     return (
         <div className={`component ${isLoading ? "loading" : ""}`} >
-            <ConfirmPopup text={"Are you sure?"} visible={isModalVisible} onConfirm={handleModalConfirm} onCancel={handleModalCancel} />
-            <DataTable classtype="component-data"
+            <ConfirmPopup text="Are you sure?" visible={isModalVisible} onConfirm={handleDeleteModalConfirm} onCancel={handleModalCancel} />
+            <DataTable
+                isLoading={isLoading}
                 headers={labels}
                 items={items}
-                getRowForItem={(item, idx) => (
-                    <tr key={idx}>
-                        <td>
-                            {(editor.isEditMode && editor.rowKey === item.Id) ?
-                                <input name="eduId" defaultValue={item.EduId} ref={register({ required: true })} /> :
-                                <span>{item.EduId}</span>}
-                        </td>
-                        <td>
-                            {(editor.isEditMode && editor.rowKey === item.Id) ?
-                                <input name="name" defaultValue={item.Name} ref={register({ required: true })} /> :
-                                <span>{item.Name}</span>}
-                        </td>
-                        <td>
-                            {(editor.isEditMode && editor.rowKey === item.Id) ?
-                                <input name="country" defaultValue={item.Country} ref={register({ required: true })} /> :
-                                <span>{item.Country}</span>}
-                        </td>
-                        <td>
-                            {(editor.isEditMode && editor.rowKey === item.Id) ?
-                                <input name="city" defaultValue={item.City} ref={register({ required: true })} /> :
-                                <span>{item.City}</span>}
-                        </td>
-                        <td>
-                            {(editor.isEditMode && editor.rowKey === item.Id) ?
-                                <input name="address" defaultValue={item.Address
-                                } ref={register({ required: true })} /> :
-                                <span>{item.Address}</span>}
-                        </td>
-                        <td>
-                            {(editor.isEditMode && editor.rowKey === item.Id) ?
-                                <>
-                                    <Button disabled={isLoading} text="Ok" handleClick={handleSubmit((formData) => onSubmit(item.Id, formData))} />
-                                    <Button disabled={isLoading} text="Cancel" handleClick={() => handleCancel()} />
-                                </> :
-                                <>
-                                    <Button disabled={isLoading} text="Modify" handleClick={() => handleModify(item.Id)} />
-                                    <Button disabled={isLoading} text="Delete" handleClick={() => handleModalShown(item.Id)} />
-                                </>}
-                        </td>
-                    </tr>
-                )}
+                getRowForItem={(item, idx) => {
+                    const isEditing = editor.isEditMode && editor.rowKey === item.Id;
+
+                    return (
+                        <tr key={idx}>
+                            <td>
+                                {isEditing ?
+                                    <input name="eduId" defaultValue={item.EduId} ref={register({ required: true })} /> :
+                                    <span>{item.EduId}</span>}
+                            </td>
+                            <td>
+                                {isEditing ?
+                                    <input name="name" defaultValue={item.Name} ref={register({ required: true })} /> :
+                                    <span>{item.Name}</span>}
+                            </td>
+                            <td>
+                                {isEditing ?
+                                    <input name="country" defaultValue={item.Country} ref={register({ required: true })} /> :
+                                    <span>{item.Country}</span>}
+                            </td>
+                            <td>
+                                {isEditing ?
+                                    <input name="city" defaultValue={item.City} ref={register({ required: true })} /> :
+                                    <span>{item.City}</span>}
+                            </td>
+                            <td>
+                                {isEditing ?
+                                    <input name="address" defaultValue={item.Address} ref={register({ required: true })} /> :
+                                    <span>{item.Address}</span>}
+                            </td>
+                            <td>
+                                {isEditing ?
+                                    <>
+                                        <Button disabled={isLoading} text="Ok" handleClick={handleSubmit((formData) => onSubmit(item.Id, formData))} />
+                                        <Button disabled={isLoading} text="Cancel" handleClick={() => closeEditor()} />
+                                    </> :
+                                    <>
+                                        <Button disabled={isLoading} text="Modify" handleClick={() => openEditor(item.Id)} />
+                                        <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(item.Id)} />
+                                    </>}
+                            </td>
+                        </tr>
+                    );
+                }}
             />
             <div className="footer">
                 <Link to={linkToCreate}>

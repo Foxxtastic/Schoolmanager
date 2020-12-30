@@ -1,17 +1,27 @@
+import { Loader } from './Loader';
+
 export function DataTable(props) {
 
-    const { classtype, headers, items, getRowForItem } = props;
+    const { isLoading, headers, items, getRowForItem } = props;
 
     return (
-        <table className={`datatable ${classtype}`} >
-            <thead>
-                <tr>
-                    {headers.map((x, idx) => <th key={idx}>{x}</th>)}
-                </tr>
-            </thead>
-            <tbody>
-                {items.map((item, idx) => getRowForItem(item, idx))}
-            </tbody>
-        </table >
+        <>
+            <div className="component-data">
+                <div className="datatable">
+                    <Loader isLoading={isLoading} />
+
+                    <table>
+                        <thead>
+                            <tr>
+                                {headers.map((headerText, idx) => <th key={idx}>{headerText}</th>)}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {items.map((item, idx) => getRowForItem(item, idx))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </>
     );
 }

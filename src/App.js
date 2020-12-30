@@ -17,46 +17,28 @@ class App extends Component {
     super(props);
     this.state = {
       schools: undefined,
-      loaded: false,
       isLoading: false,
     }
     this.getData = this.getData.bind(this);
   }
 
-  setSchools(items) {
-    this.setState({
-      schools: items
-    });
+  setSchools(schools) {
+    this.setState({ schools });
   }
 
-  setLoaded(statement) {
-    this.setState({
-      loaded: statement
-    });
-  }
 
-  setNewSchool(item) {
-    this.setState({
-      newschool: item
-    });
+  setIsLoading(isLoading) {
+    this.setState({ isLoading });
   }
 
   getData() {
-    console.log('getting data...');
+    this.setIsLoading(true);
     return fetch('/api/school')
       .then(res => res.json())
       .then(list => {
-        console.log("loading:");
-        this.setLoaded(true);
-        console.log('schools: ', list);
+        this.setIsLoading(false);
         this.setSchools(list);
       });
-  }
-
-  setIsloading(isLoading) {
-    this.setState({
-      isLoading: isLoading
-    })
   }
 
   componentDidMount() {
@@ -64,7 +46,7 @@ class App extends Component {
   }
 
   handleSchoolCreate = (newItem) => {
-    this.setIsloading(true);
+    this.setIsLoading(true);
     fetch('/api/school', {
       method: 'POST',
       headers: {
@@ -73,16 +55,14 @@ class App extends Component {
       body: JSON.stringify(newItem)
     })
       .then(res => res.json())
-      .then(newSchool => {
-        console.log('newSchool: ', newSchool);
-        return this.getData();
-      })
+      .then(() => this.getData())
       .then(() => history.push("/schools"))
-      .then(() => this.setIsloading(false));
+      .then(() => this.setIsLoading(false));
   }
 
   handleSchoolUpdate = (idToUpdate, school) => {
-    this.setIsloading(true);
+    this.setIsLoading(true);
+
     return fetch(`/api/school/${idToUpdate}`, {
       method: 'PUT',
       headers: {
@@ -91,22 +71,17 @@ class App extends Component {
       body: JSON.stringify(school)
     })
       .then(res => res.json())
-      .then(updatedSchool => {
-        console.log('updatedSchool: ', updatedSchool);
-      })
-      .then(() => this.setIsloading(false));
+      .then(() => this.setIsLoading(false));
   }
 
   handleSchoolDelete = (idToDelete) => {
-    this.setIsloading(true);
+    this.setIsLoading(true);
+
     fetch(`/api/school/${idToDelete}`, {
       method: 'DELETE'
     })
-      .then(res => {
-        console.log('delete status code: ', res.status, res.statusText);
-        return this.getData()
-          .then(() => this.setIsloading(false));
-      })
+      .then(() => this.getData())
+      .then(() => this.setIsLoading(false));
   }
 
   render() {
@@ -125,12 +100,12 @@ class App extends Component {
               <div className="main-content bg-mgray">
                 {(this.state.schools !== undefined) &&
                   <SchoolList
-                    afterUpdate={this.getData}
                     items={this.state.schools}
+                    isLoading={this.state.isLoading}
                     linkToCreate="/schools/create"
+                    afterUpdate={this.getData}
                     onDelete={this.handleSchoolDelete}
                     onUpdate={this.handleSchoolUpdate}
-                    isLoading={this.state.isLoading}
                   />}
               </div>
             </Route>
