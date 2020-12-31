@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { MainHeader } from '../shared/MainHeader';
 import { Route, Switch } from 'react-router-dom';
 import { GenericTextForm } from '../shared/GenericTextForm';
-import { history } from '../history'
+import { history } from '../../history'
 import { MainContent } from '../shared/MainContent';
 import { SchoolListPage } from './SchoolListPage';
 

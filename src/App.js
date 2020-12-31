@@ -2,7 +2,7 @@ import './cssreset.css';
 import './App.css';
 import { Navbar } from './components/shared/Navbar';
 import { Router } from 'react-router-dom';
-import { history } from './components/history'
+import { history } from './history'
 import { SchoolManagement } from './components/schoolmanagement/SchoolManagement';
 import { Home } from './components/shared/Home';
 
@@ -16,7 +16,7 @@ function App() {
           links={["/", "/schools"]}
         />
         <Home />
-        <SchoolManagement history={history} />
+        <SchoolManagement />
       </Router>
     </>
   );
