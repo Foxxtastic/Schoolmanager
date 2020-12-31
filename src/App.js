@@ -6,15 +6,15 @@ import { history } from './components/history'
 import { SchoolManagement } from './components/schoolmanagement/SchoolManagement';
 import { Home } from './components/shared/Home';
 
-const navbarItems = ["Home", "Schools"];
-
 function App() {
 
   return (
     <>
       <Router history={history}>
         <Navbar
-          items={navbarItems} links={["/", "/schools"]} />
+          items={["Home", "Schools"]}
+          links={["/", "/schools"]}
+        />
         <Home />
         <SchoolManagement history={history} />
       </Router>
