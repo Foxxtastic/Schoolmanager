@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { Button } from "./Button";
-import { ConfirmPopup } from "./ConfirmPopup";
-import { DataTable } from "./DataTable";
+import { Button } from "../shared/Button";
+import { ConfirmPopup } from "../shared/ConfirmPopup";
+import { DataTable } from "../shared/DataTable";
 
 const labels = ["EduId", "Name", "Country", "City", "Address", ""]
 
