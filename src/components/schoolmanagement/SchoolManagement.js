@@ -1,12 +1,8 @@
 import { useEffect, useState } from 'react';
-import { MainHeader } from '../shared/MainHeader';
 import { Route, Switch } from 'react-router-dom';
-import { GenericTextForm } from '../shared/GenericTextForm';
 import { history } from '../../history'
-import { MainContent } from '../shared/MainContent';
 import { SchoolListPage } from './SchoolListPage';
-
-const createSchoolLabels = ["EduId", "Name", "Country", "City", "Address"];
+import { SchoolCreatePage } from './SchoolCreatePage';
 
 export function SchoolManagement(props) {
     const [schools, setSchools] = useState(undefined);
@@ -76,10 +72,7 @@ export function SchoolManagement(props) {
                     onUpdate={handleSchoolUpdate} />
             </Route>
             <Route path="/schools/create">
-                <MainHeader text="Create new School" />
-                <MainContent>
-                    <GenericTextForm labels={createSchoolLabels} isLoading={isLoading} onSubmit={handleSchoolCreate} />
-                </MainContent>
+                <SchoolCreatePage isLoading={isLoading} onSubmit={handleSchoolCreate} />
             </Route>
         </Switch>
     )
