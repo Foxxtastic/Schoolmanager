@@ -1,26 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { history } from '../../history'
 import { SchoolListPage } from './SchoolListPage';
 import { SchoolCreatePage } from './SchoolCreatePage';
+import { pageSize } from '../../config';
 
 export function SchoolManagement(props) {
-    const [schools, setSchools] = useState(undefined);
     const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
-        getData();
-    }, []);
-
-    function getData() {
+    const getData = useCallback((pageNumber) => {
         setIsLoading(true);
-        return fetch('/api/school')
+        return fetch(`/api/school?pageNumber=${pageNumber}&pageSize=${pageSize}`)
             .then(res => res.json())
-            .then(list => {
+            .then(listResponse => {
                 setIsLoading(false);
-                setSchools(list);
+                return listResponse;
             });
-    }
+    }, []);
 
     const handleSchoolUpdate = (idToUpdate, school) => {
         setIsLoading(true);
@@ -65,8 +61,8 @@ export function SchoolManagement(props) {
         <Switch>
             <Route path="/schools" exact>
                 <SchoolListPage
-                    schools={schools}
                     isLoading={isLoading}
+                    afterPaging={getData}
                     afterUpdate={getData}
                     onDelete={handleSchoolDelete}
                     onUpdate={handleSchoolUpdate} />

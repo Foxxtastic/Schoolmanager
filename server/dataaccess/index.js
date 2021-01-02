@@ -21,7 +21,33 @@ async function listAllSchools() {
         select Id, EduId, Name, Country, City, Address
         from dbo.Schools`;
 
-    return result.recordset;
+    return {
+        items: result.recordset,
+        allItemsCount: result.recordset.length
+    };
+}
+
+async function listPaged(pageNumber, pageSize) {
+    await sql.connect(databaseConnection);
+    const offset = (pageNumber - 1) * pageSize;
+    const pageSizeAsNumber = parseInt(pageSize, 10);
+
+    const pageResult = await sql.query`
+        select Id, EduId, Name, Country, City, Address
+        from Schools
+        order by Id offset ${offset} rows
+        fetch next ${pageSizeAsNumber} rows only;`;
+
+    const countResult = await sql.query`
+        select count(*) as Count
+        from Schools`;
+
+    const count = countResult.recordset[0].Count;
+
+    return {
+        items: pageResult.recordset,
+        allItemsCount: count
+    };
 }
 
 async function createSchool(schoolDto) {
@@ -81,6 +107,7 @@ async function deleteById(schoolId) {
 module.exports = {
     getSchoolById,
     listAllSchools,
+    listPaged,
     createSchool,
     deleteById,
     updateSchool

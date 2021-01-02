@@ -2,10 +2,11 @@ const express = require('express');
 const dataaccess = require('../dataaccess/index');
 const router = express.Router();
 
-router.get('/', async (_req, res, next) => {
+router.get('/', async (req, res, next) => {
     try {
-        const allSchools = await dataaccess.listAllSchools();
-        res.json(allSchools);
+        const { pageNumber, pageSize } = req.query;
+        const schools = await (pageNumber && pageSize ? dataaccess.listPaged(pageNumber, pageSize) : dataaccess.listAllSchools());
+        res.json(schools);
     } catch (error) {
         next(error);
     }

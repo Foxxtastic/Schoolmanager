@@ -3,22 +3,21 @@ import { MainHeader } from "../shared/MainHeader";
 import { SchoolList } from "./SchoolList";
 
 export function SchoolListPage(props) {
-    const { schools, isLoading, afterUpdate, onDelete, onUpdate } = props;
+    const { isLoading, afterUpdate, afterPaging, onDelete, onUpdate } = props;
 
     return (
         <>
             <MainHeader text="Schools" />
-            {(schools !== undefined) &&
-                <MainContent>
-                    <SchoolList
-                        items={schools}
-                        isLoading={isLoading}
-                        linkToCreate="/schools/create"
-                        afterUpdate={afterUpdate}
-                        onDelete={onDelete}
-                        onUpdate={onUpdate}
-                    />
-                </MainContent>}
+            <MainContent>
+                <SchoolList
+                    isLoading={isLoading}
+                    linkToCreate="/schools/create"
+                    afterUpdate={afterUpdate}
+                    afterPaging={afterPaging}
+                    onDelete={onDelete}
+                    onUpdate={onUpdate}
+                />
+            </MainContent>
         </>
     )
 }
