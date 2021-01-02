@@ -356,6 +356,11 @@ label {
   background-color: #ecf0f1;
 }
 
+.validationerror {
+  margin-top: 5px;
+  margin-left: 2px;
+}
+
 .confirmmenu-content {
   padding: 10px;
   position: absolute;

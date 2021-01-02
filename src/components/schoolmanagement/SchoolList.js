@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Button } from "../shared/Button";
 import { ConfirmPopup } from "../shared/ConfirmPopup";
 import { DataTable } from "../shared/DataTable";
+import { ValidationErrors } from "../shared/ValidationErrors";
 
 const labels = ["EduId", "Name", "Country", "City", "Address", ""]
 
@@ -83,27 +84,42 @@ export function SchoolList(props) {
                         <tr key={idx}>
                             <td>
                                 {isEditing ?
-                                    <input name="eduId" defaultValue={item.EduId} ref={register({ required: true })} /> :
+                                    <>
+                                        <input name="eduId" defaultValue={item.EduId} ref={register({ required: true })} />
+                                        <ValidationErrors name="eduId" errors={errors} />
+                                    </> :
                                     <span>{item.EduId}</span>}
                             </td>
                             <td>
                                 {isEditing ?
-                                    <input name="name" defaultValue={item.Name} ref={register({ required: true })} /> :
+                                    <>
+                                        <input name="name" defaultValue={item.Name} ref={register({ required: true })} />
+                                        <ValidationErrors name="name" errors={errors} />
+                                    </> :
                                     <span>{item.Name}</span>}
                             </td>
                             <td>
                                 {isEditing ?
-                                    <input name="country" defaultValue={item.Country} ref={register({ required: true })} /> :
+                                    <>
+                                        <input name="country" defaultValue={item.Country} ref={register({ required: true })} />
+                                        <ValidationErrors name="country" errors={errors} />
+                                    </> :
                                     <span>{item.Country}</span>}
                             </td>
                             <td>
                                 {isEditing ?
-                                    <input name="city" defaultValue={item.City} ref={register({ required: true })} /> :
+                                    <>
+                                        <input name="city" defaultValue={item.City} ref={register({ required: true })} />
+                                        <ValidationErrors name="city" errors={errors} />
+                                    </> :
                                     <span>{item.City}</span>}
                             </td>
                             <td>
                                 {isEditing ?
-                                    <input name="address" defaultValue={item.Address} ref={register({ required: true })} /> :
+                                    <>
+                                        <input name="address" defaultValue={item.Address} ref={register({ required: true })} />
+                                        <ValidationErrors name="address" errors={errors} />
+                                    </> :
                                     <span>{item.Address}</span>}
                             </td>
                             <td>

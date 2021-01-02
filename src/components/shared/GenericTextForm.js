@@ -1,5 +1,6 @@
 import { Loader } from './Loader';
 import { useForm } from "react-hook-form";
+import { ValidationErrors } from './ValidationErrors';
 
 export function GenericTextForm(props) {
 
@@ -21,6 +22,7 @@ export function GenericTextForm(props) {
                         <div key={idx} className="item">
                             <label >{`${x}:`}</label>
                             <input name={`${x}`} typeof="text" ref={register({ required: true })}></input>
+                            <ValidationErrors name={x} errors={errors} />
                         </div>
                     )}
                 </div>
