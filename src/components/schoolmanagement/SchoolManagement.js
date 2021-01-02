@@ -8,9 +8,9 @@ import { pageSize } from '../../config';
 export function SchoolManagement(props) {
     const [isLoading, setIsLoading] = useState(false);
 
-    const getData = useCallback((pageNumber) => {
+    const getData = useCallback((pageNumber, sortingProperty, isDescending) => {
         setIsLoading(true);
-        return fetch(`/api/school?pageNumber=${pageNumber}&pageSize=${pageSize}`)
+        return fetch(`/api/school?pageNumber=${pageNumber}&pageSize=${pageSize}&sorting=${sortingProperty}&isDescending=${isDescending}`)
             .then(res => res.json())
             .then(listResponse => {
                 setIsLoading(false);
@@ -34,7 +34,8 @@ export function SchoolManagement(props) {
 
     const handleSchoolCreate = (newItem) => {
         setIsLoading(true);
-        fetch('/api/school', {
+
+        return fetch('/api/school', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -42,18 +43,15 @@ export function SchoolManagement(props) {
             body: JSON.stringify(newItem)
         })
             .then(res => res.json())
-            .then(() => getData())
-            .then(() => history.push("/schools"))
             .then(() => setIsLoading(false));
     }
 
     const handleSchoolDelete = (idToDelete) => {
         setIsLoading(true);
 
-        fetch(`/api/school/${idToDelete}`, {
+        return fetch(`/api/school/${idToDelete}`, {
             method: 'DELETE'
         })
-            .then(() => getData())
             .then(() => setIsLoading(false));
     }
 
@@ -64,11 +62,16 @@ export function SchoolManagement(props) {
                     isLoading={isLoading}
                     afterPaging={getData}
                     afterUpdate={getData}
+                    afterDelete={getData}
                     onDelete={handleSchoolDelete}
                     onUpdate={handleSchoolUpdate} />
             </Route>
             <Route path="/schools/create">
-                <SchoolCreatePage isLoading={isLoading} onSubmit={handleSchoolCreate} />
+                <SchoolCreatePage
+                    isLoading={isLoading}
+                    onCreate={handleSchoolCreate}
+                    afterCreate={() => history.push("/schools")}
+                />
             </Route>
         </Switch>
     )

@@ -15,11 +15,34 @@ async function getSchoolById(schoolId) {
     return result.recordset;
 }
 
-async function listAllSchools() {
+async function listAllSchools(sortingProperty = 'Id', isAscending = true) {
     await sql.connect(databaseConnection);
+    const isAscendingParam = isAscending === true ? 1 : -1;
+
     const result = await sql.query`
+        with schoolsWithRowNum AS
+        (
+            select
+                *,
+                row_number() over (
+                    order by
+                    case ${sortingProperty}
+                        when 'Id'      then convert(nvarchar(max), Id)
+                        when 'EduId'   then convert(nvarchar(max), EduId)
+                        when 'Name'    then convert(nvarchar(max), Name)
+                        when 'Country' then convert(nvarchar(max), Country)
+                        when 'City'    then convert(nvarchar(max), City)
+                        when 'Address' then convert(nvarchar(max), Address)
+                    end
+                ) as RowNum
+            from
+                Schools
+        )
         select Id, EduId, Name, Country, City, Address
-        from dbo.Schools`;
+        from
+            schoolsWithRowNum
+        order by
+            RowNum * ${isAscendingParam}`;
 
     return {
         items: result.recordset,
@@ -27,16 +50,38 @@ async function listAllSchools() {
     };
 }
 
-async function listPaged(pageNumber, pageSize) {
+async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscending = true) {
     await sql.connect(databaseConnection);
     const offset = (pageNumber - 1) * pageSize;
     const pageSizeAsNumber = parseInt(pageSize, 10);
+    const isAscendingParam = isAscending === true ? 1 : -1;
 
     const pageResult = await sql.query`
+        with schoolsWithRowNum AS
+        (
+            select
+                *,
+                row_number() over (
+                    order by
+                    case ${sortingProperty}
+                        when 'Id'      then convert(nvarchar(max), Id)
+                        when 'EduId'   then convert(nvarchar(max), EduId)
+                        when 'Name'    then convert(nvarchar(max), Name)
+                        when 'Country' then convert(nvarchar(max), Country)
+                        when 'City'    then convert(nvarchar(max), City)
+                        when 'Address' then convert(nvarchar(max), Address)
+                    end
+                ) as RowNum
+            from
+                Schools
+        )
         select Id, EduId, Name, Country, City, Address
-        from Schools
-        order by Id offset ${offset} rows
-        fetch next ${pageSizeAsNumber} rows only;`;
+        from
+            schoolsWithRowNum
+        order by
+            RowNum * ${isAscendingParam}
+            offset ${offset} rows
+        fetch next ${pageSizeAsNumber} rows only;`
 
     const countResult = await sql.query`
         select count(*) as Count

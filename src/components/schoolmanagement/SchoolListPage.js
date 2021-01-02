@@ -3,7 +3,7 @@ import { MainHeader } from "../shared/MainHeader";
 import { SchoolList } from "./SchoolList";
 
 export function SchoolListPage(props) {
-    const { isLoading, afterUpdate, afterPaging, onDelete, onUpdate } = props;
+    const { isLoading, afterPaging, afterDelete, afterUpdate, onDelete, onUpdate } = props;
 
     return (
         <>
@@ -12,8 +12,9 @@ export function SchoolListPage(props) {
                 <SchoolList
                     isLoading={isLoading}
                     linkToCreate="/schools/create"
-                    afterUpdate={afterUpdate}
                     afterPaging={afterPaging}
+                    afterUpdate={afterUpdate}
+                    afterDelete={afterDelete}
                     onDelete={onDelete}
                     onUpdate={onUpdate}
                 />

@@ -8,8 +8,21 @@ import { DataTable } from "../shared/DataTable";
 import { ValidationErrors } from "../shared/ValidationErrors";
 import { usePageNumber } from '../../hooks/usePageNumber';
 import { history } from '../../history'
+import { useSorting } from "../../hooks/useSorting";
+import { useSortingDirection } from "../../hooks/useSortingDirection";
 
-const labels = ["EduId", "Name", "Country", "City", "Address", ""]
+const headers = [
+    { text: "Educational Id", propertyName: 'EduId', isSortable: true },
+    { text: "Name", propertyName: 'Name', isSortable: true },
+    { text: "Country", propertyName: 'Country', isSortable: true },
+    { text: "City", propertyName: 'City', isSortable: true },
+    { text: "Address", propertyName: 'Address', isSortable: true },
+    { text: "", isSortable: false },
+];
+
+function calculateMaxPage(listResponse) {
+    return Math.ceil(listResponse.allItemsCount / pageSize);
+}
 
 export function SchoolList(props) {
 
@@ -27,11 +40,20 @@ export function SchoolList(props) {
     const [activeIdForDelete, setActiveIdForDelete] = useState(null);
     const [maxPageNumber, setMaxPageNumber] = useState(undefined);
 
-    const { afterUpdate, afterPaging, linkToCreate, onUpdate, onDelete, isLoading } = props;
+    let sortingProperty = useSorting();
+    sortingProperty = sortingProperty === null ? 'EduId' : sortingProperty;
+    const { isDescending } = useSortingDirection();
+
+    const { afterUpdate, afterDelete, afterPaging, linkToCreate, onUpdate, onDelete, isLoading } = props;
+
+    const setSchoolsFromServer = (listResponse) => {
+        setMaxPageNumber(calculateMaxPage(listResponse));
+        setSchools(listResponse.items);
+    }
 
     useEffect(() => {
-        afterPaging(activePageNumber).then(listResponse => {
-            const maxPage = Math.ceil(listResponse.allItemsCount / pageSize);
+        afterPaging(activePageNumber, sortingProperty, isDescending).then(listResponse => {
+            const maxPage = calculateMaxPage(listResponse);
             if (listResponse.allItemsCount <= (activePageNumber - 1) * pageSize) {
                 history.push(`/schools?page=${maxPage}`);
                 return;
@@ -39,7 +61,7 @@ export function SchoolList(props) {
             setSchools(listResponse.items);
             setMaxPageNumber(maxPage);
         });
-    }, [activePageNumber, afterPaging]);
+    }, [activePageNumber, afterPaging, sortingProperty, isDescending]);
 
     const openEditor = (id) => {
         setEditor({
@@ -57,7 +79,8 @@ export function SchoolList(props) {
 
     const fireAfterUpdateEvent = () => {
         if (afterUpdate !== undefined) {
-            afterUpdate(activePageNumber);
+            afterUpdate(activePageNumber, sortingProperty, isDescending)
+                .then(setSchoolsFromServer);
         }
     }
 
@@ -83,7 +106,9 @@ export function SchoolList(props) {
     }
 
     const handleDeleteModalConfirm = () => {
-        onDelete(activeIdForDelete);
+        onDelete(activeIdForDelete)
+            .then(() => afterDelete(activePageNumber, sortingProperty, isDescending))
+            .then(setSchoolsFromServer);
         setIsModalVisible(false);
     }
 
@@ -101,7 +126,9 @@ export function SchoolList(props) {
             <ConfirmPopup text="Are you sure?" visible={isModalVisible} onConfirm={handleDeleteModalConfirm} onCancel={handleModalCancel} />
             <DataTable
                 isLoading={isLoading}
-                headers={labels}
+                headers={headers}
+                sortingProperty={sortingProperty}
+                isDescending={isDescending}
                 items={schools}
                 activePageNumber={activePageNumber}
                 maxPageNumber={maxPageNumber}

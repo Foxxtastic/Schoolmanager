@@ -8,13 +8,13 @@ export function GenericTextForm(props) {
 
     const { labels, isLoading, onSubmit, onError } = props;
 
-    const onSubmiting = (data) => {
+    const onSubmitting = (data) => {
         onSubmit(data);
     }
 
     return (
         <>
-            <form className={`component ${isLoading ? "loading" : ""}`} onSubmit={handleSubmit(onSubmiting, onError)}>
+            <form className={`component ${isLoading ? "loading" : ""}`} onSubmit={handleSubmit(onSubmitting, onError)}>
                 <Loader isLoading={isLoading} />
 
                 <div className="component-data createitem bg-lgray">
