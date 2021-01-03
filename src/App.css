@@ -64,6 +64,10 @@ label {
   background-color: #1abc9c;
 }
 
+.datatable a {
+  margin-right: 5px;
+}
+
 .datatable td, .datatable th {
   border-width: 2px;
   border-color: #1abc9c;
@@ -370,6 +374,20 @@ label {
 }
 
 .confirmmenu-content div {
+  text-align: center;
+}
+
+.filtermmenu {
+  z-index: 9999;
+  border: solid 1px #bdc3c7;
+  background-color: #ecf0f1;
+}
+
+.filtermenu-content {
+  padding: 5px;
+}
+
+.filtermenu-content div{
   text-align: center;
 }
 

@@ -8,9 +8,11 @@ import { pageSize } from '../../config';
 export function SchoolManagement(props) {
     const [isLoading, setIsLoading] = useState(false);
 
-    const getData = useCallback((pageNumber, sortingProperty, isDescending) => {
+    const getData = useCallback((pageNumber, sortingProperty, isDescending, filterProperty, filterValue) => {
         setIsLoading(true);
-        return fetch(`/api/school?pageNumber=${pageNumber}&pageSize=${pageSize}&sorting=${sortingProperty}&isDescending=${isDescending}`)
+        return fetch(`/api/school?pageNumber=${pageNumber}&pageSize=${pageSize}` +
+            `&sorting=${sortingProperty}&isDescending=${isDescending}` +
+            `&filterProperty=${filterProperty}&filterValue=${filterValue}`)
             .then(res => res.json())
             .then(listResponse => {
                 setIsLoading(false);

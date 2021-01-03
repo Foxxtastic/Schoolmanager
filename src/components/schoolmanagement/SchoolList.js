@@ -1,3 +1,4 @@
+import { history } from '../../history'
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
@@ -7,9 +8,10 @@ import { ConfirmPopup } from "../shared/ConfirmPopup";
 import { DataTable } from "../shared/DataTable";
 import { ValidationErrors } from "../shared/ValidationErrors";
 import { usePageNumber } from '../../hooks/usePageNumber';
-import { history } from '../../history'
 import { useSorting } from "../../hooks/useSorting";
 import { useSortingDirection } from "../../hooks/useSortingDirection";
+import { useFilterProperty } from "../../hooks/useFilterProperty";
+import { useFilterValue } from "../../hooks/useFilterValue";
 
 const headers = [
     { text: "Educational Id", propertyName: 'EduId', isSortable: true },
@@ -44,6 +46,12 @@ export function SchoolList(props) {
     sortingProperty = sortingProperty === null ? 'EduId' : sortingProperty;
     const { isDescending } = useSortingDirection();
 
+    let filterProperty = useFilterProperty();
+    filterProperty = filterProperty === null ? 'EduId' : filterProperty;
+
+    let filterValue = useFilterValue();
+    filterValue = filterValue === null ? '' : filterValue;
+
     const { afterUpdate, afterDelete, afterPaging, linkToCreate, onUpdate, onDelete, isLoading } = props;
 
     const setSchoolsFromServer = (listResponse) => {
@@ -52,7 +60,7 @@ export function SchoolList(props) {
     }
 
     useEffect(() => {
-        afterPaging(activePageNumber, sortingProperty, isDescending).then(listResponse => {
+        afterPaging(activePageNumber, sortingProperty, isDescending, filterProperty, filterValue).then(listResponse => {
             const maxPage = calculateMaxPage(listResponse);
             if (listResponse.allItemsCount <= (activePageNumber - 1) * pageSize) {
                 history.push(`/schools?page=${maxPage}`);
@@ -61,7 +69,7 @@ export function SchoolList(props) {
             setSchools(listResponse.items);
             setMaxPageNumber(maxPage);
         });
-    }, [activePageNumber, afterPaging, sortingProperty, isDescending]);
+    }, [activePageNumber, afterPaging, sortingProperty, isDescending, filterProperty, filterValue]);
 
     const openEditor = (id) => {
         setEditor({
@@ -79,7 +87,7 @@ export function SchoolList(props) {
 
     const fireAfterUpdateEvent = () => {
         if (afterUpdate !== undefined) {
-            afterUpdate(activePageNumber, sortingProperty, isDescending)
+            afterUpdate(activePageNumber, sortingProperty, isDescending, filterProperty, filterValue)
                 .then(setSchoolsFromServer);
         }
     }
@@ -107,7 +115,7 @@ export function SchoolList(props) {
 
     const handleDeleteModalConfirm = () => {
         onDelete(activeIdForDelete)
-            .then(() => afterDelete(activePageNumber, sortingProperty, isDescending))
+            .then(() => afterDelete(activePageNumber, sortingProperty, isDescending, filterProperty, filterValue))
             .then(setSchoolsFromServer);
         setIsModalVisible(false);
     }
@@ -129,6 +137,8 @@ export function SchoolList(props) {
                 headers={headers}
                 sortingProperty={sortingProperty}
                 isDescending={isDescending}
+                filterProperty={filterProperty}
+                filterValue={filterValue}
                 items={schools}
                 activePageNumber={activePageNumber}
                 maxPageNumber={maxPageNumber}
