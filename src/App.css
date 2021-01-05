@@ -15,9 +15,20 @@ table {
   overflow: scroll;
 }
 
+.headerbutton {
+  border: none;
+  background-color:rgba(0, 0, 0, 0);
+  padding: 0;
+  font-size: 1em;
+}
+
 label {
   display: block;
   padding: 5px;
+}
+
+button {
+  cursor: pointer;
 }
 
 .alert {
@@ -26,8 +37,21 @@ label {
   margin-bottom: 1em;
 }
 
-.item {
+.icon {
+  margin-left: 10px;
+}
+
+.icon-wpointer {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.item-padding {
   padding: 1em 3em 0.5em 3em;
+}
+
+.item-margin {
+  margin: 1em 3em 0.5em 3em;
 }
 
 .loader-container {
@@ -62,6 +86,7 @@ label {
 
 .datatable thead {
   background-color: #1abc9c;
+  text-align: left;
 }
 
 .datatable a {
@@ -73,7 +98,6 @@ label {
   border-color: #1abc9c;
   border-style: solid;
   padding: 5px;
-  text-align: left;
   width: 1%;
   padding-right: 12px;
   white-space: nowrap;
@@ -81,6 +105,10 @@ label {
 
 .datatable td input {
   width: 100%;
+}
+
+.datatable-footer {
+  text-align: right;
 }
 
 .popupform {
@@ -133,7 +161,7 @@ label {
   height: 100%;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 80px;
+  grid-template-rows: 1fr 1fr;
   grid-template-areas:
     "component-data"
     "footer";
@@ -145,13 +173,19 @@ label {
 
 .footer {
   grid-area: footer;
-  line-height: 80px;
+  margin-left: 2em;
 }
 
 .button {
   font-size: 1em;
   padding: 3px;
   margin-right: 10px;
+  margin-left: 10px;
+}
+
+.button-withoutmargin {
+  font-size: 1em;
+  padding: 3px;
 }
 
 .button:disabled {
@@ -388,7 +422,7 @@ label {
 }
 
 .filtermenu-content div{
-  text-align: center;
+  text-align: left;
 }
 
 .hidden {

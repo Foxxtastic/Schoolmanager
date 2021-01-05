@@ -19,15 +19,13 @@ export function GenericTextForm(props) {
 
                 <div className="component-data createitem bg-lgray">
                     {labels.map((x, idx) =>
-                        <div key={idx} className="item">
-                            <label >{`${x}:`}</label>
+                        <div key={idx} className="item-padding">
+                            <label >{`${x}:*`}</label>
                             <input name={`${x}`} typeof="text" ref={register({ required: true })}></input>
                             <ValidationErrors name={x} errors={errors} />
                         </div>
                     )}
-                </div>
-                <div className="footer">
-                    <input disabled={isLoading} type="submit" className="button" />
+                    <input className="button-withoutmargin item-margin" disabled={isLoading} type="submit" />
                 </div>
             </form>
         </>

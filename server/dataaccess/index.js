@@ -62,7 +62,7 @@ async function listAllSchools(sortingProperty = 'Id', isAscending = true, filter
 
 async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscending = true, filterProperty = 'EduId', filter = '') {
     await sql.connect(databaseConnection);
-    const offset = (pageNumber - 1) * pageSize;
+    const offset = (pageNumber === '0') ? 0 : (pageNumber - 1) * pageSize;
     const pageSizeAsNumber = parseInt(pageSize, 10);
     const isAscendingParam = isAscending === true ? 1 : -1;
 
@@ -104,8 +104,24 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
         fetch next ${pageSizeAsNumber} rows only;`
 
     const countResult = await sql.query`
+        with schoolsWithFilter as
+        (
+        select Id, EduId, Name, Country, City, Address
+            from
+                Schools
+            where 
+                case ${filterProperty}
+                    when 'Id'      then convert(nvarchar(max), Id)
+                    when 'EduId'   then convert(nvarchar(max), EduId)
+                    when 'Name'    then convert(nvarchar(max), Name)
+                    when 'Country' then convert(nvarchar(max), Country)
+                    when 'City'    then convert(nvarchar(max), City)
+                    when 'Address' then convert(nvarchar(max), Address)
+                end
+                like '%'+${filter}+'%'
+        )
         select count(*) as Count
-        from Schools`;
+        from schoolsWithFilter`
 
     const count = countResult.recordset[0].Count;
 

@@ -1,4 +1,3 @@
-import { history } from '../../history'
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
@@ -12,6 +11,7 @@ import { useSorting } from "../../hooks/useSorting";
 import { useSortingDirection } from "../../hooks/useSortingDirection";
 import { useFilterProperty } from "../../hooks/useFilterProperty";
 import { useFilterValue } from "../../hooks/useFilterValue";
+import { updateSearch } from '../../helpers/updateSearch';
 
 const headers = [
     { text: "Educational Id", propertyName: 'EduId', isSortable: true },
@@ -63,7 +63,7 @@ export function SchoolList(props) {
         afterPaging(activePageNumber, sortingProperty, isDescending, filterProperty, filterValue).then(listResponse => {
             const maxPage = calculateMaxPage(listResponse);
             if (listResponse.allItemsCount <= (activePageNumber - 1) * pageSize) {
-                history.push(`/schools?page=${maxPage}`);
+                updateSearch({ page: maxPage });
                 return;
             }
             setSchools(listResponse.items);
@@ -204,7 +204,7 @@ export function SchoolList(props) {
             />
             <div className="footer">
                 <Link to={linkToCreate}>
-                    <Button text="Create" />
+                    <Button customClass="button-withoutmargin" text="Create" />
                 </Link>
             </div>
         </ div>

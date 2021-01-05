@@ -18,7 +18,7 @@ export function FilterPopup(props) {
                 <input value={value} onChange={(e) => setValue(e.target.value)} />
                 <div>
                     <>
-                        <Button text="Ok" handleClick={() => onConfirm(filterColumn, value)} />
+                        <Button customClass="button-withoutmargin" text="Ok" handleClick={() => onConfirm(filterColumn, value)} />
                         {(isFiltered && filterValue !== '') ? <Button text="RemoveFilter" handleClick={() => handleFilterRemove()} /> : ''}
                     </>
                 </div>
