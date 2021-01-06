@@ -29,6 +29,23 @@ END
 IF (NOT EXISTS (SELECT * 
                 FROM INFORMATION_SCHEMA.TABLES 
                 WHERE TABLE_SCHEMA = 'dbo' 
+                AND  TABLE_NAME = 'Persons'))
+BEGIN
+	Create TABLE dbo.Persons (
+		Id int NOT NULL IDENTITY(1,1) PRIMARY KEY,
+		FirstName nvarchar(50) NOT NULL,
+		LastName nvarchar(50) NOT NULL,
+		BirthDate date NOT Null,
+		Nationality nvarchar(100) NOT Null,
+		SecondNationality nvarchar(100),
+		City nvarchar(100),
+		Address nvarchar (100)
+	);
+END
+
+IF (NOT EXISTS (SELECT * 
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = 'dbo' 
                 AND  TABLE_NAME = 'Teachers'))
 BEGIN
 	CREATE TABLE dbo.Teachers (
