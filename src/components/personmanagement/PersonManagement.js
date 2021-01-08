@@ -7,6 +7,7 @@ import { pageSize } from '../../config';
 
 export function PersonManagement(props) {
     const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState({ message: "", rowidx: null });
 
     const getData = useCallback((pageNumber, sortingProperty, isDescending, filterProperty, filterValue) => {
         setIsLoading(true);
@@ -30,7 +31,15 @@ export function PersonManagement(props) {
             },
             body: JSON.stringify(person)
         })
-            .then(res => res.json())
+            .then(res => {
+                if (res.status === 500) {
+                    throw new Error("Invalid Data! Date must be in YYYY-MM-DD format.")
+                } else {
+                    setErrorMessage(undefined);
+                    return res.json()
+                }
+            })
+            .catch((err) => setErrorMessage({ message: err.message, rowidx: idToUpdate }))
             .then(() => setIsLoading(false));
     }
 
@@ -61,6 +70,7 @@ export function PersonManagement(props) {
         <Switch>
             <Route path="/persons" exact>
                 <PersonListPage
+                    errorMessage={errorMessage}
                     isLoading={isLoading}
                     afterPaging={getData}
                     afterUpdate={getData}

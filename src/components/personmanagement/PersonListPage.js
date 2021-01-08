@@ -3,13 +3,14 @@ import { MainHeader } from "../shared/MainHeader";
 import { PersonList } from "./PersonList";
 
 export function PersonListPage(props) {
-    const { isLoading, afterPaging, afterDelete, afterUpdate, onDelete, onUpdate } = props;
+    const { errorMessage, isLoading, afterPaging, afterDelete, afterUpdate, onDelete, onUpdate } = props;
 
     return (
         <>
             <MainHeader text="Persons" />
             <MainContent>
                 <PersonList
+                    errorMessage={errorMessage}
                     isLoading={isLoading}
                     linkToCreate="/persons/create"
                     afterPaging={afterPaging}

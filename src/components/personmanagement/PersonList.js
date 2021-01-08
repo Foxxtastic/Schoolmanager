@@ -13,6 +13,8 @@ import { useFilterProperty } from "../../hooks/useFilterProperty";
 import { useFilterValue } from "../../hooks/useFilterValue";
 import { updateSearch } from '../../helpers/updateSearch';
 import moment from "moment";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const headers = [
     { text: "FirstName", propertyName: 'FirstName', isSortable: true },
@@ -44,6 +46,7 @@ export function PersonList(props) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [activeIdForDelete, setActiveIdForDelete] = useState(null);
     const [maxPageNumber, setMaxPageNumber] = useState(undefined);
+    const [hoverOnIcon, setHoveronIcon] = useState(null);
 
     let sortingProperty = useSorting();
     sortingProperty = sortingProperty === null ? 'FirstName' : sortingProperty;
@@ -55,7 +58,7 @@ export function PersonList(props) {
     let filterValue = useFilterValue();
     filterValue = filterValue === null ? '' : filterValue;
 
-    const { afterUpdate, afterDelete, afterPaging, linkToCreate, onUpdate, onDelete, isLoading } = props;
+    const { errorMessage, afterUpdate, afterDelete, afterPaging, linkToCreate, onUpdate, onDelete, isLoading } = props;
 
     const setPersonsFromServer = (listResponse) => {
         setMaxPageNumber(calculateMaxPage(listResponse));
@@ -136,6 +139,7 @@ export function PersonList(props) {
         <div className={`component ${isLoading ? "loading" : ""}`} >
             <ConfirmPopup text="Are you sure?" visible={isModalVisible} onConfirm={handleDeleteModalConfirm} onCancel={handleModalCancel} />
             <DataTable
+                errorMessage={errorMessage}
                 isLoading={isLoading}
                 headers={headers}
                 sortingProperty={sortingProperty}
@@ -149,6 +153,18 @@ export function PersonList(props) {
                     const isEditing = editor.isEditMode && editor.rowKey === person.Id;
                     return (
                         <tr key={idx}>
+                            {errorMessage.rowidx === person.Id &&
+                                <td className="error">
+                                    <FontAwesomeIcon
+                                        className="tx-lred"
+                                        icon={faExclamationTriangle}
+                                        onMouseEnter={() => setHoveronIcon(errorMessage.rowidx)}
+                                        onMouseLeave={() => setHoveronIcon(null)}
+                                    />
+                                    {hoverOnIcon === errorMessage.rowidx && <div className="tooltip">{errorMessage.message}</div>}
+                                </td>}
+                            {errorMessage.rowidx !== null && errorMessage.rowidx !== person.Id &&
+                                <td className="error"></td>}
                             <td>
                                 {isEditing ?
                                     <>

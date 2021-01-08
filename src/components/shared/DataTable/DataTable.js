@@ -9,6 +9,7 @@ import { useState } from 'react';
 export function DataTable(props) {
 
     const {
+        errorMessage,
         isLoading,
         headers,
         items,
@@ -65,6 +66,7 @@ export function DataTable(props) {
                     <Loader isLoading={isLoading} />
                     <table>
                         <Header
+                            errorMessage={errorMessage}
                             headers={headers}
                             filterProperty={filterProperty}
                             filterValue={filterValue}
@@ -77,7 +79,7 @@ export function DataTable(props) {
                         />
                         <tfoot>
                             <tr className="datatable-footer bg-lturquoise">
-                                <td colSpan={headers.length}>
+                                <td colSpan={headers.length + ((errorMessage !== undefined) ? 1 : 0)}>
                                     <span>Page: </span>
                                     <Pager activePageNumber={activePageNumber} maxPageNumber={maxPageNumber} />
                                 </td>
