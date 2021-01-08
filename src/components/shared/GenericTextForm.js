@@ -9,6 +9,7 @@ export function GenericTextForm(props) {
     const { labels, isLoading, onSubmit, onError } = props;
 
     const onSubmitting = (data) => {
+        console.log(data);
         onSubmit(data);
     }
 
@@ -20,9 +21,9 @@ export function GenericTextForm(props) {
                 <div className="component-data createitem bg-lgray">
                     {labels.map((x, idx) =>
                         <div key={idx} className="item-padding">
-                            <label >{`${x}:*`}</label>
-                            <input name={`${x}`} typeof="text" ref={register({ required: true })}></input>
-                            <ValidationErrors name={x} errors={errors} />
+                            <label >{`${x.label}:${x.required ? '*' : ''}`}</label>
+                            <input name={`${x.label}`} typeof="text" ref={register({ required: x.required })}></input>
+                            <ValidationErrors name={x.label} errors={errors} />
                         </div>
                     )}
                     <input className="button-withoutmargin item-margin" disabled={isLoading} type="submit" />

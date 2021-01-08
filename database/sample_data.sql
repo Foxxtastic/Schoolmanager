@@ -21,7 +21,7 @@ VALUES ('031603','Neumann János Középiskola','Hungary','Eger','Rákóczi út 
 	   ('DE 01300','Berufsakademie (BA) Sachsen - Staatliche Studienakademie Dresden','Germany','Dresden','Hans-Grundig-Straße 25'),
 	   ('FR 12400','Universite Clermont 2, Moulins','France','Mills','BOULEVARD Nomazy')
 
-INSERT INTO [DBO].[Persons](FirstName, LastName, BirthDate, Nationality, secondNationality, City, Address)
+INSERT INTO [DBO].[Persons](FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address)
 Values ('Admin', 'Az', '2000-01-01', 'Hungary', Null, Null, Null),
 	   ('Mihály', 'Csombor', '1974-12-17', 'Hungary', Null, 'Hajdúnánás', 'Erzsébet utca 44.'),
 	   ('Katalin', 'Hajdú', '1984-06-03', 'Hungary', Null, 'Hajdúnánás', 'Petőfi utca 11.'),

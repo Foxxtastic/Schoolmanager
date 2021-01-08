@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const schoolRouter = require('./routes/schools.js');
+const personRouter = require('./routes/persons.js');
 const app = express();
 const port = 5000;
 
@@ -10,8 +11,9 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 app.use(morgan('tiny'));
 
 app.use('/api/school', schoolRouter);
+app.use('/api/person', personRouter);
 
-app.use((error, req, res, next) => {
+app.use((error, _req, res, _next) => {
     res.status(error.status || 500).send({
         error: {
             status: error.status || 500,
