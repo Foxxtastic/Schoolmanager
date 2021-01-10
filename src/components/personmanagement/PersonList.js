@@ -15,6 +15,7 @@ import { updateSearch } from '../../helpers/updateSearch';
 import moment from "moment";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import DatePicker from "../shared/DatePicker";
 
 const headers = [
     { text: "FirstName", propertyName: 'FirstName', isSortable: true },
@@ -58,7 +59,7 @@ export function PersonList(props) {
     let filterValue = useFilterValue();
     filterValue = filterValue === null ? '' : filterValue;
 
-    const { errorMessage, afterUpdate, afterDelete, afterPaging, linkToCreate, onUpdate, onDelete, isLoading } = props;
+    const { error, afterUpdate, afterDelete, afterPaging, linkToCreate, onUpdate, onDelete, isLoading } = props;
 
     const setPersonsFromServer = (listResponse) => {
         setMaxPageNumber(calculateMaxPage(listResponse));
@@ -139,7 +140,7 @@ export function PersonList(props) {
         <div className={`component ${isLoading ? "loading" : ""}`} >
             <ConfirmPopup text="Are you sure?" visible={isModalVisible} onConfirm={handleDeleteModalConfirm} onCancel={handleModalCancel} />
             <DataTable
-                errorMessage={errorMessage}
+                error={error}
                 isLoading={isLoading}
                 headers={headers}
                 sortingProperty={sortingProperty}
@@ -153,17 +154,17 @@ export function PersonList(props) {
                     const isEditing = editor.isEditMode && editor.rowKey === person.Id;
                     return (
                         <tr key={idx}>
-                            {errorMessage.rowidx === person.Id &&
+                            {error && error.rowidx === person.Id &&
                                 <td className="error">
                                     <FontAwesomeIcon
                                         className="tx-lred"
                                         icon={faExclamationTriangle}
-                                        onMouseEnter={() => setHoveronIcon(errorMessage.rowidx)}
+                                        onMouseEnter={() => setHoveronIcon(error.rowidx)}
                                         onMouseLeave={() => setHoveronIcon(null)}
                                     />
-                                    {hoverOnIcon === errorMessage.rowidx && <div className="tooltip">{errorMessage.message}</div>}
+                                    {hoverOnIcon === error.rowidx && <div className="tooltip">{error.message}</div>}
                                 </td>}
-                            {errorMessage.rowidx !== null && errorMessage.rowidx !== person.Id &&
+                            {error && error.rowidx !== person.Id &&
                                 <td className="error"></td>}
                             <td>
                                 {isEditing ?
@@ -184,7 +185,7 @@ export function PersonList(props) {
                             <td>
                                 {isEditing ?
                                     <>
-                                        <input name="BirthDate" defaultValue={moment(person.BirthDate).format("YYYY-MM-DD")} ref={register({ required: true })} />
+                                        <DatePicker name="BirthDate" defaultValue={moment(person.BirthDate).format("YYYY-MM-DD")} ref={register({ required: true })} />
                                         <ValidationErrors name="BirthDate" errors={errors} />
                                     </> :
                                     <span>{moment(person.BirthDate).format("YYYY-MM-DD")}</span>}

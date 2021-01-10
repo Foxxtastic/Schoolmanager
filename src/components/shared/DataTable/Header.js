@@ -3,7 +3,7 @@ import { updateSearch } from '../../../helpers/updateSearch'
 
 export function Header(props) { //This is a private component to DataTable. Never use it!!!
     const {
-        errorMessage,
+        error,
         headers,
         filterProperty,
         filterValue,
@@ -18,7 +18,7 @@ export function Header(props) { //This is a private component to DataTable. Neve
     return (
         <thead>
             <tr>
-                {errorMessage.rowidx !== null && <th>error</th>}
+                {error && <th></th>}
                 {headers.map((header, idx) =>
                     <th key={idx}>
                         <button className="headerbutton" onClick={() => updateSearch({

@@ -7,7 +7,7 @@ import { pageSize } from '../../config';
 
 export function PersonManagement(props) {
     const [isLoading, setIsLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState({ message: "", rowidx: null });
+    const [error, setError] = useState(undefined);
 
     const getData = useCallback((pageNumber, sortingProperty, isDescending, filterProperty, filterValue) => {
         setIsLoading(true);
@@ -15,9 +15,8 @@ export function PersonManagement(props) {
             `&sorting=${sortingProperty}&isDescending=${isDescending}` +
             `&filterProperty=${filterProperty}&filterValue=${filterValue}`)
             .then(res => res.json())
-            .then(listResponse => {
+            .finally(() => {
                 setIsLoading(false);
-                return listResponse;
             });
     }, []);
 
@@ -31,16 +30,21 @@ export function PersonManagement(props) {
             },
             body: JSON.stringify(person)
         })
-            .then(res => {
-                if (res.status === 500) {
-                    throw new Error("Invalid Data! Date must be in YYYY-MM-DD format.")
-                } else {
-                    setErrorMessage(undefined);
-                    return res.json()
+            .then(res => res.json())
+            .then(jsonResponse => {
+                if (jsonResponse.error) {
+                    setError({ message: jsonResponse.error.message, rowidx: idToUpdate });
+                    return;
                 }
+
+                setError(undefined);
             })
-            .catch((err) => setErrorMessage({ message: err.message, rowidx: idToUpdate }))
-            .then(() => setIsLoading(false));
+            .catch((err) => {
+                setError({ message: err.message, rowidx: idToUpdate })
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     }
 
     const handlePersonCreate = (newItem) => {
@@ -54,7 +58,9 @@ export function PersonManagement(props) {
             body: JSON.stringify(newItem)
         })
             .then(res => res.json())
-            .then(() => setIsLoading(false));
+            .finally(() => {
+                setIsLoading(false);
+            });
     }
 
     const handlePersonDelete = (idToDelete) => {
@@ -63,14 +69,16 @@ export function PersonManagement(props) {
         return fetch(`/api/person/${idToDelete}`, {
             method: 'DELETE'
         })
-            .then(() => setIsLoading(false));
+            .finally(() => {
+                setIsLoading(false);
+            });
     }
 
     return (
         <Switch>
             <Route path="/persons" exact>
                 <PersonListPage
-                    errorMessage={errorMessage}
+                    error={error}
                     isLoading={isLoading}
                     afterPaging={getData}
                     afterUpdate={getData}

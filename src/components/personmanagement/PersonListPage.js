@@ -1,16 +1,17 @@
+import '../../calendar.css';
 import { MainContent } from "../shared/MainContent";
 import { MainHeader } from "../shared/MainHeader";
 import { PersonList } from "./PersonList";
 
 export function PersonListPage(props) {
-    const { errorMessage, isLoading, afterPaging, afterDelete, afterUpdate, onDelete, onUpdate } = props;
+    const { error, isLoading, afterPaging, afterDelete, afterUpdate, onDelete, onUpdate } = props;
 
     return (
         <>
             <MainHeader text="Persons" />
             <MainContent>
                 <PersonList
-                    errorMessage={errorMessage}
+                    error={error}
                     isLoading={isLoading}
                     linkToCreate="/persons/create"
                     afterPaging={afterPaging}
