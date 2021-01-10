@@ -23,7 +23,7 @@ export function PersonCreatePage(props) {
         <>
             <MainHeader text="Create new Person" />
             <MainContent>
-                <GenericTextForm labels={createPersonLabels} isLoading={isLoading} onSubmit={handleFormSubmit} />
+                <GenericTextForm labels={createPersonLabels} isLoading={isLoading} onSubmit={handleFormSubmit} datePickerRow={3} />
             </MainContent>
         </>
     );

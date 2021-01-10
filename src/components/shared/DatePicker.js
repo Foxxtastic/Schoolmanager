@@ -4,7 +4,7 @@ const DatePicker = forwardRef((props, ref) => (
     <input
         type="date"
         name={props.name}
-        defaultValue={props.defaultValue}
+        defaultValue={props.name === undefined ? "2000-01-01" : props.defaultValue}
         ref={ref}
     />
 ))
