@@ -2,7 +2,7 @@ import { Loader } from '../Loader';
 import { Pager } from '../Pager';
 import { Header } from './Header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSortAlphaUp, faSortAlphaDownAlt, faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faSortAlphaUp, faSortAlphaDownAlt, faSearch, faAngleDoubleRight, faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons'
 import { updateSearch } from '../../../helpers/updateSearch'
 import { useState } from 'react';
 
@@ -59,6 +59,13 @@ export function DataTable(props) {
         setOpenFilter(undefined);
     }
 
+    const handlePageSwitch = (increment) => {
+        if ((activePageNumber === 1 && increment < 0) || (activePageNumber === maxPageNumber && increment > 0)) {
+            return
+        }
+        updateSearch({ page: activePageNumber + increment });
+    }
+
     return (
         <>
             <div className="component-data">
@@ -81,7 +88,9 @@ export function DataTable(props) {
                             <tr className="datatable-footer bg-lturquoise">
                                 <td colSpan={headers.length + ((error !== undefined) ? 1 : 0)}>
                                     <span>Page: </span>
+                                    <FontAwesomeIcon className="icon-wpointer pagerarrow" icon={faAngleDoubleLeft} onClick={() => handlePageSwitch(-1)} />
                                     <Pager activePageNumber={activePageNumber} maxPageNumber={maxPageNumber} />
+                                    <FontAwesomeIcon className="icon-wpointer pagerarrow" icon={faAngleDoubleRight} onClick={() => handlePageSwitch(1)} />
                                 </td>
                             </tr>
                         </tfoot>
