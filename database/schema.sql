@@ -46,6 +46,20 @@ END
 IF (NOT EXISTS (SELECT * 
                 FROM INFORMATION_SCHEMA.TABLES 
                 WHERE TABLE_SCHEMA = 'dbo' 
+                AND  TABLE_NAME = 'Users'))
+BEGIN
+	CREATE TABLE dbo.Users (
+		Id int NOT NULL IDENTITY(1,1) PRIMARY KEY,
+		EmailAddress nvarchar (100) NOT NULL,
+		PassWordHash binary(64) NOT NULL,
+		IsActive bit NOT NULL,
+		LastLogin date
+	);    
+END
+
+IF (NOT EXISTS (SELECT * 
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = 'dbo' 
                 AND  TABLE_NAME = 'Teachers'))
 BEGIN
 	CREATE TABLE dbo.Teachers (

@@ -2,7 +2,7 @@ import { Loader } from '../Loader';
 import { Pager } from '../Pager';
 import { Header } from './Header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSortAlphaUp, faSortAlphaDownAlt, faSearch, faAngleDoubleRight, faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons'
+import { faSortAlphaUp, faSortAlphaDownAlt, faSearch, faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { updateSearch } from '../../../helpers/updateSearch'
 import { useState } from 'react';
 
@@ -88,9 +88,9 @@ export function DataTable(props) {
                             <tr className="datatable-footer bg-lturquoise">
                                 <td colSpan={headers.length + ((error !== undefined) ? 1 : 0)}>
                                     <span>Page: </span>
-                                    <FontAwesomeIcon className="icon-wpointer pagerarrow" icon={faAngleDoubleLeft} onClick={() => handlePageSwitch(-1)} />
+                                    <FontAwesomeIcon className="icon-wpointer pagerarrow" icon={faAngleLeft} onClick={() => handlePageSwitch(-1)} />
                                     <Pager activePageNumber={activePageNumber} maxPageNumber={maxPageNumber} />
-                                    <FontAwesomeIcon className="icon-wpointer pagerarrow" icon={faAngleDoubleRight} onClick={() => handlePageSwitch(1)} />
+                                    <FontAwesomeIcon className="icon-wpointer pagerarrow" icon={faAngleRight} onClick={() => handlePageSwitch(1)} />
                                 </td>
                             </tr>
                         </tfoot>
