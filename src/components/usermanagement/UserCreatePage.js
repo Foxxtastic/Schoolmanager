@@ -18,7 +18,7 @@ export function UserCreatePage(props) {
 
     return (
         <>
-            <MainHeader text="Create new Person" />
+            <MainHeader text="Create new User" />
             <MainContent>
                 <GenericTextForm labels={createPersonLabels} isLoading={isLoading} onSubmit={handleFormSubmit} datePickerRow={3} />
             </MainContent>

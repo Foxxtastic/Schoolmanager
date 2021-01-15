@@ -12,7 +12,11 @@ async function getUserById(userId) {
         return undefined;
     }
 
-    return result.recordset;
+    if (result.recordset.length !== 1) {
+        throw new Error(`More than one record with Id ${userId}`)
+    }
+
+    return result.recordset[0];
 }
 
 async function listAllUsers(sortingProperty = 'Id', isAscending = true, filterProperty = 'EmailAddress', filter = '') {
@@ -127,7 +131,7 @@ async function createUser(userDto) {
         insert into dbo.Users(EmailAddress, PassWordHash, IsActive, LastLogin)
         values (
             ${userDto.EmailAddress}, 
-            HASHBYTES('SHA2_512', ${userDto.PassWord}), 
+            HASHBYTES('SHA2_512', '${userDto.Password}'), 
             ${userDto.IsActive}, 
             ${userDto.LastLogin})`;
 
@@ -154,7 +158,7 @@ async function updateUser(id, userDto) {
     update dbo.Users
     set
         EmailAddress = ${userDto.EmailAddress}, 
-        PassWordHash = HASHBYTES('SHA2_512', ${userDto.PassWord}), 
+        PassWordHash = HASHBYTES('SHA2_512', '${userDto.Password}'), 
         IsActive = ${userDto.IsActive}, 
         LastLogin = ${userDto.LastLogin}
     where

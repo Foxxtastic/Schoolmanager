@@ -4,13 +4,11 @@ import { ValidationErrors } from './ValidationErrors';
 import DatePicker from './DatePicker';
 
 export function GenericTextForm(props) {
+    const { labels, isLoading, onSubmit, onError, datePickerRow, defaultData } = props;
 
-    const { register, handleSubmit, errors } = useForm();
-
-    const { labels, isLoading, onSubmit, onError, datePickerRow } = props;
+    const { register, handleSubmit, errors } = useForm({ defaultValues: defaultData });
 
     const onSubmitting = (data) => {
-        console.log(data);
         onSubmit(data);
     }
 

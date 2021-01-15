@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { history } from '../../history'
 import { UserListPage } from './UserListPage';
 import { UserCreatePage } from './UserCreatePage';
+import UserUpdatePage from './UserUpdatePage';
 import { pageSize } from '../../config';
 
 export function UserManagement(props) {
@@ -20,10 +21,18 @@ export function UserManagement(props) {
             });
     }, []);
 
+    const getDataById = useCallback((idToUpdate) => {
+        setIsLoading(true);
+        return fetch(`/api/user/${idToUpdate}`)
+            .then(res => res.json())
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }, []);
+
     const handleUserUpdate = (idToUpdate, user) => {
         setIsLoading(true);
-
-        return fetch(`/api/user/${idToUpdate}`, {
+        return fetch(`/ api / user / ${idToUpdate}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -36,7 +45,6 @@ export function UserManagement(props) {
                     setError({ message: jsonResponse.error.message, rowidx: idToUpdate });
                     return;
                 }
-
                 setError(undefined);
             })
             .catch((err) => {
@@ -49,7 +57,6 @@ export function UserManagement(props) {
 
     const handleUserCreate = (newItem) => {
         setIsLoading(true);
-
         return fetch('/api/user', {
             method: 'POST',
             headers: {
@@ -65,8 +72,7 @@ export function UserManagement(props) {
 
     const handleUserDelete = (idToDelete) => {
         setIsLoading(true);
-
-        return fetch(`/api/user/${idToDelete}`, {
+        return fetch(`/ api / user / ${idToDelete}`, {
             method: 'DELETE'
         })
             .finally(() => {
@@ -91,6 +97,14 @@ export function UserManagement(props) {
                     isLoading={isLoading}
                     onCreate={handleUserCreate}
                     afterCreate={() => history.push("/users")}
+                />
+            </Route>
+            <Route path="/users/:id/update">
+                <UserUpdatePage
+                    isLoading={isLoading}
+                    getDataById={getDataById}
+                    onUpdate={handleUserUpdate}
+                    afterUpdate={() => history.push("/users")}
                 />
             </Route>
         </Switch>

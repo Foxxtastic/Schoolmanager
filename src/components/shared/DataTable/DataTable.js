@@ -88,9 +88,9 @@ export function DataTable(props) {
                             <tr className="datatable-footer bg-lturquoise">
                                 <td colSpan={headers.length + ((error !== undefined) ? 1 : 0)}>
                                     <span>Page: </span>
-                                    <FontAwesomeIcon className="icon-wpointer pagerarrow" icon={faAngleLeft} onClick={() => handlePageSwitch(-1)} />
+                                    <FontAwesomeIcon className="icon-wpointer pagerspacing" icon={faAngleLeft} onClick={() => handlePageSwitch(-1)} />
                                     <Pager activePageNumber={activePageNumber} maxPageNumber={maxPageNumber} />
-                                    <FontAwesomeIcon className="icon-wpointer pagerarrow" icon={faAngleRight} onClick={() => handlePageSwitch(1)} />
+                                    <FontAwesomeIcon className="icon-wpointer pagerspacing" icon={faAngleRight} onClick={() => handlePageSwitch(1)} />
                                 </td>
                             </tr>
                         </tfoot>

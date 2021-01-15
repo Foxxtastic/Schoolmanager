@@ -9,16 +9,14 @@ export function SchoolManagement(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(undefined);
 
-
     const getData = useCallback((pageNumber, sortingProperty, isDescending, filterProperty, filterValue) => {
         setIsLoading(true);
         return fetch(`/api/school?pageNumber=${pageNumber}&pageSize=${pageSize}` +
             `&sorting=${sortingProperty}&isDescending=${isDescending}` +
             `&filterProperty=${filterProperty}&filterValue=${filterValue}`)
             .then(res => res.json())
-            .then(listResponse => {
+            .finally(() => {
                 setIsLoading(false);
-                return listResponse;
             });
     }, []);
 

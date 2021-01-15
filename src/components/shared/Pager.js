@@ -8,15 +8,23 @@ function isInRange(element, start, end) {
     return false;
 }
 
-export function Pager(props) {
-    const { activePageNumber, maxPageNumber } = props;
-
-    if (maxPageNumber === undefined) {
-        return null;
-    }
-
+function getLinks(activePageNumber, maxPageNumber, start, end) {
     const links = [];
-    const result = [];
+    for (let i = 1; i <= maxPageNumber; i++) {
+        if (i === activePageNumber) {
+            links.push({ isActivePage: true, isVisible: true });
+            continue;
+        }
+        if (isInRange(i, start, end) || i === 1 || i === maxPageNumber) {
+            links.push({ isActivePage: false, isVisible: true });
+            continue;
+        }
+        links.push({ isActivePage: false, isVisible: false });
+    }
+    return links;
+}
+
+function getRange(activePageNumber, maxPageNumber) {
     let start = 0;
     let end = 0;
 
@@ -41,36 +49,50 @@ export function Pager(props) {
         start = maxPageNumber - paginationSize + 1;
     }
 
-    const addLink = (isActivePage, isVisible, idx) => {
-        isActivePage ?
-            links.push({ link: <button disabled key={idx} >{idx}{` `}</button>, isVisible }) :
-            links.push({ link: <button key={idx} onClick={() => updateSearch({ page: idx })} >{idx}{` `}</button>, isVisible });
+    return {
+        start,
+        end
+    };
+}
+
+function getPagerButton(isActivePage, pageIndex) {
+    const pageNumber = pageIndex + 1;
+    return isActivePage ?
+        <button disabled key={pageNumber} >{pageNumber}{` `}</button> :
+        <button key={pageNumber} onClick={() => updateSearch({ page: pageNumber })}>{pageNumber}{` `}</button>;
+}
+
+export function Pager(props) {
+    const { activePageNumber, maxPageNumber } = props;
+
+    if (maxPageNumber === undefined) {
+        return null;
     }
 
-    for (let i = 1; i <= maxPageNumber; i++) {
-        if (i === activePageNumber) {
-            addLink(true, true, i);
-            continue;
-        }
-        if (isInRange(i, start, end) || i === 1 || i === maxPageNumber) {
-            addLink(false, true, i);
-            continue;
-        }
-        addLink(false, false, i);
-    }
+    const { start, end } = getRange(activePageNumber, maxPageNumber);
 
-    console.log(links);
+    const links = getLinks(activePageNumber, maxPageNumber, start, end);
+
+    const result = [];
 
     for (let j = 1; j < links.length; j++) {
-        if (links[j - 1].isVisible) {
-            result.push(links[j - 1].link);
+        const previousIndex = j - 1;
+        const previous = links[j - 1];
+        const current = links[j];
+
+        if (previous.isVisible) {
+            const button = getPagerButton(previous.isActivePage, previousIndex);
+            result.push(button);
         }
-        if (links[j - 1].isVisible === false && links[j].isVisible === true) {
-            result.push(<span key={`dot${j}`}>...</span>);
+        if (previous.isVisible === false && current.isVisible === true) {
+            result.push(<span key={`dot${previousIndex}`} className='pagerspacing'>...</span>);
         }
     }
-
-    result.push(links[links.length - 1].link);
+    if (links.length - 1 > 0) {
+        const { isActivePage } = links[links.length - 1]
+        const button = getPagerButton(isActivePage, links.length - 1);
+        result.push(button);
+    }
 
     return result;
 }

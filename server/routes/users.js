@@ -17,7 +17,7 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
-    const user = await dataaccess.getUsersById(id);
+    const user = await dataaccess.getUserById(id);
 
     if (user === undefined) {
         res.sendStatus(404);
