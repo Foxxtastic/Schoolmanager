@@ -1,0 +1,35 @@
+import { Loader } from '../shared/Loader';
+import { useForm } from "react-hook-form";
+import { ValidationErrors } from '../shared/ValidationErrors';
+import DatePicker from '../shared/DatePicker';
+
+export function UserForm(props) {
+    const { isLoading, onSubmit, onError, defaultData } = props;
+
+    const { register, handleSubmit, errors } = useForm({ defaultValues: defaultData });
+
+    const onSubmitting = (data) => {
+        onSubmit(data);
+    }
+
+    return (
+        <>
+            <form className={`component ${isLoading ? "loading" : ""}`} onSubmit={handleSubmit(onSubmitting, onError)}>
+                <Loader isLoading={isLoading} />
+
+                <div className="component-data createitem bg-lgray">
+                    <div className="item-padding">
+                        <label >Email Address:*</label>
+                        <input name="EmailAddress" ref={register({ required: true })} />
+                        <ValidationErrors name="EmailAddress" errors={errors} />
+                        <label >IsActive:</label>
+                        <input type="checkbox" name="IsActive" ref={register({ required: false })} />
+                        <label >Last Login:</label>
+                        <DatePicker name="LastLogin" ref={register({ required: false })} />
+                    </div>
+                    <input className="button-withoutmargin item-margin" disabled={isLoading} type="submit" />
+                </div>
+            </form>
+        </>
+    );
+}

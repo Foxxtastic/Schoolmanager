@@ -4,9 +4,9 @@ import { ValidationErrors } from './ValidationErrors';
 import DatePicker from './DatePicker';
 
 export function GenericTextForm(props) {
-    const { labels, isLoading, onSubmit, onError, datePickerRow, defaultData } = props;
+    const { labels, isLoading, onSubmit, onError, datePickerRow } = props;
 
-    const { register, handleSubmit, errors } = useForm({ defaultValues: defaultData });
+    const { register, handleSubmit, errors } = useForm();
 
     const onSubmitting = (data) => {
         onSubmit(data);

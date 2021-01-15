@@ -1,14 +1,8 @@
 import { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
-import { GenericTextForm } from "../shared/GenericTextForm";
 import { MainContent } from "../shared/MainContent";
 import { MainHeader } from "../shared/MainHeader";
-
-const createPersonLabels = [
-    { label: "EmailAddress", required: true },
-    { label: "Password", required: true },
-    { label: "IsActive", required: true },
-    { label: "LastLogin", required: false }];
+import { UserForm } from "./UserForm";
 
 function UserUpdatePage(props) {
 
@@ -28,7 +22,7 @@ function UserUpdatePage(props) {
         <>
             <MainHeader text={`Update User with Id ${id}`} />
             <MainContent>
-                {userToUpdate !== undefined && <GenericTextForm labels={createPersonLabels} isLoading={isLoading} onSubmit={handleFormSubmit} datePickerRow={3} defaultData={userToUpdate} />}
+                {userToUpdate !== undefined && <UserForm isLoading={isLoading} onSubmit={handleFormSubmit} defaultData={userToUpdate} />}
             </MainContent>
         </>
     );

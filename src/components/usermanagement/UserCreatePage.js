@@ -1,12 +1,6 @@
-import { GenericTextForm } from "../shared/GenericTextForm";
+import { UserForm } from "./UserForm";
 import { MainContent } from "../shared/MainContent";
 import { MainHeader } from "../shared/MainHeader";
-
-const createPersonLabels = [
-    { label: "EmailAddress", required: true },
-    { label: "Password", required: true },
-    { label: "IsActive", required: true },
-    { label: "LastLogin", required: false }];
 
 export function UserCreatePage(props) {
 
@@ -20,7 +14,7 @@ export function UserCreatePage(props) {
         <>
             <MainHeader text="Create new User" />
             <MainContent>
-                <GenericTextForm labels={createPersonLabels} isLoading={isLoading} onSubmit={handleFormSubmit} datePickerRow={3} />
+                <UserForm isLoading={isLoading} onSubmit={handleFormSubmit} />
             </MainContent>
         </>
     );

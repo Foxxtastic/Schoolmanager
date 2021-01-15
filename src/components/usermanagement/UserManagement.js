@@ -32,7 +32,7 @@ export function UserManagement(props) {
 
     const handleUserUpdate = (idToUpdate, user) => {
         setIsLoading(true);
-        return fetch(`/ api / user / ${idToUpdate}`, {
+        return fetch(`/api/user/${idToUpdate}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
