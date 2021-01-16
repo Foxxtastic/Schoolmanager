@@ -4,7 +4,7 @@ const { databaseConnection } = require('../config');
 async function getUserById(userId) {
     await sql.connect(databaseConnection);
     const result = await sql.query`
-        select Id, EmailAddress, PassWordHash, IsActive, LastLogin
+        select Id, EmailAddress, PasswordHash, IsActive, LastLogin
         from dbo.Users
         where Id = ${userId}`;
 
@@ -128,7 +128,7 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
 async function createUser(userDto) {
     await sql.connect(databaseConnection);
     let result = await sql.query`
-        insert into dbo.Users(EmailAddress, PassWordHash, IsActive, LastLogin)
+        insert into dbo.Users(EmailAddress, PasswordHash, IsActive, LastLogin)
         values (
             ${userDto.EmailAddress}, 
             HASHBYTES('SHA2_512', '${userDto.Password}'), 
@@ -136,7 +136,7 @@ async function createUser(userDto) {
             ${userDto.LastLogin})`;
 
     result = await sql.query`
-    select top 1 Id, EmailAddress, PassWordHash, IsActive, LastLogin
+    select top 1 Id, EmailAddress, PasswordHash, IsActive, LastLogin
     from dbo.Users
     order by Id desc`;
 
@@ -158,7 +158,7 @@ async function updateUser(id, userDto) {
     update dbo.Users
     set
         EmailAddress = ${userDto.EmailAddress}, 
-        PassWordHash = HASHBYTES('SHA2_512', '${userDto.Password}'), 
+        PasswordHash = HASHBYTES('SHA2_512', '${userDto.Password}'), 
         IsActive = ${userDto.IsActive}, 
         LastLogin = ${userDto.LastLogin}
     where
@@ -170,18 +170,20 @@ async function updateUser(id, userDto) {
 async function deleteById(userId) {
     await sql.connect(databaseConnection);
     const result = await sql.query`
-    delete
-        from dbo.Users
-    where Id = ${userId} `;
+    delete u
+    from dbo.Users u
+    left outer join dbo.Persons p on p.UserId = u.Id
+    where u.Id = ${userId} and p.Id is null`
 
-    if (result.rowsAffected === 0) {
-        const error = new Error(`No User with Id = ${userId} !`);
+    if (result.rowsAffected[0] === 0) {
+        const error = new Error(`There is a Person with ${userId} or, no User with Id = ${userId} !`);
         error.status = 404;
         throw error;
     }
 
     return result.rowsAffected;
 }
+
 module.exports = {
     getUserById,
     listAllUsers,

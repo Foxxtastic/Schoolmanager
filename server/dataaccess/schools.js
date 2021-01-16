@@ -12,7 +12,11 @@ async function getSchoolById(schoolId) {
         return undefined;
     }
 
-    return result.recordset;
+    if (result.recordset.length !== 1) {
+        throw new Error(`More than one record with Id ${schoolId}`)
+    }
+
+    return result.recordset[0];
 }
 
 async function listAllSchools(sortingProperty = 'Id', isAscending = true, filterProperty = 'EduId', filter = '') {
@@ -185,6 +189,7 @@ async function deleteById(schoolId) {
 
     return result.rowsAffected;
 }
+
 module.exports = {
     getSchoolById,
     listAllSchools,

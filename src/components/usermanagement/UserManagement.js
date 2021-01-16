@@ -12,6 +12,7 @@ export function UserManagement(props) {
 
     const getData = useCallback((pageNumber, sortingProperty, isDescending, filterProperty, filterValue) => {
         setIsLoading(true);
+        filterValue = encodeURIComponent(filterValue);
         return fetch(`/api/user?pageNumber=${pageNumber}&pageSize=${pageSize}` +
             `&sorting=${sortingProperty}&isDescending=${isDescending}` +
             `&filterProperty=${filterProperty}&filterValue=${filterValue}`)
@@ -65,6 +66,17 @@ export function UserManagement(props) {
             body: JSON.stringify(newItem)
         })
             .then(res => res.json())
+            .then(jsonResponse => {
+                if (jsonResponse.error) {
+                    throw new Error(jsonResponse.error.message);
+                }
+                setError(undefined);
+                return jsonResponse;
+            })
+            .catch((err) => {
+                setError({ message: err.message });
+                throw err;
+            })
             .finally(() => {
                 setIsLoading(false);
             });
@@ -72,9 +84,17 @@ export function UserManagement(props) {
 
     const handleUserDelete = (idToDelete) => {
         setIsLoading(true);
-        return fetch(`/ api / user / ${idToDelete}`, {
+        return fetch(`/api/user/${idToDelete}`, {
             method: 'DELETE'
         })
+            .then(res => res.json())
+            .then(jsonResponse => {
+                if (jsonResponse.error) {
+                    setError({ message: jsonResponse.error.message, rowidx: idToDelete });
+                    return;
+                }
+                setError(undefined);
+            })
             .finally(() => {
                 setIsLoading(false);
             });
@@ -101,6 +121,7 @@ export function UserManagement(props) {
             </Route>
             <Route path="/users/:id/update">
                 <UserUpdatePage
+                    error={error}
                     isLoading={isLoading}
                     getDataById={getDataById}
                     onUpdate={handleUserUpdate}

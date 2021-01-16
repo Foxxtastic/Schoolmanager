@@ -11,6 +11,7 @@ export function PersonManagement(props) {
 
     const getData = useCallback((pageNumber, sortingProperty, isDescending, filterProperty, filterValue) => {
         setIsLoading(true);
+        filterValue = encodeURIComponent(filterValue);
         return fetch(`/api/person?pageNumber=${pageNumber}&pageSize=${pageSize}` +
             `&sorting=${sortingProperty}&isDescending=${isDescending}` +
             `&filterProperty=${filterProperty}&filterValue=${filterValue}`)
@@ -58,6 +59,17 @@ export function PersonManagement(props) {
             body: JSON.stringify(newItem)
         })
             .then(res => res.json())
+            .then(jsonResponse => {
+                if (jsonResponse.error) {
+                    throw new Error(jsonResponse.error.message);
+                }
+                setError(undefined);
+                return jsonResponse;
+            })
+            .catch((err) => {
+                setError({ message: err.message });
+                throw err;
+            })
             .finally(() => {
                 setIsLoading(false);
             });
@@ -69,9 +81,17 @@ export function PersonManagement(props) {
         return fetch(`/api/person/${idToDelete}`, {
             method: 'DELETE'
         })
-            .finally(() => {
-                setIsLoading(false);
-            });
+        .then(res => res.json())
+        .then(jsonResponse => {
+            if (jsonResponse.error) {
+                setError({ message: jsonResponse.error.message, rowidx: idToDelete });
+                return;
+            }
+            setError(undefined);
+        })
+        .finally(() => {
+            setIsLoading(false);
+        });
     }
 
     return (
@@ -88,9 +108,13 @@ export function PersonManagement(props) {
             </Route>
             <Route path="/persons/create">
                 <PersonCreatePage
+                    error={error}
                     isLoading={isLoading}
                     onCreate={handlePersonCreate}
-                    afterCreate={() => history.push("/persons")}
+                    afterCreate={() => {
+                        console.log('after create');
+                        history.push("/persons");
+                    }}
                 />
             </Route>
         </Switch>

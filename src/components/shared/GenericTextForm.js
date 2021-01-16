@@ -4,7 +4,7 @@ import { ValidationErrors } from './ValidationErrors';
 import DatePicker from './DatePicker';
 
 export function GenericTextForm(props) {
-    const { labels, isLoading, onSubmit, onError, datePickerRow } = props;
+    const { error, fields, isLoading, onSubmit, onError } = props;
 
     const { register, handleSubmit, errors } = useForm();
 
@@ -18,16 +18,17 @@ export function GenericTextForm(props) {
                 <Loader isLoading={isLoading} />
 
                 <div className="component-data createitem bg-lgray">
-                    {labels.map((x, idx) =>
+                    {fields.map((x, idx) =>
                         <div key={idx} className="item-padding">
-                            <label >{`${x.label}:${x.required ? '*' : ''}`}</label>
-                            {datePickerRow === idx ?
-                                <DatePicker name={`${x.label}`} ref={register({ required: x.required })} /> :
-                                <input name={`${x.label}`} typeof="text" ref={register({ required: x.required })}></input>
+                            <label className={`${x.labelClass}`}>{`${x.label}:${x.required ? '*' : ''}`}</label>
+                            {x.type === 'date' ?
+                                <DatePicker name={`${x.fieldName}`} ref={register({ required: x.required })} /> :
+                                <input name={`${x.fieldName}`} type={`${x.type}`} ref={register({ required: x.required })}></input>
                             }
-                            <ValidationErrors name={x.label} errors={errors} />
+                            <ValidationErrors name={x.fieldName} errors={errors} />
                         </div>
                     )}
+                    <div className="item-padding validationerror tx-lred">{error && `A technical error has occurred. Details: ${error.message}`}</div>
                     <input className="button-withoutmargin item-margin" disabled={isLoading} type="submit" />
                 </div>
             </form>

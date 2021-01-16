@@ -5,6 +5,7 @@ const router = express.Router();
 router.get('/', async (req, res, next) => {
     try {
         const { pageNumber, pageSize, sorting, isDescending, filterProperty, filterValue } = req.query;
+        console.log(filterValue)
         const isAscending = isDescending && isDescending === 'true' ? false : true;
         const users = await (pageNumber && pageSize ?
             dataaccess.listPaged(pageNumber, pageSize, sorting, isAscending, filterProperty, filterValue) :
@@ -54,10 +55,10 @@ router.delete('/:id', async (req, res, next) => {
     const { id } = req.params;
     try {
         await dataaccess.deleteById(id);
+        res.sendStatus(200);
     } catch (error) {
         next(error);
     }
-    res.sendStatus(200);
 });
 
 module.exports = router;

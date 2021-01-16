@@ -15,6 +15,10 @@ table {
   overflow: scroll;
 }
 
+[type="checkbox"] {
+  display: inline-block;
+}
+
 .headerbutton {
   border: none;
   background-color:rgba(0, 0, 0, 0);
@@ -22,8 +26,13 @@ table {
   font-size: 1em;
 }
 
-label {
+.block-label {
   display: block;
+  padding: 5px;
+}
+
+.inline-label {
+  display: inline;
   padding: 5px;
 }
 

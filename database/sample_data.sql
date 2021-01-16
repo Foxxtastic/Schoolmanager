@@ -21,99 +21,7 @@ VALUES ('031603','Neumann János Középiskola','Hungary','Eger','Rákóczi út 
 	   ('DE 01300','Berufsakademie (BA) Sachsen - Staatliche Studienakademie Dresden','Germany','Dresden','Hans-Grundig-Straße 25'),
 	   ('FR 12400','Universite Clermont 2, Moulins','France','Mills','BOULEVARD Nomazy')
 
-INSERT INTO [DBO].[Persons](FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address)
-VALUES ('Admin', 'Az', '2000-01-01', 'Hungary', Null, Null, Null),
-	   ('Mihály', 'Csombor', '1974-12-17', 'Hungary', Null, 'Hajdúnánás', 'Erzsébet utca 44.'),
-	   ('Katalin', 'Hajdú', '1984-06-03', 'Hungary', Null, 'Hajdúnánás', 'Petőfi utca 11.'),
-	   ('Anikó', 'Kelemen',	'2008-10-16', 'Hungary', Null, 'Hajúnánás', 'Dorogi út 12.'),
-	   ('Róbert', 'Puzsér', '1974-10-24', 'Hungary', Null, 'Budapest', 'Posztmodern út 1.'),
-	   ('János', 'Kovács', '1965-06-12', 'Hungary', Null, 'Budapest', 'Blaha Lujza tér 12 2em/1'),
-	   ('János', 'Kádár', '1959-03-20', 'Hungary', Null, 'Budapest', 'Hősök tere'),
-	   ('Barbara', 'Barna', '1990-04-11', 'Hungary', Null, 'Budapest', 'Vörös Tér 1.'),
-	   ('Ervin', 'Nagy', '1983-02-15', 'Hungary', Null, 'Budaörs', 'Petőfi Sándor utca 5.'),
-	   ('Tünde', 'Kobzos', '1987-01-30', 'Hungary', Null, 'Budapest','Egry József u. 51. fsz/3'),
-	   ('Iván', 'Szakály', '1979-11-08', 'Hungary', Null, 'Szeged', 'Szél utca 3 2em/4'),
-	   ('Andrea', 'Szél', '1990-03-15', 'Hungary', Null, 'Szeged', 'Farkas utca 3em/1'),
-	   ('László', 'Favágó', '1980-02-20', 'Hungary', Null, 'Szeged', 'Bolyai János utca 34.'),
-	   ('Farkas', 'Beke', '1992-07-21', 'Hungary', Null, 'Eger', 'Mátyás Király út 11 4em/2'),
-	   ('Elemér', 'Soós', '1988-11-03', 'Hungary', Null, 'Eger', 'II. Rákóczi Ferenc u. 19 3em/11'),
-	   ('Marianna', 'Szakács', '1986-02-24', 'Hungary', Null, 'Eger', 'Kallomallom út 12 fsz/2'),
-	   ('Lubomír', 'Cermak', '1986-02-24', 'Czech', Null, 'Praha', '24 Podedvorská'),
-	   ('Květoslav', 'Kovac', '1984-03-16', 'Czech', Null, 'Praha', '294 Podedvorská'),
-	   ('Nina', 'Novák', '1990-07-20', 'Czech', 'Hungary' ,'Praha', '16 Šrobárova'),
-	   ('Alfréd', 'Hlaváček', '1986-02-24', 'Czech', Null, 'Praha', '54 Žerotínova 4p/23'),
-	   ('Thomas', 'Wolf', '1986-11-10', 'Austria', Null, 'Graz', '142 Alte Poststraße 2FB/2'),
-	   ('Zuzanna', 'Ostrowski', '1986-08-21', 'Austria', 'Poland', 'Graz', '17 Eduard-Keil-Gasse'),
-	   ('Günther', 'Bieber', '1973-11-01', 'Austria', 'Germany', 'Graz', '44 Brucknerstraße'),
-	   ('Ruedi', 'Kaufmann','1983-12-01','Germany','Austria', 'Dresden', 'Rosmaringasse 10'),
-	   ('Kristin', 'Muller','1991-10-06','Germany','France', 'Dresden', 'Seidnitzer Str. 13'),
-	   ('Simon', 'Hofmann','1978-09-30','Germany', Null, 'Leipzig', 'Mierendorffstraße 11 3FB/2'),
-	   ('Roger', 'Burgstaller','1971-03-31','Germany', Null, 'Leipzig', 'Paul-Gruner-Straße 50 1FB/1'),
-	   ('Rüdinger', 'Hahn','1968-01-24','Germany', Null, 'Bannerwitz', 'Goppelner Straße 15'),
-	   ('Anikó', 'Kelemen', '2010-06-14', 'Hungary', Null, 'Hajdúnánás', 'Hegyalja út 88.'),
-	   ('Veronika', 'Szőke', '2004-01-09', 'Hungary', Null, 'Hajdúnánás', 'Rákóczi út 15.'),
-	   ('Szabina', 'Illés', '2009-05-02', 'Hungary', Null, 'Hajdúnánás', 'Hegyalja út 36.'),
-	   ('Viktória', 'Dobos', '2004-04-03', 'Hungary', Null, 'Hajdúnánás', 'Tompa u. 56.'),
-	   ('Ivett', 'Kozma', '2010-12-24', 'Hungary', Null, 'Hajdúnánás', 'Kálmán Imre u. 44.'),
-	   ('Orsolya', 'Pataki', '2004-10-14', 'Hungary', Null, 'Hajdúnánás', 'Veres Pálné u. 61.'),
-	   ('Dorina', 'Gáspár', '2013-12-27', 'Hungary', Null, 'Hajdúnánás', 'Dayka Gábor u. 69.'),
-	   ('Éva', 'Halász', '2007-08-17', 'Hungary', Null, 'Hajdúnánás', 'Dorogi út 11.'),
-	   ('Evelin', 'Orosz', '2012-04-30', 'Hungary', Null, 'Hajdúnánás', 'Bocskai utca 13.'),
-	   ('Adél', 'Biró', '2008-03-12', 'Hungary', Null, 'Hajdúnánás', 'Hunyadi utca 1.'),
-	   ('Olivér', 'Orbán', '2013-01-15', 'Hungary', Null, 'Hajdúnánás', 'Kálvin út 10.'),
-	   ('Géza', 'Bogdán', '2011-12-20', 'Hungary', Null, 'Hajdúnánás', 'Luther utca 8.'),
-	   ('Kevin', 'Király', '2006-11-16', 'Hungary', Null, 'Hajdúnánás', 'Mártírok útja 13 2em/3'),
-	   ('Tamás', 'Apród', '2012-12-21', 'Hungary', Null, 'Hajdúnánás', 'Mártírok útja 15 3em/12'),
-	   ('Dezső', 'Bakos', '2011-04-15', 'Hungary', Null, 'Hajdúnánás', 'Mártírok útja 13 4em/14'),
-	   ('József', 'Sándor', '2009-10-20', 'Hungary', Null, 'Hajdúnánás', 'Mártírok útja 15 1em/5'),
-	   ('Gergő', 'Tóth', '2012-12-28', 'Hungary', Null, 'Hajdúnánás', 'Damjanich utca 12.'),
-	   ('Gergely', 'Kerekes', '2010-05-27', 'Hungary', Null, 'Hajdúnánás', 'József Attila utca 8.'),
-	   ('Marcell', 'Hajdú', '2007-11-18', 'Hungary', Null, 'Hajdúnánás', 'Nagy Sándor utca 17.'),
-	   ('Lajos', 'Gáspár', '2009-08-08', 'Hungary', Null, 'Hajdúnánás', 'Liget utca 23.'),
-	   ('Donát', 'Király', '2006-07-11', 'Hungary', Null, 'Hajdúnánás', 'Liget utca 11.'),
-	   ('György', 'Vörös', '2008-08-08', 'Hungary', Null, 'Hajdúnánás', 'Móricz Pál utca 12.'),
-	   ('Ármin', 'Juhász', '2013-02-21', 'Hungary', Null, 'HajúDorog', 'Nánási út 10. '),
-	   ('Viktor', 'Juhász', '2011-12-10', 'Hungary', Null, 'HajúDorog', 'Nánási út 10. '),
-	   ('Balázs', 'Borbély', '2010-10-13', 'Hungary', Null, 'HajúDorog', 'Nánási út 20. '),
-	   ('Olivér', 'László', '2011-08-20', 'Hungary', Null, 'HajúDorog', 'Nánási út 31. '),
-	   ('Bendegúz', 'Bakos', '2004-09-13', 'Hungary', Null, 'HajúDorog', 'Nánási út 5. '),
-	   ('Renátó', 'Török', '2005-11-09', 'Hungary', Null, 'Hajdúnánás', 'Tinódi utca 32.'),
-	   ('Barnabás', 'Novák', '2010-07-09', 'Hungary', Null, 'Hajdúnánás', 'Irányi utca 31.'),
-	   ('Milán', 'Kiss', '2011-03-06', 'Hungary', Null, 'Hajdúnánás', 'Attila utca 51.'),
-	   ('Laura', 'Borbély', '2013-12-21', 'Hungary', Null, 'Hajdúnánás', 'Alma utca 2.'),
-	   ('Hajnalka', 'Németh', '1997-02-17', 'Hungary', Null, 'Budapest', 'Piroska u. 29.'),
-	   ('Mária', 'Székely', '1999-02-18', 'Hungary', 'Slovakia', 'Budapest', 'Árpád fejedelem útja 83.'),
-	   ('Szabina', 'Vincze', '1997-10-17', 'Hungary', Null, 'Budapest', 'Csabai kapu 63.'),
-	   ('Lilla', 'Oláh', '1998-09-02', 'Hungary', Null, 'Budapest', 'Petőfi utca 52. 3em/12.'),
-	   ('Sára', 'Péter', '1998-06-11', 'Hungary', Null, 'Budapest', 'Nagytétényi út 35'),
-	   ('Anita', 'Fodor', '1995-09-11', 'Hungary', Null, 'Mezômegyer ', 'Veres Pálné u. 96. '),
-	   ('Benedek', 'Szalai', '1996-11-18', 'Hungary', Null, 'Budapest', ' Baross tér 31. '),
-	   ('László', 'Horváth', '2001-06-02', 'Hungary', Null, 'Budapest', 'Bem rkp. 38. '),
-	   ('Bertalan', 'Fehér', '1996-06-22', 'Hungary', Null, 'Dunaszeg', 'Bécsi utca 79. '),
-	   ('Botond', 'Lukács', '1999-11-22', 'Hungary', Null, 'Bélapátfalva ', 'Erzsébet tér 15. '),
-	   ('Ferenc', 'Bogdán', '1997-06-12', 'Hungary', 'Romania', 'Budapest', 'Tompa u. 64 '),
-	   ('Csaba', 'Gáspár', '1998-04-29', 'Hungary', Null, 'Budapest', 'Szent Gellért tér 13. '),
-	   ('Csongor', 'Kelemen', '1998-06-02', 'Hungary', Null, 'Nagybátony ', 'Apáczai Csere János u. 58. '),
-	   ('Patrik', 'Balla', '1996-08-13', 'Hungary', Null, 'Budapest', 'Síp utca 53 '),
-	   ('Dominik', 'Magyar', '2002-09-10', 'Hungary', Null, 'Budapest', 'Szent Gellért tér 23. '),
-	   ('Levente', 'Sípos', '1997-03-01', 'Hungary', Null, 'Budapest', 'Leonardo da Vinci utca 41'),
-	   ('Zsófia', 'Antal', '1996-06-02', 'Hungary', 'Serbia', 'Budapest', 'Erzsébet tér 1 fsz/1'),
-	   ('Ildikó', 'Gulyás', '2001-01-11', 'Hungary', Null, 'Budapest', 'Kiss János altábornagy utca 12.'),
-	   ('Hajnalka', 'Virág', '2001-02-25', 'Hungary', Null, 'Monor', 'Kiss Ernő utca 9.'),
-	   ('Anita', 'Zobor', '1995-08-07', 'Hungary', Null, 'Budapest', 'Petrence utca 73.'),
-	   ('Szabina', 'Biró', '1995-10-03', 'Hungary', Null, 'Lajosmizse', 'Ceglédi utca 21.'),
-	   ('Fruzsina', 'Papp', '1995-05-07', 'Hungary', Null, 'Budapest', 'Csíkhegyi utca 32. 3em/10'),
-	   ('Cintia', 'Veres', '1995-03-24', 'Hungary', Null, 'Budapest', 'Erdőalja út 172.'),
-	   ('Csilla', 'Bálint', '2000-05-22', 'Hungary', Null, 'Mezőkövesd', 'Kölcsey Ferenc utca 66.'),
-	   ('Nóra', 'Fekete', '1999-12-06', 'Hungary', Null, 'Pilisszentlászló', 'Tölgyfa utca 2.'),
-	   ('Erika', 'Vass', '1996-01-09', 'Hungary', 'Romania', 'Isaszeg', 'Móricz Zsigmond utca 2.'),
-	   ('Milán', 'Zobor', '1999-09-05', 'Hungary', Null, 'Budapest', 'BerdaJózsef utca 36. 4em/20'),
-	   ('Krisztián', 'Lengyel', '1998-07-03', 'Hungary', Null, 'Budapest', 'Thököly út 12.'),
-	   ('Géza', 'Illés', '1997-10-30', 'Hungary', Null, 'Budapest', 'Szent Mihály utca 17.'),
-	   ('Kristóf', 'Török', '2002-05-28', 'Hungary', Null, 'Budapest', 'Fő út 40.'),
-	   ('Dominik', 'Török', '1999-09-20', 'Hungary', Null, 'Budapest', 'Fő út 40.') 
-
-INSERT INTO [dbo].[Users] (EmailAddress, PassWordHash, IsActive, LastLogin)
+INSERT INTO [dbo].[Users] (EmailAddress, PasswordHash, IsActive, LastLogin)
 VALUES ('admin@schools.com', HASHBYTES('SHA2_512', 'ad52mAx17y'), 1, NULL),
 	   ('zsolt@schools.com', HASHBYTES('SHA2_512', 'zs99Ca47yo'), 1, NULL),
 	   ('mihaly.csombor@hajdunanas.com', HASHBYTES('SHA2_512', 'td62zsydwz'), 1, NULL),
@@ -205,3 +113,94 @@ VALUES ('admin@schools.com', HASHBYTES('SHA2_512', 'ad52mAx17y'), 1, NULL),
 	   ('geza.illes@budapest.com', HASHBYTES('SHA2_512', 'ef26nmckdl'), 1, NULL),
 	   ('kristof.torok@budapest.com', HASHBYTES('SHA2_512', 'ob24swtraf'), 1, NULL),
 	   ('dominik.torok@budapest.com', HASHBYTES('SHA2_512', 'bi77ffhoyp'), 1, NULL)
+
+INSERT INTO [DBO].[Persons](FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, UserId) 
+SELECT 'Mihály', 'Csombor', '1974-12-17', 'Hungary', Null, 'Hajdúnánás', 'Erzsébet utca 44..', u.Id FROM Users u WHERE EmailAddress = 'mihaly.csombor@hajdunanas.com' UNION
+SELECT 'Katalin', 'Hajdú', '1984-06-03', 'Hungary', Null, 'Hajdúnánás', 'Petőfi utca 11..', u.Id FROM Users u WHERE EmailAddress = 'katalin.hajdu@hajdunanas.com' UNION
+SELECT 'Anikó', 'Kelemen', '2008-10-16', 'Hungary', Null, 'Hajúnánás', 'Dorogi út 12..', u.Id FROM Users u WHERE EmailAddress = 'aniko.kelemen@hajunanas.com' UNION
+SELECT 'Róbert', 'Puzsér', '1974-10-24', 'Hungary', Null, 'Budapest', 'Posztmodern út 1..', u.Id FROM Users u WHERE EmailAddress = 'robert.puzser@budapest.com' UNION
+SELECT 'János', 'Kovács', '1965-06-12', 'Hungary', Null, 'Budapest', 'Blaha Lujza tér 12 2em/1.', u.Id FROM Users u WHERE EmailAddress = 'janos.kovacs@budapest.com' UNION
+SELECT 'János', 'Kádár', '1959-03-20', 'Hungary', Null, 'Budapest', 'Hősök tere.', u.Id FROM Users u WHERE EmailAddress = 'janos.kadar@budapest.com' UNION
+SELECT 'Barbara', 'Barna', '1990-04-11', 'Hungary', Null, 'Budapest', 'Vörös Tér 1..', u.Id FROM Users u WHERE EmailAddress = 'barbara.barna@budapest.com' UNION
+SELECT 'Ervin', 'Nagy', '1983-02-15', 'Hungary', Null, 'Budaörs', 'Petőfi Sándor utca 5..', u.Id FROM Users u WHERE EmailAddress = 'ervin.nagy@budaors.com' UNION
+SELECT 'Tünde', 'Kobzos', '1987-01-30', 'Hungary', Null, 'Budapest', 'Egry József u. 51. fsz/3.', u.Id FROM Users u WHERE EmailAddress = 'tunde.kobzos@budapest.com' UNION
+SELECT 'Iván', 'Szakály', '1979-11-08', 'Hungary', Null, 'Szeged', 'Szél utca 3 2em/4.', u.Id FROM Users u WHERE EmailAddress = 'ivan.szakaly@szeged.com' UNION
+SELECT 'Andrea', 'Szél', '1990-03-15', 'Hungary', Null, 'Szeged', 'Farkas utca 3em/1.', u.Id FROM Users u WHERE EmailAddress = 'andrea.szel@szeged.com' UNION
+SELECT 'László', 'Favágó', '1980-02-20', 'Hungary', Null, 'Szeged', 'Bolyai János utca 34..', u.Id FROM Users u WHERE EmailAddress = 'laszlo.favago@szeged.com' UNION
+SELECT 'Farkas', 'Beke', '1992-07-21', 'Hungary', Null, 'Eger', 'Mátyás Király út 11 4em/2.', u.Id FROM Users u WHERE EmailAddress = 'farkas.beke@eger.com' UNION
+SELECT 'Elemér', 'Soós', '1988-11-03', 'Hungary', Null, 'Eger', 'II. Rákóczi Ferenc u. 19 3em/11.', u.Id FROM Users u WHERE EmailAddress = 'elemer.soos@eger.com' UNION
+SELECT 'Marianna', 'Szakács', '1986-02-24', 'Hungary', Null, 'Eger', 'Kallomallom út 12 fsz/2.', u.Id FROM Users u WHERE EmailAddress = 'marianna.szakacs@eger.com' UNION
+SELECT 'Lubomír', 'Cermak', '1986-02-24', 'Czech', Null, 'Praha', '24 Podedvorská.', u.Id FROM Users u WHERE EmailAddress = 'lubomir.cermak@praha.com' UNION
+SELECT 'Květoslav', 'Kovac', '1984-03-16', 'Czech', Null, 'Praha', '294 Podedvorská.', u.Id FROM Users u WHERE EmailAddress = 'kvetoslav.kovac@praha.com' UNION
+SELECT 'Nina', 'Novák', '1990-07-20', 'Czech', 'Hungary', 'Praha', '16 Šrobárova.', u.Id FROM Users u WHERE EmailAddress = 'nina.novak@praha.com' UNION
+SELECT 'Alfréd', 'Hlaváček', '1986-02-24', 'Czech', Null, 'Praha', '54 Žerotínova 4p/23.', u.Id FROM Users u WHERE EmailAddress = 'alfred.hlavacek@praha.com' UNION
+SELECT 'Thomas', 'Wolf', '1986-11-10', 'Austria', Null, 'Graz', '142 Alte Poststraße 2FB/2.', u.Id FROM Users u WHERE EmailAddress = 'thomas.wolf@graz.com' UNION
+SELECT 'Zuzanna', 'Ostrowski', '1986-08-21', 'Austria', 'Poland', 'Graz', '17 Eduard-Keil-Gasse.', u.Id FROM Users u WHERE EmailAddress = 'zuzanna.ostrowski@graz.com' UNION
+SELECT 'Günther', 'Bieber', '1973-11-01', 'Austria', 'Germany', 'Graz', '44 Brucknerstraße.', u.Id FROM Users u WHERE EmailAddress = 'gunther.bieber@graz.com' UNION
+SELECT 'Ruedi', 'Kaufmann', '1983-12-01', 'Germany', 'Austria', 'Dresden', 'Rosmaringasse 10.', u.Id FROM Users u WHERE EmailAddress = 'ruedi.kaufmann@dresden.com' UNION
+SELECT 'Kristin', 'Muller', '1991-10-06', 'Germany', 'France', 'Dresden', 'Seidnitzer Str. 13.', u.Id FROM Users u WHERE EmailAddress = 'kristin.muller@dresden.com' UNION
+SELECT 'Simon', 'Hofmann', '1978-09-30', 'Germany', Null, 'Leipzig', 'Mierendorffstraße 11 3FB/2.', u.Id FROM Users u WHERE EmailAddress = 'simon.hofmann@leipzig.com' UNION
+SELECT 'Roger', 'Burgstaller', '1971-03-31', 'Germany', Null, 'Leipzig', 'Paul-Gruner-Straße 50 1FB/1.', u.Id FROM Users u WHERE EmailAddress = 'roger.burgstaller@leipzig.com' UNION
+SELECT 'Rüdinger', 'Hahn', '1968-01-24', 'Germany', Null, 'Bannerwitz', 'Goppelner Straße 15.', u.Id FROM Users u WHERE EmailAddress = 'rudinger.hahn@bannerwitz.com' UNION
+SELECT 'Anikó', 'Tóth', '2010-06-14', 'Hungary', Null, 'Hajdúnánás', 'Hegyalja út 88..', u.Id FROM Users u WHERE EmailAddress = 'aniko.toth@hajdunanas.com' UNION
+SELECT 'Veronika', 'Szőke', '2004-01-09', 'Hungary', Null, 'Hajdúnánás', 'Rákóczi út 15..', u.Id FROM Users u WHERE EmailAddress = 'veronika.szoke@hajdunanas.com' UNION
+SELECT 'Szabina', 'Illés', '2009-05-02', 'Hungary', Null, 'Hajdúnánás', 'Hegyalja út 36..', u.Id FROM Users u WHERE EmailAddress = 'szabina.illes@hajdunanas.com' UNION
+SELECT 'Viktória', 'Dobos', '2004-04-03', 'Hungary', Null, 'Hajdúnánás', 'Tompa u. 56..', u.Id FROM Users u WHERE EmailAddress = 'viktoria.dobos@hajdunanas.com' UNION
+SELECT 'Ivett', 'Kozma', '2010-12-24', 'Hungary', Null, 'Hajdúnánás', 'Kálmán Imre u. 44..', u.Id FROM Users u WHERE EmailAddress = 'ivett.kozma@hajdunanas.com' UNION
+SELECT 'Orsolya', 'Pataki', '2004-10-14', 'Hungary', Null, 'Hajdúnánás', 'Veres Pálné u. 61..', u.Id FROM Users u WHERE EmailAddress = 'orsolya.pataki@hajdunanas.com' UNION
+SELECT 'Dorina', 'Gáspár', '2013-12-27', 'Hungary', Null, 'Hajdúnánás', 'Dayka Gábor u. 69..', u.Id FROM Users u WHERE EmailAddress = 'dorina.gaspar@hajdunanas.com' UNION
+SELECT 'Éva', 'Halász', '2007-08-17', 'Hungary', Null, 'Hajdúnánás', 'Dorogi út 11..', u.Id FROM Users u WHERE EmailAddress = 'eva.halasz@hajdunanas.com' UNION
+SELECT 'Evelin', 'Orosz', '2012-04-30', 'Hungary', Null, 'Hajdúnánás', 'Bocskai utca 13..', u.Id FROM Users u WHERE EmailAddress = 'evelin.orosz@hajdunanas.com' UNION
+SELECT 'Adél', 'Biró', '2008-03-12', 'Hungary', Null, 'Hajdúnánás', 'Hunyadi utca 1..', u.Id FROM Users u WHERE EmailAddress = 'adel.biro@hajdunanas.com' UNION
+SELECT 'Olivér', 'Orbán', '2013-01-15', 'Hungary', Null, 'Hajdúnánás', 'Kálvin út 10..', u.Id FROM Users u WHERE EmailAddress = 'oliver.orban@hajdunanas.com' UNION
+SELECT 'Géza', 'Bogdán', '2011-12-20', 'Hungary', Null, 'Hajdúnánás', 'Luther utca 8..', u.Id FROM Users u WHERE EmailAddress = 'geza.bogdan@hajdunanas.com' UNION
+SELECT 'Kevin', 'Király', '2006-11-16', 'Hungary', Null, 'Hajdúnánás', 'Mártírok útja 13 2em/3.', u.Id FROM Users u WHERE EmailAddress = 'kevin.kiraly@hajdunanas.com' UNION
+SELECT 'Tamás', 'Apród', '2012-12-21', 'Hungary', Null, 'Hajdúnánás', 'Mártírok útja 15 3em/12.', u.Id FROM Users u WHERE EmailAddress = 'tamas.aprod@hajdunanas.com' UNION
+SELECT 'Dezső', 'Bakos', '2011-04-15', 'Hungary', Null, 'Hajdúnánás', 'Mártírok útja 13 4em/14.', u.Id FROM Users u WHERE EmailAddress = 'dezso.bakos@hajdunanas.com' UNION
+SELECT 'József', 'Sándor', '2009-10-20', 'Hungary', Null, 'Hajdúnánás', 'Mártírok útja 15 1em/5.', u.Id FROM Users u WHERE EmailAddress = 'jozsef.sandor@hajdunanas.com' UNION
+SELECT 'Gergő', 'Tóth', '2012-12-28', 'Hungary', Null, 'Hajdúnánás', 'Damjanich utca 12..', u.Id FROM Users u WHERE EmailAddress = 'gergo.toth@hajdunanas.com' UNION
+SELECT 'Gergely', 'Kerekes', '2010-05-27', 'Hungary', Null, 'Hajdúnánás', 'József Attila utca 8..', u.Id FROM Users u WHERE EmailAddress = 'gergely.kerekes@hajdunanas.com' UNION
+SELECT 'Marcell', 'Hajdú', '2007-11-18', 'Hungary', Null, 'Hajdúnánás', 'Nagy Sándor utca 17..', u.Id FROM Users u WHERE EmailAddress = 'marcell.hajdu@hajdunanas.com' UNION
+SELECT 'Lajos', 'Gáspár', '2009-08-08', 'Hungary', Null, 'Hajdúnánás', 'Liget utca 23..', u.Id FROM Users u WHERE EmailAddress = 'lajos.gaspar@hajdunanas.com' UNION
+SELECT 'Donát', 'Király', '2006-07-11', 'Hungary', Null, 'Hajdúnánás', 'Liget utca 11..', u.Id FROM Users u WHERE EmailAddress = 'donat.kiraly@hajdunanas.com' UNION
+SELECT 'György', 'Vörös', '2008-08-08', 'Hungary', Null, 'Hajdúnánás', 'Móricz Pál utca 12..', u.Id FROM Users u WHERE EmailAddress = 'gyorgy.voros@hajdunanas.com' UNION
+SELECT 'Ármin', 'Juhász', '2013-02-21', 'Hungary', Null, 'HajúDorog', 'Nánási út 10. .', u.Id FROM Users u WHERE EmailAddress = 'armin.juhasz@hajudorog.com' UNION
+SELECT 'Viktor', 'Juhász', '2011-12-10', 'Hungary', Null, 'HajúDorog', 'Nánási út 10. .', u.Id FROM Users u WHERE EmailAddress = 'viktor.juhasz@hajudorog.com' UNION
+SELECT 'Balázs', 'Borbély', '2010-10-13', 'Hungary', Null, 'HajúDorog', 'Nánási út 20. .', u.Id FROM Users u WHERE EmailAddress = 'balazs.borbely@hajudorog.com' UNION
+SELECT 'Olivér', 'László', '2011-08-20', 'Hungary', Null, 'HajúDorog', 'Nánási út 31. .', u.Id FROM Users u WHERE EmailAddress = 'oliver.laszlo@hajudorog.com' UNION
+SELECT 'Bendegúz', 'Bakos', '2004-09-13', 'Hungary', Null, 'HajúDorog', 'Nánási út 5. .', u.Id FROM Users u WHERE EmailAddress = 'bendeguz.bakos@hajudorog.com' UNION
+SELECT 'Renátó', 'Török', '2005-11-09', 'Hungary', Null, 'Hajdúnánás', 'Tinódi utca 32..', u.Id FROM Users u WHERE EmailAddress = 'renato.torok@hajdunanas.com' UNION
+SELECT 'Barnabás', 'Novák', '2010-07-09', 'Hungary', Null, 'Hajdúnánás', 'Irányi utca 31..', u.Id FROM Users u WHERE EmailAddress = 'barnabas.novak@hajdunanas.com' UNION
+SELECT 'Milán', 'Kiss', '2011-03-06', 'Hungary', Null, 'Hajdúnánás', 'Attila utca 51..', u.Id FROM Users u WHERE EmailAddress = 'milan.kiss@hajdunanas.com' UNION
+SELECT 'Laura', 'Borbély', '2013-12-21', 'Hungary', Null, 'Hajdúnánás', 'Alma utca 2..', u.Id FROM Users u WHERE EmailAddress = 'laura.borbely@hajdunanas.com' UNION
+SELECT 'Hajnalka', 'Németh', '1997-02-17', 'Hungary', Null, 'Budapest', 'Piroska u. 29..', u.Id FROM Users u WHERE EmailAddress = 'hajnalka.nemeth@budapest.com' UNION
+SELECT 'Mária', 'Székely', '1999-02-18', 'Hungary', 'Slovakia', 'Budapest', 'Árpád fejedelem útja 83..', u.Id FROM Users u WHERE EmailAddress = 'maria.szekely@budapest.com' UNION
+SELECT 'Szabina', 'Vincze', '1997-10-17', 'Hungary', Null, 'Budapest', 'Csabai kapu 63..', u.Id FROM Users u WHERE EmailAddress = 'szabina.vincze@budapest.com' UNION
+SELECT 'Lilla', 'Oláh', '1998-09-02', 'Hungary', Null, 'Budapest', 'Petőfi utca 52. 3em/12..', u.Id FROM Users u WHERE EmailAddress = 'lilla.olah@budapest.com' UNION
+SELECT 'Sára', 'Péter', '1998-06-11', 'Hungary', Null, 'Budapest', 'Nagytétényi út 35.', u.Id FROM Users u WHERE EmailAddress = 'sara.peter@budapest.com' UNION
+SELECT 'Anita', 'Fodor', '1995-09-11', 'Hungary', Null, 'Mezômegyer ', 'Veres Pálné u. 96. .', u.Id FROM Users u WHERE EmailAddress = 'anita.fodor@mezômegyer.com' UNION
+SELECT 'Benedek', 'Szalai', '1996-11-18', 'Hungary', Null, 'Budapest', ' Baross tér 31. .', u.Id FROM Users u WHERE EmailAddress = 'benedek.szalai@budapest.com' UNION
+SELECT 'László', 'Horváth', '2001-06-02', 'Hungary', Null, 'Budapest', 'Bem rkp. 38. .', u.Id FROM Users u WHERE EmailAddress = 'laszlo.horvath@budapest.com' UNION
+SELECT 'Bertalan', 'Fehér', '1996-06-22', 'Hungary', Null, 'Dunaszeg', 'Bécsi utca 79. .', u.Id FROM Users u WHERE EmailAddress = 'bertalan.feher@dunaszeg.com' UNION
+SELECT 'Botond', 'Lukács', '1999-11-22', 'Hungary', Null, 'Bélapátfalva ', 'Erzsébet tér 15. .', u.Id FROM Users u WHERE EmailAddress = 'botond.lukacs@belapatfalva.com' UNION
+SELECT 'Ferenc', 'Bogdán', '1997-06-12', 'Hungary', 'Romania', 'Budapest', 'Tompa u. 64 .', u.Id FROM Users u WHERE EmailAddress = 'ferenc.bogdan@budapest.com' UNION
+SELECT 'Csaba', 'Gáspár', '1998-04-29', 'Hungary', Null, 'Budapest', 'Szent Gellért tér 13. .', u.Id FROM Users u WHERE EmailAddress = 'csaba.gaspar@budapest.com' UNION
+SELECT 'Csongor', 'Kelemen', '1998-06-02', 'Hungary', Null, 'Nagybátony ', 'Apáczai Csere János u. 58. .', u.Id FROM Users u WHERE EmailAddress = 'csongor.kelemen@nagybatony.com' UNION
+SELECT 'Patrik', 'Balla', '1996-08-13', 'Hungary', Null, 'Budapest', 'Síp utca 53 .', u.Id FROM Users u WHERE EmailAddress = 'patrik.balla@budapest.com' UNION
+SELECT 'Dominik', 'Magyar', '2002-09-10', 'Hungary', Null, 'Budapest', 'Szent Gellért tér 23. .', u.Id FROM Users u WHERE EmailAddress = 'dominik.magyar@budapest.com' UNION
+SELECT 'Levente', 'Sípos', '1997-03-01', 'Hungary', Null, 'Budapest', 'Leonardo da Vinci utca 41.', u.Id FROM Users u WHERE EmailAddress = 'levente.sipos@budapest.com' UNION
+SELECT 'Zsófia', 'Antal', '1996-06-02', 'Hungary', 'Serbia', 'Budapest', 'Erzsébet tér 1 fsz/1.', u.Id FROM Users u WHERE EmailAddress = 'zsofia.antal@budapest.com' UNION
+SELECT 'Ildikó', 'Gulyás', '2001-01-11', 'Hungary', Null, 'Budapest', 'Kiss János altábornagy utca 12..', u.Id FROM Users u WHERE EmailAddress = 'ildiko.gulyas@budapest.com' UNION
+SELECT 'Hajnalka', 'Virág', '2001-02-25', 'Hungary', Null, 'Monor', 'Kiss Ernő utca 9..', u.Id FROM Users u WHERE EmailAddress = 'hajnalka.virag@monor.com' UNION
+SELECT 'Anita', 'Zobor', '1995-08-07', 'Hungary', Null, 'Budapest', 'Petrence utca 73..', u.Id FROM Users u WHERE EmailAddress = 'anita.zobor@budapest.com' UNION
+SELECT 'Szabina', 'Biró', '1995-10-03', 'Hungary', Null, 'Lajosmizse', 'Ceglédi utca 21..', u.Id FROM Users u WHERE EmailAddress = 'szabina.biro@lajosmizse.com' UNION
+SELECT 'Fruzsina', 'Papp', '1995-05-07', 'Hungary', Null, 'Budapest', 'Csíkhegyi utca 32. 3em/10.', u.Id FROM Users u WHERE EmailAddress = 'fruzsina.papp@budapest.com' UNION
+SELECT 'Cintia', 'Veres', '1995-03-24', 'Hungary', Null, 'Budapest', 'Erdőalja út 172..', u.Id FROM Users u WHERE EmailAddress = 'cintia.veres@budapest.com' UNION
+SELECT 'Csilla', 'Bálint', '2000-05-22', 'Hungary', Null, 'Mezőkövesd', 'Kölcsey Ferenc utca 66..', u.Id FROM Users u WHERE EmailAddress = 'csilla.balint@mezokovesd.com' UNION
+SELECT 'Nóra', 'Fekete', '1999-12-06', 'Hungary', Null, 'Pilisszentlászló', 'Tölgyfa utca 2..', u.Id FROM Users u WHERE EmailAddress = 'nora.fekete@pilisszentlaszlo.com' UNION
+SELECT 'Erika', 'Vass', '1996-01-09', 'Hungary', 'Romania', 'Isaszeg', 'Móricz Zsigmond utca 2..', u.Id FROM Users u WHERE EmailAddress = 'erika.vass@isaszeg.com' UNION
+SELECT 'Milán', 'Zobor', '1999-09-05', 'Hungary', Null, 'Budapest', 'BerdaJózsef utca 36. 4em/20.', u.Id FROM Users u WHERE EmailAddress = 'milan.zobor@budapest.com' UNION
+SELECT 'Krisztián', 'Lengyel', '1998-07-03', 'Hungary', Null, 'Budapest', 'Thököly út 12..', u.Id FROM Users u WHERE EmailAddress = 'krisztian.lengyel@budapest.com' UNION
+SELECT 'Géza', 'Illés', '1997-10-30', 'Hungary', Null, 'Budapest', 'Szent Mihály utca 17..', u.Id FROM Users u WHERE EmailAddress = 'geza.illes@budapest.com' UNION
+SELECT 'Kristóf', 'Török', '2002-05-28', 'Hungary', Null, 'Budapest', 'Fő út 40..', u.Id FROM Users u WHERE EmailAddress = 'kristof.torok@budapest.com' UNION
+SELECT 'Dominik', 'Török', '1999-09-20', 'Hungary', Null, 'Budapest', 'Fő út 40..', u.Id FROM Users u WHERE EmailAddress = 'dominik.torok@budapest.com' 

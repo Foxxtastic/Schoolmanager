@@ -194,7 +194,7 @@ export function SchoolList(props) {
                                         <Button disabled={isLoading} text="Cancel" handleClick={() => closeEditor()} />
                                     </> :
                                     <>
-                                        <Button disabled={isLoading} text="Modify" handleClick={() => openEditor(school.Id)} />
+                                        <Button disabled={isLoading} text="Edit" handleClick={() => openEditor(school.Id)} />
                                         <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(school.Id)} />
                                     </>}
                             </td>

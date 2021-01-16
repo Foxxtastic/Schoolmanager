@@ -12,7 +12,11 @@ async function getPersonById(personId) {
         return undefined;
     }
 
-    return result.recordset;
+    if (result.recordset.length !== 1) {
+        throw new Error(`More than one record with Id ${personId}`)
+    }
+
+    return result.recordset[0];
 }
 
 async function listAllPersons(sortingProperty = 'Id', isAscending = true, filterProperty = 'FirstName', filter = '') {
@@ -141,6 +145,7 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
     };
 }
 
+//TODO: nem működik
 async function createPerson(personDto) {
     await sql.connect(databaseConnection);
     let result = await sql.query`
@@ -204,6 +209,7 @@ async function deleteById(personId) {
 
     return result.rowsAffected;
 }
+
 module.exports = {
     getPersonById,
     listAllPersons,

@@ -11,6 +11,7 @@ export function SchoolManagement(props) {
 
     const getData = useCallback((pageNumber, sortingProperty, isDescending, filterProperty, filterValue) => {
         setIsLoading(true);
+        filterValue = encodeURIComponent(filterValue);
         return fetch(`/api/school?pageNumber=${pageNumber}&pageSize=${pageSize}` +
             `&sorting=${sortingProperty}&isDescending=${isDescending}` +
             `&filterProperty=${filterProperty}&filterValue=${filterValue}`)
@@ -58,7 +59,20 @@ export function SchoolManagement(props) {
             body: JSON.stringify(newItem)
         })
             .then(res => res.json())
-            .then(() => setIsLoading(false));
+            .then(jsonResponse => {
+                if (jsonResponse.error) {
+                    throw new Error(jsonResponse.error.message);
+                }
+                setError(undefined);
+                return jsonResponse;
+            })
+            .catch((err) => {
+                setError({ message: err.message });
+                throw err;
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     }
 
     const handleSchoolDelete = (idToDelete) => {
@@ -67,7 +81,17 @@ export function SchoolManagement(props) {
         return fetch(`/api/school/${idToDelete}`, {
             method: 'DELETE'
         })
-            .then(() => setIsLoading(false));
+            .then(res => res.json())
+            .then(jsonResponse => {
+                if (jsonResponse.error) {
+                    setError({ message: jsonResponse.error.message, rowidx: idToDelete });
+                    return;
+                }
+                setError(undefined);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     }
 
     return (
@@ -84,6 +108,7 @@ export function SchoolManagement(props) {
             </Route>
             <Route path="/schools/create">
                 <SchoolCreatePage
+                    error={error}
                     isLoading={isLoading}
                     onCreate={handleSchoolCreate}
                     afterCreate={() => history.push("/schools")}

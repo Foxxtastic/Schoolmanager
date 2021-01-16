@@ -127,7 +127,7 @@ export function UserList(props) {
                             <td>
                                 <>
                                     <Link to={`/users/${user.Id}/update`}>
-                                        <Button text="Update" />
+                                        <Button text="Edit" />
                                     </Link>
                                     <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(user.Id)} />
                                 </>

@@ -1,10 +1,9 @@
 import { Loader } from '../shared/Loader';
 import { useForm } from "react-hook-form";
 import { ValidationErrors } from '../shared/ValidationErrors';
-import DatePicker from '../shared/DatePicker';
 
 export function UserForm(props) {
-    const { isLoading, onSubmit, onError, defaultData } = props;
+    const { error, isLoading, onSubmit, onError, defaultData } = props;
 
     const { register, handleSubmit, errors } = useForm({ defaultValues: defaultData });
 
@@ -19,14 +18,13 @@ export function UserForm(props) {
 
                 <div className="component-data createitem bg-lgray">
                     <div className="item-padding">
-                        <label >Email Address:*</label>
+                        <label className="block-label" >Email Address:*</label>
                         <input name="EmailAddress" ref={register({ required: true })} />
                         <ValidationErrors name="EmailAddress" errors={errors} />
-                        <label >IsActive:</label>
+                        <label className="block-label">IsActive:</label>
                         <input type="checkbox" name="IsActive" ref={register({ required: false })} />
-                        <label >Last Login:</label>
-                        <DatePicker name="LastLogin" ref={register({ required: false })} />
                     </div>
+                    <div className="item-padding validationerror tx-lred">{error && `A technical error has occurred. Details: ${error.message}`}</div>
                     <input className="button-withoutmargin item-margin" disabled={isLoading} type="submit" />
                 </div>
             </form>

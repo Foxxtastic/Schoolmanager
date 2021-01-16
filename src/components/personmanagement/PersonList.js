@@ -226,7 +226,7 @@ export function PersonList(props) {
                                         <Button disabled={isLoading} text="Cancel" handleClick={() => closeEditor()} />
                                     </> :
                                     <>
-                                        <Button disabled={isLoading} text="Modify" handleClick={() => openEditor(person.Id)} />
+                                        <Button disabled={isLoading} text="Edit" handleClick={() => openEditor(person.Id)} />
                                         <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(person.Id)} />
                                     </>}
                             </td>
