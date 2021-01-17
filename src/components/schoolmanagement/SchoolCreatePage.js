@@ -1,13 +1,6 @@
-import { GenericTextForm } from "../shared/GenericTextForm";
+import { SchoolForm } from "./SchoolForm";
 import { MainContent } from "../shared/MainContent";
 import { MainHeader } from "../shared/MainHeader";
-
-const createSchoolFields = [
-    { fieldName: "EduId", label: "Educational ID", required: true, type: "text", labelClass: "block-label" },
-    { fieldName: "Name", label: "Name", required: true, type: "text", labelClass: "block-label" },
-    { fieldName: "Country", label: "Country", required: true, type: "text", labelClass: "block-label" },
-    { fieldName: "City", label: "City", required: true, type: "text", labelClass: "block-label" },
-    { fieldName: "Address", label: "Address", required: true, type: "text", labelClass: "block-label" }];
 
 export function SchoolCreatePage(props) {
 
@@ -27,7 +20,7 @@ export function SchoolCreatePage(props) {
         <>
             <MainHeader text="Create new School" />
             <MainContent>
-                <GenericTextForm error={error} fields={createSchoolFields} isLoading={isLoading} onSubmit={handleFormSubmit} />
+                <SchoolForm error={error} isLoading={isLoading} onSubmit={handleFormSubmit} />
             </MainContent>
         </>
     );

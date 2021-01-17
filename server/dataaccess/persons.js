@@ -149,20 +149,21 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
 async function createPerson(personDto) {
     await sql.connect(databaseConnection);
     let result = await sql.query`
-        insert into dbo.Persons(FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address)
-        values (
+        insert into dbo.Persons(FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, UserId)
+        SELECT 
             ${personDto.FirstName}, 
             ${personDto.LastName}, 
             ${personDto.BirthDate}, 
             ${personDto.Nationality}, 
             ${personDto.SecondNationality},
             ${personDto.City},
-            ${personDto.Address})`;
+            ${personDto.Address},
+            u.Id FROM dbo.Users u WHERE EmailAddress = ${personDto.EmailAddress}`
 
     result = await sql.query`
-        select top 1 Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address
-        from dbo.Persons
-        order by Id desc`;
+    select top 1 Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address
+    from dbo.Persons
+    order by Id desc`;
 
     return result.recordset;
 }
@@ -171,7 +172,7 @@ async function updatePerson(id, personDto) {
     const person = await getPersonById(id);
 
     if (person === undefined) {
-        const error = new Error(`No Person with Id = ${id}!`);
+        const error = new Error(`No Person with Id = ${id} !`);
         error.status = 404;
         throw error;
     }
@@ -179,17 +180,17 @@ async function updatePerson(id, personDto) {
     await sql.connect(databaseConnection);
 
     result = await sql.query`
-        update dbo.Persons
-        set
-            FirstName = ${personDto.FirstName}, 
-            LastName = ${personDto.LastName}, 
-            BirthDate = ${personDto.BirthDate}, 
-            Nationality = ${personDto.Nationality}, 
-            SecondNationality = ${personDto.SecondNationality},
-            City = ${personDto.City},
-            Address = ${personDto.Address}
-        where
-            Id = ${id}`;
+    update dbo.Persons
+    set
+    FirstName = ${personDto.FirstName},
+    LastName = ${personDto.LastName},
+    BirthDate = ${personDto.BirthDate},
+    Nationality = ${personDto.Nationality},
+    SecondNationality = ${personDto.SecondNationality},
+    City = ${personDto.City},
+    Address = ${personDto.Address}
+    where
+    Id = ${id} `;
 
     return await getPersonById(id);
 }
@@ -197,12 +198,12 @@ async function updatePerson(id, personDto) {
 async function deleteById(personId) {
     await sql.connect(databaseConnection);
     const result = await sql.query`
-        delete
+    delete
         from dbo.Persons
-        where Id = ${personId}`;
+    where Id = ${personId} `;
 
     if (result.rowsAffected === 0) {
-        const error = new Error(`No Person with Id = ${personId}!`);
+        const error = new Error(`No Person with Id = ${personId} !`);
         error.status = 404;
         throw error;
     }

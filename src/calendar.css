@@ -1,5 +1,6 @@
 [type="date"] {
     background:#fff url(./icons/calendar-regular.svg)  97% 50% no-repeat ;
+    width: 169px;
   }
   [type="date"]::-webkit-calendar-picker-indicator {
     opacity: 0;

@@ -1,13 +1,17 @@
 import { forwardRef } from "react"
 
-const DatePicker = forwardRef((props, ref) => (
-    <input
-        className={props.className}
-        type="date"
-        name={props.name}
-        defaultValue={props.name === undefined ? "2000-01-01" : props.defaultValue}
-        ref={ref}
-    />
-))
+const DatePicker = forwardRef((props, ref) => {
+    const { className, name, defaultValue } = props;
+
+    return (
+        <input
+            className={className}
+            type="date"
+            name={name}
+            defaultValue={name === undefined ? "2000-01-01" : defaultValue}
+            ref={ref}
+        />
+    )
+})
 
 export default DatePicker;

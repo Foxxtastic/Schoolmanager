@@ -24,35 +24,35 @@ async function listAllUsers(sortingProperty = 'Id', isAscending = true, filterPr
     const isAscendingParam = isAscending === true ? 1 : -1;
 
     const result = await sql.query`
-        with usersWithRowNum AS
+    with usersWithRowNum AS
         (
             select
-                *,
-                row_number() over (
-                    order by
+            *,
+            row_number() over(
+                order by
                     case ${sortingProperty}
                         when 'Id'                   then convert(nvarchar(max), Id)
                         when 'EmailAddress'         then convert(nvarchar(max), EmailAddress)
                         when 'IsActive'             then convert(nvarchar(max), IsActive)
                         when 'LastLogin'            then convert(nvarchar(max), LastLogin)
                     end
-                ) as RowNum
+            ) as RowNum
             from
                 Users
         )
-        select Id, EmailAddress, IsActive, LastLogin
-        from
-            usersWithRowNum
-        where 
+    select Id, EmailAddress, IsActive, LastLogin
+    from
+    usersWithRowNum
+    where 
             case ${filterProperty}
-                when 'Id'                   then convert(nvarchar(max), Id)
-                when 'EmailAddress'         then convert(nvarchar(max), EmailAddress)
-                when 'IsActive'             then convert(nvarchar(max), IsActive)
-                when 'LastLogin'            then convert(nvarchar(max), LastLogin)
-            end
-            like '%'+${filter}+'%'
-        order by
-            RowNum * ${isAscendingParam}`;
+    when 'Id'                   then convert(nvarchar(max), Id)
+    when 'EmailAddress'         then convert(nvarchar(max), EmailAddress)
+    when 'IsActive'             then convert(nvarchar(max), IsActive)
+    when 'LastLogin'            then convert(nvarchar(max), LastLogin)
+    end
+    like '%' + ${filter} +'%'
+    order by
+    RowNum * ${isAscendingParam} `;
 
     return {
         items: result.recordset,
@@ -70,52 +70,52 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
     with usersWithRowNum AS
         (
             select
-                *,
-                row_number() over (
-                    order by
+            *,
+            row_number() over(
+                order by
                     case ${sortingProperty}
                         when 'Id'                   then convert(nvarchar(max), Id)
                         when 'EmailAddress'         then convert(nvarchar(max), EmailAddress)
                         when 'IsActive'             then convert(nvarchar(max), IsActive)
                         when 'LastLogin'            then convert(nvarchar(max), LastLogin)
                     end
-                ) as RowNum
+            ) as RowNum
             from
                 Users
-        )   
-        select Id, EmailAddress, IsActive, LastLogin
-        from
-            usersWithRowNum
-        where 
+        )
+    select Id, EmailAddress, IsActive, LastLogin
+    from
+    usersWithRowNum
+    where 
             case ${filterProperty}
-                when 'Id'                   then convert(nvarchar(max), Id)
-                when 'EmailAddress'         then convert(nvarchar(max), EmailAddress)
-                when 'IsActive'             then convert(nvarchar(max), IsActive)
-                when 'LastLogin'            then convert(nvarchar(max), LastLogin)
-            end
-            like '%'+${filter}+'%'
-        order by
-            RowNum * ${isAscendingParam}
-            offset ${offset} rows
-        fetch next ${pageSizeAsNumber} rows only;`
+    when 'Id'                   then convert(nvarchar(max), Id)
+    when 'EmailAddress'         then convert(nvarchar(max), EmailAddress)
+    when 'IsActive'             then convert(nvarchar(max), IsActive)
+    when 'LastLogin'            then convert(nvarchar(max), LastLogin)
+    end
+    like '%' + ${filter} +'%'
+    order by
+    RowNum * ${isAscendingParam}
+    offset ${offset} rows
+    fetch next ${pageSizeAsNumber} rows only; `
 
     const countResult = await sql.query`
-        with usersWithFilter as
-        (
+    with usersWithFilter as
+    (
         select Id, EmailAddress, IsActive, LastLogin
-            from
-                Users
-            where 
+    from
+    Users
+    where 
                 case ${filterProperty}
-                    when 'Id'                   then convert(nvarchar(max), Id)
-                    when 'EmailAddress'         then convert(nvarchar(max), EmailAddress)
-                    when 'IsActive'             then convert(nvarchar(max), IsActive)
-                    when 'LastLogin'            then convert(nvarchar(max), LastLogin)
-                end    
-                like '%'+${filter}+'%'
+    when 'Id'                   then convert(nvarchar(max), Id)
+    when 'EmailAddress'         then convert(nvarchar(max), EmailAddress)
+    when 'IsActive'             then convert(nvarchar(max), IsActive)
+    when 'LastLogin'            then convert(nvarchar(max), LastLogin)
+    end
+    like '%' + ${filter} +'%'
         )
-        select count(*) as Count
-        from usersWithFilter`
+    select count(*) as Count
+    from usersWithFilter`
 
     const count = countResult.recordset[0].Count;
 
@@ -128,12 +128,12 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
 async function createUser(userDto) {
     await sql.connect(databaseConnection);
     let result = await sql.query`
-        insert into dbo.Users(EmailAddress, PasswordHash, IsActive, LastLogin)
-        values (
-            ${userDto.EmailAddress}, 
-            HASHBYTES('SHA2_512', '${userDto.Password}'), 
-            ${userDto.IsActive}, 
-            ${userDto.LastLogin})`;
+    insert into dbo.Users(EmailAddress, PasswordHash, IsActive, LastLogin)
+    values(
+        ${userDto.EmailAddress},
+        HASHBYTES('SHA2_512', '${userDto.Password}'),
+        ${userDto.IsActive},
+        ${userDto.LastLogin})`;
 
     result = await sql.query`
     select top 1 Id, EmailAddress, PasswordHash, IsActive, LastLogin
@@ -157,10 +157,10 @@ async function updateUser(id, userDto) {
     result = await sql.query`
     update dbo.Users
     set
-        EmailAddress = ${userDto.EmailAddress}, 
-        PasswordHash = HASHBYTES('SHA2_512', '${userDto.Password}'), 
-        IsActive = ${userDto.IsActive}, 
-        LastLogin = ${userDto.LastLogin}
+    EmailAddress = ${userDto.EmailAddress},
+    PasswordHash = HASHBYTES('SHA2_512', '${userDto.Password}'),
+        IsActive = ${userDto.IsActive},
+    LastLogin = ${userDto.LastLogin}
     where
     Id = ${id} `;
 

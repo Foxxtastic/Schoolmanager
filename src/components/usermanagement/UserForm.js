@@ -19,12 +19,12 @@ export function UserForm(props) {
                 <div className="component-data createitem bg-lgray">
                     <div className="item-padding">
                         <label className="block-label" >Email Address:*</label>
-                        <input name="EmailAddress" ref={register({ required: true })} />
+                        <input name="EmailAddress" type="email" ref={register({ required: true })} />
                         <ValidationErrors name="EmailAddress" errors={errors} />
                         <label className="block-label">IsActive:</label>
                         <input type="checkbox" name="IsActive" ref={register({ required: false })} />
                     </div>
-                    <div className="item-padding validationerror tx-lred">{error && `A technical error has occurred. Details: ${error.message}`}</div>
+                    {error && <div className="item-padding validationerror tx-lred">{`A technical error has occurred. Details: ${error.message}`}</div>}
                     <input className="button-withoutmargin item-margin" disabled={isLoading} type="submit" />
                 </div>
             </form>

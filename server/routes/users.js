@@ -5,7 +5,6 @@ const router = express.Router();
 router.get('/', async (req, res, next) => {
     try {
         const { pageNumber, pageSize, sorting, isDescending, filterProperty, filterValue } = req.query;
-        console.log(filterValue)
         const isAscending = isDescending && isDescending === 'true' ? false : true;
         const users = await (pageNumber && pageSize ?
             dataaccess.listPaged(pageNumber, pageSize, sorting, isAscending, filterProperty, filterValue) :

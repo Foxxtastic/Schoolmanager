@@ -48,9 +48,33 @@ export function PersonManagement(props) {
             });
     }
 
+    const handleUserCreate = (newUser) => {
+        return fetch('/api/user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newUser)
+        })
+            .then(res => res.json())
+            .then(jsonResponse => {
+                if (jsonResponse.error) {
+                    throw new Error(jsonResponse.error.message);
+                }
+                setError(undefined);
+                return jsonResponse;
+            })
+            .catch((err) => {
+                setError({ message: err.message });
+                throw err;
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }
+
     const handlePersonCreate = (newItem) => {
         setIsLoading(true);
-
         return fetch('/api/person', {
             method: 'POST',
             headers: {
@@ -81,17 +105,17 @@ export function PersonManagement(props) {
         return fetch(`/api/person/${idToDelete}`, {
             method: 'DELETE'
         })
-        .then(res => res.json())
-        .then(jsonResponse => {
-            if (jsonResponse.error) {
-                setError({ message: jsonResponse.error.message, rowidx: idToDelete });
-                return;
-            }
-            setError(undefined);
-        })
-        .finally(() => {
-            setIsLoading(false);
-        });
+            .then(res => res.json())
+            .then(jsonResponse => {
+                if (jsonResponse.error) {
+                    setError({ message: jsonResponse.error.message, rowidx: idToDelete });
+                    return;
+                }
+                setError(undefined);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     }
 
     return (
@@ -110,9 +134,9 @@ export function PersonManagement(props) {
                 <PersonCreatePage
                     error={error}
                     isLoading={isLoading}
-                    onCreate={handlePersonCreate}
+                    onUserCreate={handleUserCreate}
+                    onPersonCreate={handlePersonCreate}
                     afterCreate={() => {
-                        console.log('after create');
                         history.push("/persons");
                     }}
                 />
