@@ -145,25 +145,31 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
     };
 }
 
-//TODO: nem működik
 async function createPerson(personDto) {
     await sql.connect(databaseConnection);
     let result = await sql.query`
+        insert into dbo.Users(EmailAddress, PasswordHash, IsActive, LastLogin)
+        values(
+            ${personDto.EmailAddress},
+            HASHBYTES('SHA2_512', '${personDto.Password}'),
+            ${personDto.IsActive},
+            ${personDto.LastLogin})
+            
         insert into dbo.Persons(FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, UserId)
-        SELECT 
-            ${personDto.FirstName}, 
-            ${personDto.LastName}, 
-            ${personDto.BirthDate}, 
-            ${personDto.Nationality}, 
+        SELECT
+            ${personDto.FirstName},
+            ${personDto.LastName},
+            ${personDto.BirthDate},
+            ${personDto.Nationality},
             ${personDto.SecondNationality},
             ${personDto.City},
             ${personDto.Address},
-            u.Id FROM dbo.Users u WHERE EmailAddress = ${personDto.EmailAddress}`
+        u.Id FROM dbo.Users u WHERE EmailAddress = ${personDto.EmailAddress} `
 
     result = await sql.query`
-    select top 1 Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address
-    from dbo.Persons
-    order by Id desc`;
+        select top 1 Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address
+        from dbo.Persons
+        order by Id desc`;
 
     return result.recordset;
 }

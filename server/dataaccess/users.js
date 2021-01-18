@@ -19,6 +19,24 @@ async function getUserById(userId) {
     return result.recordset[0];
 }
 
+async function getUserByEmailAddress(userEmail) {
+    await sql.connect(databaseConnection);
+    const result = await sql.query`
+        select Id, EmailAddress, PasswordHash, IsActive, LastLogin
+        from dbo.Users
+        where EmailAddress = ${userEmail}`;
+
+    if (result.recordset.length === 0) {
+        return undefined;
+    }
+
+    if (result.recordset.length !== 1) {
+        throw new Error(`More than one record with Email Address ${userEmail}`)
+    }
+
+    return result.recordset[0];
+}
+
 async function listAllUsers(sortingProperty = 'Id', isAscending = true, filterProperty = 'EmailAddress', filter = '') {
     await sql.connect(databaseConnection);
     const isAscendingParam = isAscending === true ? 1 : -1;
@@ -186,6 +204,7 @@ async function deleteById(userId) {
 
 module.exports = {
     getUserById,
+    getUserByEmailAddress,
     listAllUsers,
     listPaged,
     createUser,

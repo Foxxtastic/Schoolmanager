@@ -67,7 +67,7 @@ export function PersonForm(props) {
                         errors={errors}
                     />
                     <Input
-                        name="PassWord"
+                        name="Password"
                         type="password"
                         ref={register({ required: false })}
                     />

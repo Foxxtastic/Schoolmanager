@@ -15,15 +15,13 @@ router.get('/', async (req, res, next) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
-    const { id } = req.params;
-    const user = await dataaccess.getUserById(id);
-
+router.get('/:param', async (req, res) => {
+    const { param } = req.params;
+    const user = (param.includes("@")) ? await dataaccess.getUserByEmailAddress(param) : await dataaccess.getUserById(param);
     if (user === undefined) {
         res.sendStatus(404);
         return;
     }
-
     res.json(user);
 });
 
