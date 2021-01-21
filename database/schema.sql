@@ -67,11 +67,92 @@ END
 IF (NOT EXISTS (SELECT * 
                 FROM INFORMATION_SCHEMA.TABLES 
                 WHERE TABLE_SCHEMA = 'dbo' 
+                AND  TABLE_NAME = 'Majors'))
+BEGIN
+	CREATE TABLE dbo.Majors(
+		Id int NOT NULL IDENTITY(1,1)
+			CONSTRAINT PK_Majors PRIMARY KEY,
+		Name nvarchar (50) NOT NULL
+	);    
+END
+
+IF (NOT EXISTS (SELECT * 
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = 'dbo' 
                 AND  TABLE_NAME = 'Teachers'))
 BEGIN
 	CREATE TABLE dbo.Teachers (
 		Id int NOT NULL IDENTITY(1,1)
 			CONSTRAINT PK_Teachers PRIMARY KEY,
-		TypeId nvarchar (100),
+		PersonId int NOT NULL
+			CONSTRAINT FK_Teachers_PersonId
+			REFERENCES Persons(Id)
+	);    
+END
+
+IF (NOT EXISTS (SELECT * 
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = 'dbo' 
+                AND  TABLE_NAME = 'MajorTeacher'))
+BEGIN
+	CREATE TABLE dbo.MajorTeacher (
+		MajorId int NOT NULL
+			CONSTRAINT FK_MajorTeacher_MajorId
+			REFERENCES Majors(Id),
+		TeacherId int NOT NULL
+			CONSTRAINT FK_MajorTeacher_TeacherId
+			REFERENCES Teachers(Id),
+		 CONSTRAINT PK_MajorTeacher PRIMARY KEY NONCLUSTERED ([MajorId], [TeacherId])
+			 
+	);    
+END
+
+IF (NOT EXISTS (SELECT * 
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = 'dbo' 
+                AND  TABLE_NAME = 'Students'))
+BEGIN
+	CREATE TABLE dbo.Students (
+		Id int NOT NULL IDENTITY(1,1)
+			CONSTRAINT PK_Students PRIMARY KEY,
+		StartDate date NOT NULL,
+		ActiveStatus bit NOT NULL,
+		PersonId int NOT NULL
+			CONSTRAINT FK_Students_PersonId
+			REFERENCES Persons(Id)
+	);    
+END
+
+IF (NOT EXISTS (SELECT * 
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = 'dbo' 
+                AND  TABLE_NAME = 'SchoolTeacher'))
+BEGIN
+	CREATE TABLE dbo.SchoolTeacher (
+		SchoolId int NOT NULL
+			CONSTRAINT PK_SchoolTeacher_SchoolId
+			REFERENCES Schools(Id),
+		
+		TeacherId int NOT NULL
+			CONSTRAINT PK_SchoolTeacher_TeacherId
+			REFERENCES Teachers(Id),
+		CONSTRAINT PK_SchoolTeacher PRIMARY KEY NONCLUSTERED ([SchoolId], [TeacherId])
+	);    
+END
+
+IF (NOT EXISTS (SELECT * 
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = 'dbo' 
+                AND  TABLE_NAME = 'SchoolStudent'))
+BEGIN
+	CREATE TABLE dbo.SchoolStudent (
+		SchoolId int NOT NULL
+			CONSTRAINT PK_SchoolStudent_SchoolId
+			REFERENCES Schools(Id),
+		
+		StudentId int NOT NULL
+			CONSTRAINT PK_SchoolStudent_StudentId
+			REFERENCES Students(Id),
+		CONSTRAINT PK_SchoolStudent PRIMARY KEY NONCLUSTERED ([SchoolId], [StudentId])
 	);    
 END

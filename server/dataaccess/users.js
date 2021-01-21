@@ -199,7 +199,7 @@ async function deleteById(userId) {
         throw error;
     }
 
-    return result.rowsAffected;
+    return result.rowsAffected[0];
 }
 
 module.exports = {

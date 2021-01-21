@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
 import { pageSize } from '../../config';
 import { Button } from "../shared/Button";
 import { ConfirmPopup } from "../shared/ConfirmPopup";
@@ -12,13 +11,11 @@ import { useSortingDirection } from "../../hooks/useSortingDirection";
 import { useFilterProperty } from "../../hooks/useFilterProperty";
 import { useFilterValue } from "../../hooks/useFilterValue";
 import { updateSearch } from '../../helpers/updateSearch';
+import { faCheck, faExclamationTriangle, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const headers = [
-    { text: "Educational Id", propertyName: 'EduId', isSortable: true },
     { text: "Name", propertyName: 'Name', isSortable: true },
-    { text: "Country", propertyName: 'Country', isSortable: true },
-    { text: "City", propertyName: 'City', isSortable: true },
-    { text: "Address", propertyName: 'Address', isSortable: true },
     { text: "", isSortable: false },
 ];
 
@@ -26,7 +23,7 @@ function calculateMaxPage(listResponse) {
     return Math.ceil(listResponse.allItemsCount / pageSize);
 }
 
-export function SchoolList(props) {
+export function MajorList(props) {
 
     const { register, handleSubmit, errors } = useForm();
     const [editor, setEditor] = useState({
@@ -37,26 +34,27 @@ export function SchoolList(props) {
     let activePageNumber = usePageNumber();
     activePageNumber = activePageNumber === null ? 1 : activePageNumber;
 
-    const [schools, setSchools] = useState(undefined);
+    const [majors, setMajors] = useState(undefined);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [activeIdForDelete, setActiveIdForDelete] = useState(null);
     const [maxPageNumber, setMaxPageNumber] = useState(undefined);
+    const [hoverOnIcon, setHoveronIcon] = useState(null);
 
     let sortingProperty = useSorting();
-    sortingProperty = sortingProperty === null ? 'EduId' : sortingProperty;
+    sortingProperty = sortingProperty === null ? 'Name' : sortingProperty;
     const { isDescending } = useSortingDirection();
 
     let filterProperty = useFilterProperty();
-    filterProperty = filterProperty === null ? 'EduId' : filterProperty;
+    filterProperty = filterProperty === null ? 'Name' : filterProperty;
 
     let filterValue = useFilterValue();
     filterValue = filterValue === null ? '' : filterValue;
 
-    const { error, afterUpdate, afterDelete, afterPaging, linkToCreate, onUpdate, onDelete, isLoading } = props;
+    const { error, afterUpdate, afterCreate, afterDelete, afterPaging, onUpdate, onDelete, isLoading } = props;
 
-    const setSchoolsFromServer = (listResponse) => {
+    const setmajorsFromServer = (listResponse) => {
         setMaxPageNumber(calculateMaxPage(listResponse));
-        setSchools(listResponse.items);
+        setMajors(listResponse.items);
     }
 
     useEffect(() => {
@@ -66,7 +64,7 @@ export function SchoolList(props) {
                 updateSearch({ page: maxPage });
                 return;
             }
-            setSchools(listResponse.items);
+            setMajors(listResponse.items);
             setMaxPageNumber(maxPage);
         });
     }, [activePageNumber, afterPaging, sortingProperty, isDescending, filterProperty, filterValue]);
@@ -88,7 +86,7 @@ export function SchoolList(props) {
     const fireAfterUpdateEvent = () => {
         if (afterUpdate !== undefined) {
             afterUpdate(activePageNumber, sortingProperty, isDescending, filterProperty, filterValue)
-                .then(setSchoolsFromServer);
+                .then(setmajorsFromServer);
         }
     }
 
@@ -116,7 +114,7 @@ export function SchoolList(props) {
     const handleDeleteModalConfirm = () => {
         onDelete(activeIdForDelete)
             .then(() => afterDelete(activePageNumber, sortingProperty, isDescending, filterProperty, filterValue))
-            .then(setSchoolsFromServer);
+            .then(setmajorsFromServer);
         setIsModalVisible(false);
     }
 
@@ -125,7 +123,7 @@ export function SchoolList(props) {
         setIsModalVisible(false);
     }
 
-    if (schools === undefined) {
+    if (majors === undefined) {
         return 'Loading...';
     }
 
@@ -140,74 +138,49 @@ export function SchoolList(props) {
                 isDescending={isDescending}
                 filterProperty={filterProperty}
                 filterValue={filterValue}
-                items={schools}
+                items={majors}
                 activePageNumber={activePageNumber}
                 maxPageNumber={maxPageNumber}
-                getRowForItem={(school, idx) => {
-                    const isEditing = editor.isEditMode && editor.rowKey === school.Id;
+                getRowForItem={(major, idx) => {
+                    const isEditing = editor.isEditMode && editor.rowKey === major.Id;
 
                     return (
                         <tr key={idx}>
+                            {error && error.rowidx === major.Id &&
+                                <td className="error">
+                                    <FontAwesomeIcon
+                                        className="tx-lred"
+                                        icon={faExclamationTriangle}
+                                        onMouseEnter={() => setHoveronIcon(error.rowidx)}
+                                        onMouseLeave={() => setHoveronIcon(null)}
+                                    />
+                                    {hoverOnIcon === error.rowidx && <div className="tooltip">{error.message}</div>}
+                                </td>}
+                            {error && error.rowidx !== major.Id &&
+                                <td className="error"></td>}
                             <td>
                                 {isEditing ?
                                     <>
-                                        <input name="eduId" defaultValue={school.EduId} ref={register({ required: true })} />
-                                        <ValidationErrors name="eduId" errors={errors} />
+                                        <input name="Name" defaultValue={major.Name} ref={register({ required: true })} />
+                                        <ValidationErrors name="Name" errors={errors} />
                                     </> :
-                                    <span>{school.EduId}</span>}
+                                    <span>{major.Name}</span>}
                             </td>
                             <td>
                                 {isEditing ?
                                     <>
-                                        <input name="name" defaultValue={school.Name} ref={register({ required: true })} />
-                                        <ValidationErrors name="name" errors={errors} />
-                                    </> :
-                                    <span>{school.Name}</span>}
-                            </td>
-                            <td>
-                                {isEditing ?
-                                    <>
-                                        <input name="country" defaultValue={school.Country} ref={register({ required: true })} />
-                                        <ValidationErrors name="country" errors={errors} />
-                                    </> :
-                                    <span>{school.Country}</span>}
-                            </td>
-                            <td>
-                                {isEditing ?
-                                    <>
-                                        <input name="city" defaultValue={school.City} ref={register({ required: true })} />
-                                        <ValidationErrors name="city" errors={errors} />
-                                    </> :
-                                    <span>{school.City}</span>}
-                            </td>
-                            <td>
-                                {isEditing ?
-                                    <>
-                                        <input name="address" defaultValue={school.Address} ref={register({ required: true })} />
-                                        <ValidationErrors name="address" errors={errors} />
-                                    </> :
-                                    <span>{school.Address}</span>}
-                            </td>
-                            <td>
-                                {isEditing ?
-                                    <>
-                                        <Button disabled={isLoading} text="Ok" handleClick={handleSubmit((formData) => onSubmit(school.Id, formData))} />
+                                        <Button disabled={isLoading} text="Ok" handleClick={handleSubmit((formData) => onSubmit(major.Id, formData))} />
                                         <Button disabled={isLoading} text="Cancel" handleClick={() => closeEditor()} />
                                     </> :
                                     <>
-                                        <Button disabled={isLoading} text="Edit" handleClick={() => openEditor(school.Id)} />
-                                        <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(school.Id)} />
+                                        <Button disabled={isLoading} text="Edit" handleClick={() => openEditor(major.Id)} />
+                                        <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(major.Id)} />
                                     </>}
                             </td>
                         </tr>
                     );
                 }}
             />
-            <div className="footer">
-                <Link to={linkToCreate}>
-                    <Button customClass="button-withoutmargin" text="Create" />
-                </Link>
-            </div>
         </ div>
     );
 }

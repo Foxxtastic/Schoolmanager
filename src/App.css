@@ -6,6 +6,10 @@ a {
   text-decoration: none;
 }
 
+.inline-block {
+  display: inline-block;
+}
+
 ul {
 	list-style: none;
 	margin: 0;

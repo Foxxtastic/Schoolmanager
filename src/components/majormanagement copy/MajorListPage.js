@@ -1,20 +1,21 @@
+import '../../calendar.css';
 import { MainContent } from "../shared/MainContent";
 import { MainHeader } from "../shared/MainHeader";
-import { SchoolList } from "./SchoolList";
+import { MajorList } from './MajorList';
 
-export function SchoolListPage(props) {
-    const { error, isLoading, afterPaging, afterDelete, afterUpdate, onDelete, onUpdate } = props;
+export function MajorListPage(props) {
+    const { error, isLoading, afterPaging, afterDelete, afterCreate, afterUpdate, onDelete, onUpdate } = props;
 
     return (
         <>
-            <MainHeader text="Schools" />
+            <MainHeader text="Users" />
             <MainContent>
-                <SchoolList
+                <MajorList
                     error={error}
                     isLoading={isLoading}
-                    linkToCreate="/schools/create"
                     afterPaging={afterPaging}
                     afterUpdate={afterUpdate}
+                    afterCreate={afterCreate}
                     afterDelete={afterDelete}
                     onDelete={onDelete}
                     onUpdate={onUpdate}

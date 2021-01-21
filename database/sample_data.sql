@@ -204,3 +204,94 @@ SELECT 'Krisztián', 'Lengyel', '1998-07-03', 'Hungary', Null, 'Budapest', 'Thö
 SELECT 'Géza', 'Illés', '1997-10-30', 'Hungary', Null, 'Budapest', 'Szent Mihály utca 17..', u.Id FROM Users u WHERE EmailAddress = 'geza.illes@budapest.com' UNION
 SELECT 'Kristóf', 'Török', '2002-05-28', 'Hungary', Null, 'Budapest', 'Fő út 40..', u.Id FROM Users u WHERE EmailAddress = 'kristof.torok@budapest.com' UNION
 SELECT 'Dominik', 'Török', '1999-09-20', 'Hungary', Null, 'Budapest', 'Fő út 40..', u.Id FROM Users u WHERE EmailAddress = 'dominik.torok@budapest.com' 
+
+INSERT INTO [DBO].[Majors](Name)
+VALUES ('Biology'), ('Chemistry'), ('Mathematics'), ('Physics'), ('Gymnastic'), ('Economics'), ('Art'), ('IT'), ('Literature'), ('Grammar'),
+	   ('History'), ('English'), ('German'), ('French'), ('Algebra'), ('Programming'), ('Philosophy'), ('Painting'), ('Silviculture'), ('Ecology'),
+	   ('Zoology'), ('Botany'), ('Logistic'), ('Graphic art'), ('Sculpture'), ('Discrete mathematics'), ('Database knowledge'), ('Latin'),
+	   ('Social science'), ('Calculus'), ('Tourism'), ('Astronomy'), ('Geography'), ('Animation'), ('Designer'), ('Photography'), ('Technics'),
+	   ('Robotics'), ('Journalism'), ('Agriculture'), ('Psychology')
+
+INSERT INTO [DBO].[Teachers](PersonId)
+SELECT p.Id FROM Persons p WHERE BirthDate='1974-12-17' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1984-06-03' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1974-10-24' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1965-06-12' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1959-03-20' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1990-04-11' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1983-02-15' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1987-01-30' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1979-11-08' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1990-03-15' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1980-02-20' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1992-07-21' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1988-11-03' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1986-02-24' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1986-02-24' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1984-03-16' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1990-07-20' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1986-02-24' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1986-11-10' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1986-08-21' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1973-11-01' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1983-12-01' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1991-10-06' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1978-09-30' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1971-03-31' UNION
+SELECT p.Id FROM Persons p WHERE BirthDate='1968-01-24'
+
+INSERT INTO [DBO].[MajorTeacher] (MajorId, TeacherId)
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Mathematics' AND  p.BirthDate = '1974-12-17' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Literature' AND  p.BirthDate = '1984-06-03' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'History' AND  p.BirthDate = '1974-10-24' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Mathematics' AND  p.BirthDate = '1965-06-12' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Economics' AND  p.BirthDate = '1959-03-20' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Robotics' AND  p.BirthDate = '1990-04-11' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Zoology' AND  p.BirthDate = '1983-02-15' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'English' AND  p.BirthDate = '1987-01-30' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Silviculture' AND  p.BirthDate = '1979-11-08' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Mathematics' AND  p.BirthDate = '1990-03-15' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'History' AND  p.BirthDate = '1980-02-20' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'IT' AND  p.BirthDate = '1992-07-21' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Mathematics' AND  p.BirthDate = '1988-11-03' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Literature' AND  p.BirthDate = '1986-02-24' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Algebra' AND  p.BirthDate = '1986-02-24' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Journalism' AND  p.BirthDate = '1984-03-16' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Social Science' AND  p.BirthDate = '1990-07-20' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Tourism ' AND  p.BirthDate = '1986-02-24' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Literature' AND  p.BirthDate = '1986-11-10' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Social Science' AND  p.BirthDate = '1986-08-21' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Economics' AND  p.BirthDate = '1973-11-01' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Robotics' AND  p.BirthDate = '1983-12-01' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Technics' AND  p.BirthDate = '1991-10-06' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Designer' AND  p.BirthDate = '1978-09-30' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Sculpture ' AND  p.BirthDate = '1971-03-31' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Zoology' AND  p.BirthDate = '1968-01-24' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'IT' AND  p.BirthDate = '1974-12-17' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Grammar' AND  p.BirthDate = '1984-06-03' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Literature' AND  p.BirthDate = '1974-10-24' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Algebra' AND  p.BirthDate = '1965-06-12' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Logistic' AND  p.BirthDate = '1959-03-20' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Programming' AND  p.BirthDate = '1990-04-11' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Botany' AND  p.BirthDate = '1983-02-15' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'German' AND  p.BirthDate = '1987-01-30' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Biology' AND  p.BirthDate = '1979-11-08' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Economics' AND  p.BirthDate = '1990-03-15' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Literature' AND  p.BirthDate = '1980-02-20' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Programming' AND  p.BirthDate = '1992-07-21' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Physics' AND  p.BirthDate = '1988-11-03' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Grammar' AND  p.BirthDate = '1986-02-24' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Discrete Mathematics' AND  p.BirthDate = '1986-02-24' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Grammar' AND  p.BirthDate = '1984-03-16' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Economics' AND  p.BirthDate = '1990-07-20' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Logistic' AND  p.BirthDate = '1986-02-24' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Grammar' AND  p.BirthDate = '1986-11-10' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Psychology ' AND  p.BirthDate = '1986-08-21' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Geograpics' AND  p.BirthDate = '1973-11-01' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'IT' AND  p.BirthDate = '1983-12-01' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Calculus' AND  p.BirthDate = '1991-10-06' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Painting' AND  p.BirthDate = '1978-09-30' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Logistic ' AND  p.BirthDate = '1971-03-31' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Botany' AND  p.BirthDate = '1968-01-24' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Grammar' AND  p.BirthDate = '1980-02-20' AND p.Id = t.PersonId UNION
+SELECT m.Id, t.Id FROM Majors m, Persons p, Teachers t  WHERE m.Name = 'Designer' AND  p.BirthDate = '1984-03-16' AND p.Id = t.PersonId

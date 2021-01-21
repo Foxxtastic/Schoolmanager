@@ -54,10 +54,10 @@ router.delete('/:id', async (req, res, next) => {
     const { id } = req.params;
     try {
         await dataaccess.deleteById(id);
+        res.json(`Deleted item with Id ${id}`);
     } catch (error) {
         next(error);
     }
-    res.sendStatus(200);
 });
 
 module.exports = router;

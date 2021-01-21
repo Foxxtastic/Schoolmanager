@@ -8,6 +8,7 @@ import { Home } from './components/shared/Home';
 import { SchoolManagement } from './components/schoolmanagement/SchoolManagement';
 import { PersonManagement } from './components/personmanagement/PersonManagement';
 import { UserManagement } from './components/usermanagement/UserManagement';
+import { MajorManagement } from './components/majormanagement copy/MajorManagement';
 
 const menuItems = [
   {
@@ -32,6 +33,10 @@ const menuItems = [
       {
         text: 'Users',
         link: '/users'
+      },
+      {
+        text: 'Majors',
+        link: '/majors'
       }
     ]
   },
@@ -49,6 +54,7 @@ function App() {
         <SchoolManagement />
         <PersonManagement />
         <UserManagement />
+        <MajorManagement />
         <Login />
       </Router>
     </>

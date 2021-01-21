@@ -181,13 +181,13 @@ async function deleteById(schoolId) {
         from dbo.Schools
         where Id = ${schoolId}`;
 
-    if (result.rowsAffected === 0) {
+    if (result.rowsAffected[0] === 0) {
         const error = new Error(`No Product with Id = ${schoolId}!`);
         error.status = 404;
         throw error;
     }
 
-    return result.rowsAffected;
+    return result.rowsAffected[0];
 }
 
 module.exports = {
