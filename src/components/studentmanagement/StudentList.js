@@ -13,7 +13,7 @@ import { useFilterProperty } from "../../hooks/useFilterProperty";
 import { useFilterValue } from "../../hooks/useFilterValue";
 import { updateSearch } from '../../helpers/updateSearch';
 import moment from "moment";
-import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faExclamationTriangle, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DatePicker from "../shared/DatePicker";
 
@@ -25,6 +25,8 @@ const headers = [
     { text: "Second Nationality", propertyName: 'SecondNationality', isSortable: true },
     { text: "City", propertyName: 'City', isSortable: true },
     { text: "Address", propertyName: 'Address', isSortable: true },
+    { text: "Start Date", propertyName: 'StartDate', isSortable: true },
+    { text: "Active Status", propertyName: 'ActiveStatus', isSortable: true },
     { text: "", isSortable: false }
 ];
 
@@ -32,7 +34,7 @@ function calculateMaxPage(listResponse) {
     return Math.ceil(listResponse.allItemsCount / pageSize);
 }
 
-export function PersonList(props) {
+export function StudentList(props) {
 
     const { register, handleSubmit, errors } = useForm();
     const [editor, setEditor] = useState({
@@ -43,7 +45,7 @@ export function PersonList(props) {
     let activePageNumber = usePageNumber();
     activePageNumber = activePageNumber === null ? 1 : activePageNumber;
 
-    const [persons, setPersons] = useState(undefined);
+    const [students, setStudents] = useState(undefined);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [activeIdForDelete, setActiveIdForDelete] = useState(null);
     const [maxPageNumber, setMaxPageNumber] = useState(undefined);
@@ -61,9 +63,9 @@ export function PersonList(props) {
 
     const { error, afterUpdate, afterDelete, afterPaging, linkToCreate, onUpdate, onDelete, isLoading } = props;
 
-    const setPersonsFromServer = (listResponse) => {
+    const setStudentsFromServer = (listResponse) => {
         setMaxPageNumber(calculateMaxPage(listResponse));
-        setPersons(listResponse.items);
+        setStudents(listResponse.items);
     }
 
     useEffect(() => {
@@ -73,7 +75,7 @@ export function PersonList(props) {
                 updateSearch({ page: maxPage });
                 return;
             }
-            setPersons(listResponse.items);
+            setStudents(listResponse.items);
             setMaxPageNumber(maxPage);
         });
     }, [activePageNumber, afterPaging, sortingProperty, isDescending, filterProperty, filterValue]);
@@ -95,7 +97,7 @@ export function PersonList(props) {
     const fireAfterUpdateEvent = () => {
         if (afterUpdate !== undefined) {
             afterUpdate(activePageNumber, sortingProperty, isDescending, filterProperty, filterValue)
-                .then(setPersonsFromServer);
+                .then(setStudentsFromServer);
         }
     }
 
@@ -123,7 +125,7 @@ export function PersonList(props) {
     const handleDeleteModalConfirm = () => {
         onDelete(activeIdForDelete)
             .then(() => afterDelete(activePageNumber, sortingProperty, isDescending, filterProperty, filterValue))
-            .then(setPersonsFromServer);
+            .then(setStudentsFromServer);
         setIsModalVisible(false);
     }
 
@@ -132,7 +134,7 @@ export function PersonList(props) {
         setIsModalVisible(false);
     }
 
-    if (persons === undefined) {
+    if (students === undefined) {
         return 'Loading...';
     }
 
@@ -147,14 +149,14 @@ export function PersonList(props) {
                 isDescending={isDescending}
                 filterProperty={filterProperty}
                 filterValue={filterValue}
-                items={persons}
+                items={students}
                 activePageNumber={activePageNumber}
                 maxPageNumber={maxPageNumber}
-                getRowForItem={(person, idx) => {
-                    const isEditing = editor.isEditMode && editor.rowKey === person.Id;
+                getRowForItem={(student, idx) => {
+                    const isEditing = editor.isEditMode && editor.rowKey === student.Id;
                     return (
                         <tr key={idx}>
-                            {error && error.rowidx === person.Id &&
+                            {error && error.rowidx === student.Id &&
                                 <td className="error">
                                     <FontAwesomeIcon
                                         className="tx-lred"
@@ -164,70 +166,81 @@ export function PersonList(props) {
                                     />
                                     {hoverOnIcon === error.rowidx && <div className="tooltip">{error.message}</div>}
                                 </td>}
-                            {error && error.rowidx !== person.Id &&
+                            {error && error.rowidx !== student.Id &&
                                 <td className="error"></td>}
                             <td>
                                 {isEditing ?
                                     <>
-                                        <input name="FirstName" defaultValue={person.FirstName} ref={register({ required: true })} />
+                                        <input name="FirstName" defaultValue={student.FirstName} ref={register({ required: true })} />
                                         <ValidationErrors name="FirstName" errors={errors} />
                                     </> :
-                                    <span>{person.FirstName}</span>}
+                                    <span>{student.FirstName}</span>}
                             </td>
                             <td>
                                 {isEditing ?
                                     <>
-                                        <input name="LastName" defaultValue={person.LastName} ref={register({ required: true })} />
+                                        <input name="LastName" defaultValue={student.LastName} ref={register({ required: true })} />
                                         <ValidationErrors name="LastName" errors={errors} />
                                     </> :
-                                    <span>{person.LastName}</span>}
+                                    <span>{student.LastName}</span>}
                             </td>
                             <td>
                                 {isEditing ?
                                     <>
-                                        <DatePicker name="BirthDate" defaultValue={moment(person.BirthDate).format("YYYY-MM-DD")} ref={register({ required: true })} />
+                                        <DatePicker name="BirthDate" defaultValue={moment(student.BirthDate).format("YYYY-MM-DD")} ref={register({ required: true })} />
                                         <ValidationErrors name="BirthDate" errors={errors} />
                                     </> :
-                                    <span>{moment(person.BirthDate).format("YYYY-MM-DD")}</span>}
+                                    <span>{moment(student.BirthDate).format("YYYY-MM-DD")}</span>}
                             </td>
                             <td>
                                 {isEditing ?
                                     <>
-                                        <input name="Nationality" defaultValue={person.Nationality} ref={register({ required: true })} />
+                                        <input name="Nationality" defaultValue={student.Nationality} ref={register({ required: true })} />
                                         <ValidationErrors name="Nationality" errors={errors} />
                                     </> :
-                                    <span>{person.Nationality}</span>}
+                                    <span>{student.Nationality}</span>}
                             </td>
                             <td>
                                 {isEditing ?
                                     <>
-                                        <input name="SecondNationality" defaultValue={person.SecondNationality} ref={register({ required: false })} />
+                                        <input name="SecondNationality" defaultValue={student.SecondNationality} ref={register({ required: false })} />
                                     </> :
-                                    <span>{person.SecondNationality}</span>}
+                                    <span>{student.SecondNationality}</span>}
                             </td>
                             <td>
                                 {isEditing ?
                                     <>
-                                        <input name="City" defaultValue={person.City} ref={register({ required: false })} />
+                                        <input name="City" defaultValue={student.City} ref={register({ required: false })} />
                                     </> :
-                                    <span>{person.City}</span>}
+                                    <span>{student.City}</span>}
                             </td>
                             <td>
                                 {isEditing ?
                                     <>
-                                        <input name="Address" defaultValue={person.Address} ref={register({ required: false })} />
+                                        <input name="Address" defaultValue={student.Address} ref={register({ required: false })} />
                                     </> :
-                                    <span>{person.Address}</span>}
+                                    <span>{student.Address}</span>}
                             </td>
                             <td>
                                 {isEditing ?
                                     <>
-                                        <Button disabled={isLoading} text="Ok" handleClick={handleSubmit((formData) => onSubmit(person.Id, formData))} />
+                                        <DatePicker name="StartDate" defaultValue={moment(student.StartDate).format("YYYY-MM-DD")} ref={register({ required: true })} />
+                                        <ValidationErrors name="StartDate" errors={errors} />
+                                    </> :
+                                    <span>{moment(student.StartDate).format("YYYY-MM-DD")}</span>}
+                            </td>
+                            <td>
+                                <span>{(student.ActiveStatus === true) ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faTimesCircle} />}</span>
+                            </td>
+                            <td>
+                                {isEditing ?
+                                    <>
+                                        <Button disabled={isLoading} text="Ok" handleClick={handleSubmit((formData) => onSubmit(student.Id, formData))} />
                                         <Button disabled={isLoading} text="Cancel" handleClick={() => closeEditor()} />
                                     </> :
                                     <>
-                                        <Button disabled={isLoading} text="Edit" handleClick={() => openEditor(person.Id)} />
-                                        <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(person.Id)} />
+                                        <Button disabled={isLoading} text="Edit" handleClick={() => openEditor(student.Id)} />
+                                        <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(student.Id)} />
                                     </>}
                             </td>
                         </tr>

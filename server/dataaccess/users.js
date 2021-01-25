@@ -5,7 +5,7 @@ async function getUserById(userId) {
     await sql.connect(databaseConnection);
     const result = await sql.query`
         select Id, EmailAddress, PasswordHash, IsActive, LastLogin
-        from dbo.Users
+        from Users
         where Id = ${userId}`;
 
     if (result.recordset.length === 0) {
@@ -23,7 +23,7 @@ async function getUserByEmailAddress(userEmail) {
     await sql.connect(databaseConnection);
     const result = await sql.query`
         select Id, EmailAddress, PasswordHash, IsActive, LastLogin
-        from dbo.Users
+        from Users
         where EmailAddress = ${userEmail}`;
 
     if (result.recordset.length === 0) {
@@ -146,7 +146,7 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
 async function createUser(userDto) {
     await sql.connect(databaseConnection);
     let result = await sql.query`
-    insert into dbo.Users(EmailAddress, PasswordHash, IsActive, LastLogin)
+    insert into Users(EmailAddress, PasswordHash, IsActive, LastLogin)
     values(
         ${userDto.EmailAddress},
         HASHBYTES('SHA2_512', '${userDto.Password}'),
@@ -155,7 +155,7 @@ async function createUser(userDto) {
 
     result = await sql.query`
     select top 1 Id, EmailAddress, PasswordHash, IsActive, LastLogin
-    from dbo.Users
+    from Users
     order by Id desc`;
 
     return result.recordset;
@@ -173,7 +173,7 @@ async function updateUser(id, userDto) {
     await sql.connect(databaseConnection);
 
     result = await sql.query`
-    update dbo.Users
+    update Users
     set
     EmailAddress = ${userDto.EmailAddress},
     PasswordHash = HASHBYTES('SHA2_512', '${userDto.Password}'),
@@ -189,8 +189,8 @@ async function deleteById(userId) {
     await sql.connect(databaseConnection);
     const result = await sql.query`
     delete u
-    from dbo.Users u
-    left outer join dbo.Persons p on p.UserId = u.Id
+    from Users u
+    left outer join Persons p on p.UserId = u.Id
     where u.Id = ${userId} and p.Id is null`
 
     if (result.rowsAffected[0] === 0) {

@@ -5,7 +5,7 @@ async function getSchoolById(schoolId) {
     await sql.connect(databaseConnection);
     const result = await sql.query`
         select Id, EduId, Name, Country, City, Address
-        from dbo.Schools
+        from Schools
         where Id = ${schoolId}`;
 
     if (result.recordset.length === 0) {
@@ -28,7 +28,8 @@ async function listAllSchools(sortingProperty = 'Id', isAscending = true, filter
         (
             select
                 *,
-                row_number() over (
+                row_number() over 
+                (
                     order by
                     case ${sortingProperty}
                         when 'Id'      then convert(nvarchar(max), Id)
@@ -75,7 +76,8 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
         (
             select
                 *,
-                row_number() over (
+                row_number() over 
+                (
                     order by
                     case ${sortingProperty}
                         when 'Id'      then convert(nvarchar(max), Id)
@@ -138,12 +140,12 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
 async function createSchool(schoolDto) {
     await sql.connect(databaseConnection);
     let result = await sql.query`
-        insert into dbo.Schools(EduId, Name, Country, City, Address)
+        insert into Schools(EduId, Name, Country, City, Address)
         values (${schoolDto.EduId}, ${schoolDto.Name}, ${schoolDto.Country}, ${schoolDto.City}, ${schoolDto.Address})`;
 
     result = await sql.query`
         select top 1 Id, EduId, Name, Country, City, Address
-        from dbo.Schools
+        from Schools
         order by Id desc`;
 
     return result.recordset;
@@ -161,7 +163,7 @@ async function updateSchool(id, schoolDto) {
     await sql.connect(databaseConnection);
 
     result = await sql.query`
-        update dbo.Schools
+        update Schools
         set
             EduId = ${schoolDto.eduId},
             Name = ${schoolDto.name},
@@ -178,7 +180,7 @@ async function deleteById(schoolId) {
     await sql.connect(databaseConnection);
     const result = await sql.query`
         delete
-        from dbo.Schools
+        from Schools
         where Id = ${schoolId}`;
 
     if (result.rowsAffected[0] === 0) {

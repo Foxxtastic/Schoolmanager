@@ -1,15 +1,15 @@
 const express = require('express');
-const dataaccess = require('../dataaccess/majors');
+const dataaccess = require('../dataaccess/students');
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
     try {
         const { pageNumber, pageSize, sorting, isDescending, filterProperty, filterValue } = req.query;
         const isAscending = isDescending && isDescending === 'true' ? false : true;
-        const majors = await (pageNumber && pageSize ?
+        const students = await (pageNumber && pageSize ?
             dataaccess.listPaged(pageNumber, pageSize, sorting, isAscending, filterProperty, filterValue) :
-            dataaccess.listAllMajors(sorting, isAscending, filterProperty, filterValue));
-        res.json(majors);
+            dataaccess.listAllStudents(sorting, isAscending, filterProperty, filterValue));
+        res.json(students);
     } catch (error) {
         next(error);
     }
@@ -17,34 +17,34 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
-    const major = await dataaccess.getMajorsById(id);
+    const student = await dataaccess.getStudentById(id);
 
-    if (major === undefined) {
+    if (student === undefined) {
         res.sendStatus(404);
         return;
     }
 
-    res.json(major);
+    res.json(student);
 });
 
 router.post('/', async (req, res, next) => {
     try {
-        const majorDto = req.body;
-        const major = await dataaccess.createMajor(majorDto);
-        res.json(major);
+        const studentDto = req.body;
+        const student = await dataaccess.createStudent(studentDto);
+        res.json(student);
     } catch (error) {
         next(error);
     }
 });
 
 router.put('/:id', async (req, res, next) => {
-    const majorDto = req.body;
+    const studentDto = req.body;
     const { id } = req.params;
     const idAsNumber = parseInt(id, 10);
 
     try {
-        const major = await dataaccess.updateMajor(idAsNumber, majorDto);
-        res.json(major);
+        const student = await dataaccess.updateStudent(idAsNumber, studentDto);
+        res.json(student);
     } catch (error) {
         next(error);
     }

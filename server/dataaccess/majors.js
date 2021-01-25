@@ -5,7 +5,7 @@ async function getMajorById(majorId) {
     await sql.connect(databaseConnection);
     const result = await sql.query`
         select Id, Name
-        from dbo.Majors
+        from Majors
         where Id = ${majorId}`;
 
     if (result.recordset.length === 0) {
@@ -28,11 +28,12 @@ async function listAllMajors(sortingProperty = 'Id', isAscending = true, filterP
         (
             select
                 *,
-                row_number() over (
+                row_number() over 
+                (
                     order by
                     case ${sortingProperty}
-                        when 'Id'              then convert(nvarchar(max), Id)
-                        when 'Name'            then convert(nvarchar(max), Name)
+                        when 'Id'     then convert(nvarchar(max), Id)
+                        when 'Name'   then convert(nvarchar(max), Name)
                     end
                 ) as RowNum
             from
@@ -43,8 +44,8 @@ async function listAllMajors(sortingProperty = 'Id', isAscending = true, filterP
             majorsWithRowNum
         where 
             case ${filterProperty}
-                when 'Id'           then convert(nvarchar(max), Id)
-                when 'Name'         then convert(nvarchar(max), Name)
+                when 'Id'      then convert(nvarchar(max), Id)
+                when 'Name'    then convert(nvarchar(max), Name)
             end
             like '%'+${filter}+'%'
         order by
@@ -67,7 +68,8 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
         (
             select
                 *,
-                row_number() over (
+                row_number() over
+                (
                     order by
                     case ${sortingProperty}
                         when 'Id'           then convert(nvarchar(max), Id)
@@ -118,13 +120,13 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
 async function createMajor(majorDto) {
     await sql.connect(databaseConnection);
     let result = await sql.query`
-        insert into dbo.Majors(Name)
+        insert into Majors(Name)
         values(
             ${majorDto.Name}`
 
     result = await sql.query`
         select top 1 Id, Name
-        from dbo.Majors
+        from Majors
         order by Id desc`;
 
     return result.recordset;
@@ -142,7 +144,7 @@ async function updateMajor(id, majorDto) {
     await sql.connect(databaseConnection);
 
     result = await sql.query`
-    update dbo.Majors
+    update Majors
     set
     Name = ${majorDto.Name}
     where
@@ -155,8 +157,8 @@ async function deleteById(majorId) {
     await sql.connect(databaseConnection);
     const result = await sql.query`
     delete m
-    from dbo.Majors m
-    left outer join dbo.MajorTeacher t on t.MajorId = m.Id
+    from Majors m
+    left outer join MajorTeacher t on t.MajorId = m.Id
     where m.Id = ${majorId} and t.MajorId is null`;
 
     if (result.rowsAffected[0] === 0) {

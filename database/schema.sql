@@ -16,7 +16,7 @@ IF (NOT EXISTS (SELECT *
                 WHERE TABLE_SCHEMA = 'dbo' 
                 AND  TABLE_NAME = 'Schools'))
 BEGIN
-	Create TABLE dbo.Schools (
+	Create TABLE Schools (
 		Id int NOT NULL IDENTITY(1,1)
 			CONSTRAINT PK_Schools PRIMARY KEY,
 		EduId nvarchar(20) NOT NULL,
@@ -32,7 +32,7 @@ IF (NOT EXISTS (SELECT *
                 WHERE TABLE_SCHEMA = 'dbo' 
                 AND  TABLE_NAME = 'Users'))
 BEGIN
-	CREATE TABLE dbo.Users (
+	CREATE TABLE Users (
 		Id int NOT NULL IDENTITY(1,1)
 			CONSTRAINT PK_Users PRIMARY KEY,
 		EmailAddress nvarchar (100) NOT NULL
@@ -48,7 +48,7 @@ IF (NOT EXISTS (SELECT *
                 WHERE TABLE_SCHEMA = 'dbo' 
                 AND  TABLE_NAME = 'Persons'))
 BEGIN
-	Create TABLE dbo.Persons (
+	Create TABLE Persons (
 		Id int NOT NULL IDENTITY(1,1)
 			CONSTRAINT PK_Persons PRIMARY KEY,
 		FirstName nvarchar(50) NOT NULL,
@@ -69,7 +69,7 @@ IF (NOT EXISTS (SELECT *
                 WHERE TABLE_SCHEMA = 'dbo' 
                 AND  TABLE_NAME = 'Majors'))
 BEGIN
-	CREATE TABLE dbo.Majors(
+	CREATE TABLE Majors(
 		Id int NOT NULL IDENTITY(1,1)
 			CONSTRAINT PK_Majors PRIMARY KEY,
 		Name nvarchar (50) NOT NULL
@@ -81,7 +81,7 @@ IF (NOT EXISTS (SELECT *
                 WHERE TABLE_SCHEMA = 'dbo' 
                 AND  TABLE_NAME = 'Teachers'))
 BEGIN
-	CREATE TABLE dbo.Teachers (
+	CREATE TABLE Teachers (
 		Id int NOT NULL IDENTITY(1,1)
 			CONSTRAINT PK_Teachers PRIMARY KEY,
 		PersonId int NOT NULL
@@ -95,7 +95,7 @@ IF (NOT EXISTS (SELECT *
                 WHERE TABLE_SCHEMA = 'dbo' 
                 AND  TABLE_NAME = 'MajorTeacher'))
 BEGIN
-	CREATE TABLE dbo.MajorTeacher (
+	CREATE TABLE MajorTeacher (
 		MajorId int NOT NULL
 			CONSTRAINT FK_MajorTeacher_MajorId
 			REFERENCES Majors(Id),
@@ -112,7 +112,7 @@ IF (NOT EXISTS (SELECT *
                 WHERE TABLE_SCHEMA = 'dbo' 
                 AND  TABLE_NAME = 'Students'))
 BEGIN
-	CREATE TABLE dbo.Students (
+	CREATE TABLE Students (
 		Id int NOT NULL IDENTITY(1,1)
 			CONSTRAINT PK_Students PRIMARY KEY,
 		StartDate date NOT NULL,
@@ -128,7 +128,7 @@ IF (NOT EXISTS (SELECT *
                 WHERE TABLE_SCHEMA = 'dbo' 
                 AND  TABLE_NAME = 'SchoolTeacher'))
 BEGIN
-	CREATE TABLE dbo.SchoolTeacher (
+	CREATE TABLE SchoolTeacher (
 		SchoolId int NOT NULL
 			CONSTRAINT PK_SchoolTeacher_SchoolId
 			REFERENCES Schools(Id),
@@ -145,7 +145,7 @@ IF (NOT EXISTS (SELECT *
                 WHERE TABLE_SCHEMA = 'dbo' 
                 AND  TABLE_NAME = 'SchoolStudent'))
 BEGIN
-	CREATE TABLE dbo.SchoolStudent (
+	CREATE TABLE SchoolStudent (
 		SchoolId int NOT NULL
 			CONSTRAINT PK_SchoolStudent_SchoolId
 			REFERENCES Schools(Id),

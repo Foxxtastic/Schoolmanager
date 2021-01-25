@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
 import { pageSize } from '../../config';
 import { Button } from "../shared/Button";
 import { ConfirmPopup } from "../shared/ConfirmPopup";
@@ -12,27 +11,19 @@ import { useSortingDirection } from "../../hooks/useSortingDirection";
 import { useFilterProperty } from "../../hooks/useFilterProperty";
 import { useFilterValue } from "../../hooks/useFilterValue";
 import { updateSearch } from '../../helpers/updateSearch';
-import moment from "moment";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import DatePicker from "../shared/DatePicker";
 
 const headers = [
-    { text: "First Name", propertyName: 'FirstName', isSortable: true },
-    { text: "Last Name", propertyName: 'LastName', isSortable: true },
-    { text: "Birth Date", propertyName: 'BirthDate', isSortable: true },
-    { text: "Nationality", propertyName: 'Nationality', isSortable: true },
-    { text: "Second Nationality", propertyName: 'SecondNationality', isSortable: true },
-    { text: "City", propertyName: 'City', isSortable: true },
-    { text: "Address", propertyName: 'Address', isSortable: true },
-    { text: "", isSortable: false }
+    { text: "Name", propertyName: 'Name', isSortable: true },
+    { text: "", isSortable: false },
 ];
 
 function calculateMaxPage(listResponse) {
     return Math.ceil(listResponse.allItemsCount / pageSize);
 }
 
-export function PersonList(props) {
+export function MajorList(props) {
 
     const { register, handleSubmit, errors } = useForm();
     const [editor, setEditor] = useState({
@@ -43,27 +34,27 @@ export function PersonList(props) {
     let activePageNumber = usePageNumber();
     activePageNumber = activePageNumber === null ? 1 : activePageNumber;
 
-    const [persons, setPersons] = useState(undefined);
+    const [majors, setMajors] = useState(undefined);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [activeIdForDelete, setActiveIdForDelete] = useState(null);
     const [maxPageNumber, setMaxPageNumber] = useState(undefined);
     const [hoverOnIcon, setHoveronIcon] = useState(null);
 
     let sortingProperty = useSorting();
-    sortingProperty = sortingProperty === null ? 'FirstName' : sortingProperty;
+    sortingProperty = sortingProperty === null ? 'Name' : sortingProperty;
     const { isDescending } = useSortingDirection();
 
     let filterProperty = useFilterProperty();
-    filterProperty = filterProperty === null ? 'FirstName' : filterProperty;
+    filterProperty = filterProperty === null ? 'Name' : filterProperty;
 
     let filterValue = useFilterValue();
     filterValue = filterValue === null ? '' : filterValue;
 
-    const { error, afterUpdate, afterDelete, afterPaging, linkToCreate, onUpdate, onDelete, isLoading } = props;
+    const { error, afterUpdate, afterCreate, afterDelete, afterPaging, onUpdate, onDelete, isLoading } = props;
 
-    const setPersonsFromServer = (listResponse) => {
+    const setmajorsFromServer = (listResponse) => {
         setMaxPageNumber(calculateMaxPage(listResponse));
-        setPersons(listResponse.items);
+        setMajors(listResponse.items);
     }
 
     useEffect(() => {
@@ -73,7 +64,7 @@ export function PersonList(props) {
                 updateSearch({ page: maxPage });
                 return;
             }
-            setPersons(listResponse.items);
+            setMajors(listResponse.items);
             setMaxPageNumber(maxPage);
         });
     }, [activePageNumber, afterPaging, sortingProperty, isDescending, filterProperty, filterValue]);
@@ -95,7 +86,7 @@ export function PersonList(props) {
     const fireAfterUpdateEvent = () => {
         if (afterUpdate !== undefined) {
             afterUpdate(activePageNumber, sortingProperty, isDescending, filterProperty, filterValue)
-                .then(setPersonsFromServer);
+                .then(setmajorsFromServer);
         }
     }
 
@@ -123,7 +114,7 @@ export function PersonList(props) {
     const handleDeleteModalConfirm = () => {
         onDelete(activeIdForDelete)
             .then(() => afterDelete(activePageNumber, sortingProperty, isDescending, filterProperty, filterValue))
-            .then(setPersonsFromServer);
+            .then(setmajorsFromServer);
         setIsModalVisible(false);
     }
 
@@ -132,7 +123,7 @@ export function PersonList(props) {
         setIsModalVisible(false);
     }
 
-    if (persons === undefined) {
+    if (majors === undefined) {
         return 'Loading...';
     }
 
@@ -147,14 +138,15 @@ export function PersonList(props) {
                 isDescending={isDescending}
                 filterProperty={filterProperty}
                 filterValue={filterValue}
-                items={persons}
+                items={majors}
                 activePageNumber={activePageNumber}
                 maxPageNumber={maxPageNumber}
-                getRowForItem={(person, idx) => {
-                    const isEditing = editor.isEditMode && editor.rowKey === person.Id;
+                getRowForItem={(major, idx) => {
+                    const isEditing = editor.isEditMode && editor.rowKey === major.Id;
+
                     return (
                         <tr key={idx}>
-                            {error && error.rowidx === person.Id &&
+                            {error && error.rowidx === major.Id &&
                                 <td className="error">
                                     <FontAwesomeIcon
                                         className="tx-lred"
@@ -164,81 +156,31 @@ export function PersonList(props) {
                                     />
                                     {hoverOnIcon === error.rowidx && <div className="tooltip">{error.message}</div>}
                                 </td>}
-                            {error && error.rowidx !== person.Id &&
+                            {error && error.rowidx !== major.Id &&
                                 <td className="error"></td>}
                             <td>
                                 {isEditing ?
                                     <>
-                                        <input name="FirstName" defaultValue={person.FirstName} ref={register({ required: true })} />
-                                        <ValidationErrors name="FirstName" errors={errors} />
+                                        <input name="Name" defaultValue={major.Name} ref={register({ required: true })} />
+                                        <ValidationErrors name="Name" errors={errors} />
                                     </> :
-                                    <span>{person.FirstName}</span>}
+                                    <span>{major.Name}</span>}
                             </td>
                             <td>
                                 {isEditing ?
                                     <>
-                                        <input name="LastName" defaultValue={person.LastName} ref={register({ required: true })} />
-                                        <ValidationErrors name="LastName" errors={errors} />
-                                    </> :
-                                    <span>{person.LastName}</span>}
-                            </td>
-                            <td>
-                                {isEditing ?
-                                    <>
-                                        <DatePicker name="BirthDate" defaultValue={moment(person.BirthDate).format("YYYY-MM-DD")} ref={register({ required: true })} />
-                                        <ValidationErrors name="BirthDate" errors={errors} />
-                                    </> :
-                                    <span>{moment(person.BirthDate).format("YYYY-MM-DD")}</span>}
-                            </td>
-                            <td>
-                                {isEditing ?
-                                    <>
-                                        <input name="Nationality" defaultValue={person.Nationality} ref={register({ required: true })} />
-                                        <ValidationErrors name="Nationality" errors={errors} />
-                                    </> :
-                                    <span>{person.Nationality}</span>}
-                            </td>
-                            <td>
-                                {isEditing ?
-                                    <>
-                                        <input name="SecondNationality" defaultValue={person.SecondNationality} ref={register({ required: false })} />
-                                    </> :
-                                    <span>{person.SecondNationality}</span>}
-                            </td>
-                            <td>
-                                {isEditing ?
-                                    <>
-                                        <input name="City" defaultValue={person.City} ref={register({ required: false })} />
-                                    </> :
-                                    <span>{person.City}</span>}
-                            </td>
-                            <td>
-                                {isEditing ?
-                                    <>
-                                        <input name="Address" defaultValue={person.Address} ref={register({ required: false })} />
-                                    </> :
-                                    <span>{person.Address}</span>}
-                            </td>
-                            <td>
-                                {isEditing ?
-                                    <>
-                                        <Button disabled={isLoading} text="Ok" handleClick={handleSubmit((formData) => onSubmit(person.Id, formData))} />
+                                        <Button disabled={isLoading} text="Ok" handleClick={handleSubmit((formData) => onSubmit(major.Id, formData))} />
                                         <Button disabled={isLoading} text="Cancel" handleClick={() => closeEditor()} />
                                     </> :
                                     <>
-                                        <Button disabled={isLoading} text="Edit" handleClick={() => openEditor(person.Id)} />
-                                        <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(person.Id)} />
+                                        <Button disabled={isLoading} text="Edit" handleClick={() => openEditor(major.Id)} />
+                                        <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(major.Id)} />
                                     </>}
                             </td>
                         </tr>
                     );
                 }}
             />
-            <div className="footer">
-                <Link to={linkToCreate}>
-                    <Button customClass="button-withoutmargin" text="Create" />
-                </Link>
-            </div>
         </ div>
     );
 }
