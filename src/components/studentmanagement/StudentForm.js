@@ -83,23 +83,26 @@ export function StudentForm(props) {
                         errors={errors}
                     />
                     <Input
+                        labelText="Start Date"
+                        name="StartDate"
+                        type="date"
+                        isValidatable={true}
+                        ref={register({ required: true })}
+                        errors={errors}
+                    />
+                    <Input
                         labelClass="inline-label"
+                        isInline={true}
+                        labelText="Active Status"
+                        name="ActiveStatus"
+                        type="checkbox"
+                        ref={register({ required: false })}
+                    />
+                    <Input
+                        labelClass="inline-label"
+                        isInline={true}
                         labelText="Is Active"
                         name="IsActive"
-                        type="checkbox"
-                        ref={register({ required: false })}
-                    />
-                    <Input
-                        isInline={true}
-                        labelClass="inline-label"
-                        name="Student"
-                        type="checkbox"
-                        ref={register({ required: false })}
-                    />
-                    <Input
-                        isInline={true}
-                        labelClass="inline-label"
-                        name="Teacher"
                         type="checkbox"
                         ref={register({ required: false })}
                         lineBreak={true}

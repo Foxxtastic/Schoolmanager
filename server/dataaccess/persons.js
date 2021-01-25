@@ -148,13 +148,14 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
 async function createPerson(personDto) {
     await sql.connect(databaseConnection);
     let result = await sql.query`
-        insert into dbo.Users(EmailAddress, PasswordHash, IsActive, LastLogin)
-        values(
-            ${personDto.EmailAddress},
-            HASHBYTES('SHA2_512', '${personDto.Password}'),
-            ${personDto.IsActive},
-            ${personDto.LastLogin})
-            
+        insert into Users(EmailAddress, PasswordHash, IsActive, LastLogin)
+        values
+        (
+            ${studentDto.EmailAddress},
+            HASHBYTES('SHA2_512', '${studentDto.Password}'),
+            ${studentDto.IsActive},
+            null
+        );
         insert into dbo.Persons(FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, UserId)
         SELECT
             ${personDto.FirstName},

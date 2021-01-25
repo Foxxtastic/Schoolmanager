@@ -208,12 +208,13 @@ async function createTeacher(teacherDto) {
     await sql.connect(databaseConnection);
     let result = await sql.query`
     insert into Users(EmailAddress, PasswordHash, IsActive, LastLogin)
-    values(
-        ${teacherDto.EmailAddress},
-        HASHBYTES('SHA2_512', '${teacherDto.Password}'),
-        ${teacherDto.IsActive},
-        ${teacherDto.LastLogin});
-
+    values
+    (
+        ${studentDto.EmailAddress},
+        HASHBYTES('SHA2_512', '${studentDto.Password}'),
+        ${studentDto.IsActive},
+        null
+    );
     insert into Persons(FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, UserId)
     select
     ${teacherDto.FirstName},

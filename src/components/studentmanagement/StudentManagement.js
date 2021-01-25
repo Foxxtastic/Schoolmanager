@@ -109,7 +109,7 @@ export function StudentManagement(props) {
                 <StudentCreatePage
                     error={error}
                     isLoading={isLoading}
-                    onPersonCreate={handleStudentCreate}
+                    onStudentCreate={handleStudentCreate}
                     afterCreate={() => {
                         history.push("/students");
                     }}

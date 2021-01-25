@@ -165,12 +165,14 @@ async function createStudent(studentDto) {
     await sql.connect(databaseConnection);
     let result = await sql.query`
         insert into Users(EmailAddress, PasswordHash, IsActive, LastLogin)
-        values(
+        values
+        (
             ${studentDto.EmailAddress},
             HASHBYTES('SHA2_512', '${studentDto.Password}'),
             ${studentDto.IsActive},
-            ${studentDto.LastLogin});
-            
+            null
+        );
+
         insert into Persons(FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, UserId)
         select
             ${studentDto.FirstName},
@@ -182,15 +184,20 @@ async function createStudent(studentDto) {
             ${studentDto.Address},
             u.Id 
         from Users u 
-        where EmailAddress = ${studentDto.EmailAddress}; 
-            
-            insert into Students(StartDate, ActiveStatus, PersonId)
+        where EmailAddress = ${studentDto.EmailAddress};
+        
+        declare @id int
+        set @id = 
+        (
+            select top 1 p.Id
+                from Persons p
+                order by p.Id desc
+        );
+        insert into Students(StartDate, ActiveStatus, PersonId)
             select
-                ${studentDto.StartDate}
-                ${studentDto.ActiveStatus}
-                top 1 p.Id
-            from Persons p
-                order by p.Id desc;`;
+                ${studentDto.StartDate},
+                ${studentDto.ActiveStatus},
+                @id`
 
     result = await sql.query`
         select top 1 s.Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, s.StartDate, s.ActiveStatus
