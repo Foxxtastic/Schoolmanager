@@ -201,9 +201,9 @@ async function createStudent(studentDto) {
 
     result = await sql.query`
         select top 1 s.Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, s.StartDate, s.ActiveStatus
-        from Persons p
-        inner join Students s on p.Id = s.PersonId
-        order by s.Id desc;`;
+            from Persons p
+            inner join Students s on p.Id = s.PersonId
+            order by s.Id desc;`;
 
     return result.recordset;
 }
@@ -212,7 +212,7 @@ async function updateStudent(id, studentDto) {
     const student = await getStudentById(id);
 
     if (student === undefined) {
-        const error = new Error(`No Person with Id = ${id} !`);
+        const error = new Error(`No Student with Id = ${id} !`);
         error.status = 404;
         throw error;
     }
@@ -220,27 +220,63 @@ async function updateStudent(id, studentDto) {
     await sql.connect(databaseConnection);
 
     result = await sql.query`
-    update Persons
-    set
-        FirstName = ${studentDto.FirstName},
-        LastName = ${studentDto.LastName},
-        BirthDate = ${studentDto.BirthDate},
-        Nationality = ${studentDto.Nationality},
-        SecondNationality = ${studentDto.SecondNationality},
-        City = ${studentDto.City},
-        Address = ${studentDto.Address}
-    where
-        Id = ${id} `;
+        declare @id int
+            set @id = 
+            (
+                select p.Id
+                    from Persons p
+                    inner join Students s on s.PersonId = p.Id
+                where s.Id = ${id}
+            );
+
+        update Persons
+        set
+            FirstName = ${studentDto.FirstName},
+            LastName = ${studentDto.LastName},
+            BirthDate = ${studentDto.BirthDate},
+            Nationality = ${studentDto.Nationality},
+            SecondNationality = ${studentDto.SecondNationality},
+            City = ${studentDto.City},
+            Address = ${studentDto.Address}
+        where Id = @id;
+            
+        update Students
+        set
+            StartDate= ${studentDto.StartDate},
+            ActiveStatus = ${studentDto.ActiveStatus}
+        where Id=${id};`;
 
     return await getStudentById(id);
 }
 
 async function deleteById(studentId) {
     await sql.connect(databaseConnection);
+    let personId = await sql.query`
+        select s.PersonId
+            from Students s
+        where s.Id = ${studentId};`
+
+    personId = personId.recordset[0].PersonId;
+
+    let userId = await sql.query`
+        select p.UserId
+            from Persons p
+        where p.Id = ${personId};`
+
+    userId = userId.recordset[0].UserId;
+
     const result = await sql.query`
-    delete
-        from Students
-    where Id = ${studentId} `;
+        delete
+            from Students
+        where Id = ${studentId};
+        
+        delete
+            from Persons
+        where Id = ${personId};
+        
+        delete 
+            from Users
+        where Id = ${userId};`
 
     if (result.rowsAffected[0] === 0) {
         const error = new Error(`No Student with Id = ${studentId} !`);

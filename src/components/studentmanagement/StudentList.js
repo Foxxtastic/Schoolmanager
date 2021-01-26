@@ -202,23 +202,17 @@ export function StudentList(props) {
                             </td>
                             <td>
                                 {isEditing ?
-                                    <>
-                                        <input name="SecondNationality" defaultValue={student.SecondNationality} ref={register({ required: false })} />
-                                    </> :
+                                    <input name="SecondNationality" defaultValue={student.SecondNationality} ref={register({ required: false })} /> :
                                     <span>{student.SecondNationality}</span>}
                             </td>
                             <td>
                                 {isEditing ?
-                                    <>
-                                        <input name="City" defaultValue={student.City} ref={register({ required: false })} />
-                                    </> :
+                                    <input name="City" defaultValue={student.City} ref={register({ required: false })} /> :
                                     <span>{student.City}</span>}
                             </td>
                             <td>
                                 {isEditing ?
-                                    <>
-                                        <input name="Address" defaultValue={student.Address} ref={register({ required: false })} />
-                                    </> :
+                                    <input name="Address" defaultValue={student.Address} ref={register({ required: false })} /> :
                                     <span>{student.Address}</span>}
                             </td>
                             <td>
@@ -230,7 +224,9 @@ export function StudentList(props) {
                                     <span>{moment(student.StartDate).format("YYYY-MM-DD")}</span>}
                             </td>
                             <td>
-                                <span>{(student.ActiveStatus === true) ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faTimesCircle} />}</span>
+                                {isEditing ?
+                                    <input type="checkbox" name="ActiveStatus" defaultChecked={student.ActiveStatus} ref={register({ required: false })} /> :
+                                    <span>{(student.ActiveStatus === true) ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faTimesCircle} />}</span>}
                             </td>
                             <td>
                                 {isEditing ?

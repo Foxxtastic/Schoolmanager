@@ -207,40 +207,38 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
 async function createTeacher(teacherDto) {
     await sql.connect(databaseConnection);
     let result = await sql.query`
-    insert into Users(EmailAddress, PasswordHash, IsActive, LastLogin)
-    values
-    (
-        ${studentDto.EmailAddress},
-        HASHBYTES('SHA2_512', '${studentDto.Password}'),
-        ${studentDto.IsActive},
-        null
-    );
-    insert into Persons(FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, UserId)
-    select
-    ${teacherDto.FirstName},
-    ${teacherDto.LastName},
-    ${teacherDto.BirthDate},
-    ${teacherDto.Nationality},
-    ${teacherDto.SecondNationality},
-    ${teacherDto.City},
-    ${teacherDto.Address},
-    Id
-    from Users
-    where EmailAddress = ${teacherDto.EmailAddress};
+        insert into Users(EmailAddress, PasswordHash, IsActive, LastLogin)
+        values
+        (
+            ${studentDto.EmailAddress},
+            HASHBYTES('SHA2_512', '${studentDto.Password}'),
+            ${studentDto.IsActive},
+            null
+        );
+        insert into Persons(FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, UserId)
+        select
+            ${teacherDto.FirstName},
+            ${teacherDto.LastName},
+            ${teacherDto.BirthDate},
+            ${teacherDto.Nationality},
+            ${teacherDto.SecondNationality},
+            ${teacherDto.City},
+            ${teacherDto.Address},
+        Id
+        from Users
+        where EmailAddress = ${teacherDto.EmailAddress};
 
-    insert into Teachers(PersonId)
-    select p.Id
-    from
-    Persons p
-    inner join Users u on u.id = p.UserId
-    where u.EmailAddress = ${teacherDto.EmailAddress}; `;
+        insert into Teachers(PersonId)
+        select p.Id
+            from Persons p
+            inner join Users u on u.id = p.UserId
+            where u.EmailAddress = ${teacherDto.EmailAddress}; `;
 
     result = await sql.query`
-    select top 1 Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address
-    from
-    Teachers t
-    inner join Persons p on p.id = t.PersonId
-    order by Id desc`;
+        select top 1 Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address
+            from Teachers t
+            inner join Persons p on p.id = t.PersonId
+            order by Id desc`;
 
     return result.recordset;
 }

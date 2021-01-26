@@ -204,10 +204,21 @@ async function updatePerson(id, personDto) {
 
 async function deleteById(personId) {
     await sql.connect(databaseConnection);
+    let userId = await sql.query`
+        select p.UserId
+            from Persons p
+        where p.Id = ${personId};`
+
+    userId = userId.recordset[0].UserId;
+
     const result = await sql.query`
-    delete
-        from dbo.Persons
-    where Id = ${personId} `;
+        delete
+            from Persons
+        where Id = ${personId}; 
+        
+        delete
+            from Users
+        where Id = ${userId}`;
 
     if (result.rowsAffected[0] === 0) {
         const error = new Error(`No Person with Id = ${personId} !`);
