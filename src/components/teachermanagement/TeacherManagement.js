@@ -9,6 +9,14 @@ export function TeacherManagement(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(undefined);
 
+    const getMajors = useCallback(() => {
+        setIsLoading(true);
+        return fetch('/api/major')
+            .then(res => res.json())
+            .finally(() =>
+                setIsLoading(false));
+    }, []);
+
     const getData = useCallback((pageNumber, sortingProperty, isDescending, filterProperty, filterValue) => {
         setIsLoading(true);
         filterValue = encodeURIComponent(filterValue);
@@ -105,13 +113,14 @@ export function TeacherManagement(props) {
                     onDelete={handleTeacherDelete}
                     onUpdate={handleTeacherUpdate} />
             </Route>
-            <Route path="/teacher/create">
+            <Route path="/teachers/create">
                 <TeacherCreatePage
+                    getMajors={getMajors}
                     error={error}
                     isLoading={isLoading}
                     onTeacherCreate={handleTeacherCreate}
                     afterCreate={() => {
-                        history.push("/teacher");
+                        history.push("/teachers");
                     }}
                 />
             </Route>

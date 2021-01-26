@@ -251,29 +251,25 @@ async function updateStudent(id, studentDto) {
 
 async function deleteById(studentId) {
     await sql.connect(databaseConnection);
-    let personId = await sql.query`
-        select s.PersonId
+    const personAndUserId = await sql.query`
+        select s.PersonId, p.UserId
             from Students s
+                inner join Persons p
+                on s.PersonId = p.Id
         where s.Id = ${studentId};`
 
-    personId = personId.recordset[0].PersonId;
-
-    let userId = await sql.query`
-        select p.UserId
-            from Persons p
-        where p.Id = ${personId};`
-
-    userId = userId.recordset[0].UserId;
+    const personId = personAndUserId.recordset[0].PersonId;
+    const userId = personAndUserId.recordset[0].UserId;
 
     const result = await sql.query`
         delete
             from Students
         where Id = ${studentId};
-        
+
         delete
             from Persons
         where Id = ${personId};
-        
+
         delete 
             from Users
         where Id = ${userId};`

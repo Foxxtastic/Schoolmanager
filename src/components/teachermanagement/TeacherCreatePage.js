@@ -4,7 +4,7 @@ import { MainHeader } from "../shared/MainHeader";
 
 export function TeacherCreatePage(props) {
 
-    const { error, isLoading, onTeacherCreate, afterCreate, onError } = props;
+    const { getMajors, error, isLoading, onTeacherCreate, afterCreate, onError } = props;
 
     const handleFormSubmit = (newItem) => {
         onTeacherCreate(newItem)
@@ -20,7 +20,7 @@ export function TeacherCreatePage(props) {
         <>
             <MainHeader text="Create new Teacher" />
             <MainContent>
-                <TeacherForm error={error} isLoading={isLoading} onSubmit={handleFormSubmit} />
+                <TeacherForm getMajors={getMajors} error={error} isLoading={isLoading} onSubmit={handleFormSubmit} />
             </MainContent>
         </>
     );

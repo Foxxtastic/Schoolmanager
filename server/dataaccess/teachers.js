@@ -210,9 +210,9 @@ async function createTeacher(teacherDto) {
         insert into Users(EmailAddress, PasswordHash, IsActive, LastLogin)
         values
         (
-            ${studentDto.EmailAddress},
+            ${teacherDto.EmailAddress},
             HASHBYTES('SHA2_512', '${studentDto.Password}'),
-            ${studentDto.IsActive},
+            ${teacherDto.IsActive},
             null
         );
         insert into Persons(FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, UserId)
@@ -224,21 +224,26 @@ async function createTeacher(teacherDto) {
             ${teacherDto.SecondNationality},
             ${teacherDto.City},
             ${teacherDto.Address},
-        Id
-        from Users
-        where EmailAddress = ${teacherDto.EmailAddress};
+            Id
+                from Users
+                where EmailAddress = ${teacherDto.EmailAddress};
 
+        declare @id int
+            set @id = 
+            (
+                select top 1 p.Id
+                    from Persons p
+                order by p.Id desc
+            );
+        
         insert into Teachers(PersonId)
-        select p.Id
-            from Persons p
-            inner join Users u on u.id = p.UserId
-            where u.EmailAddress = ${teacherDto.EmailAddress}; `;
+            @id;`;
 
     result = await sql.query`
         select top 1 Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address
             from Teachers t
             inner join Persons p on p.id = t.PersonId
-            order by Id desc`;
+        order by Id desc`;
 
     return result.recordset;
 }

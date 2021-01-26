@@ -1,15 +1,22 @@
+import { useEffect, useState } from 'react';
 import { Loader } from '../shared/Loader';
-import { useForm } from "react-hook-form";
+import { get, useForm } from "react-hook-form";
 import Input from '../shared/Input';
+import { MultiSelector } from '../shared/MultiSelector';
 
 export function TeacherForm(props) {
-    const { error, isLoading, onSubmit, onError, defaultData } = props;
+    const { getMajors, error, isLoading, onSubmit, onError, defaultData } = props;
 
+    const [majors, setMajors] = useState(undefined);
     const { register, handleSubmit, errors } = useForm({ defaultValues: defaultData });
 
     const onSubmitting = (data) => {
         onSubmit(data);
     }
+
+    useEffect(() => {
+        getMajors().then(listResponse => setMajors(listResponse.items))
+    }, [getMajors]);
 
     return (
         <>
@@ -89,21 +96,7 @@ export function TeacherForm(props) {
                         type="checkbox"
                         ref={register({ required: false })}
                     />
-                    <Input
-                        isInline={true}
-                        labelClass="inline-label"
-                        name="Student"
-                        type="checkbox"
-                        ref={register({ required: false })}
-                    />
-                    <Input
-                        isInline={true}
-                        labelClass="inline-label"
-                        name="Teacher"
-                        type="checkbox"
-                        ref={register({ required: false })}
-                        lineBreak={true}
-                    />
+                    <MultiSelector name="Majors" optionList={majors && majors.map(x => x.Name)} />
                     {error && <div className="item-padding validationerror tx-lred">{`A technical error has occurred. Details: ${error.message}`}</div>}
                     <input className="button-withoutmargin item-margin" disabled={isLoading} type="submit" />
                 </div>
