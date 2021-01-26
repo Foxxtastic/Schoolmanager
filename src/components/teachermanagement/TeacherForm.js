@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Loader } from '../shared/Loader';
-import { get, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Input from '../shared/Input';
 import { MultiSelector } from '../shared/MultiSelector';
 
@@ -8,6 +8,7 @@ export function TeacherForm(props) {
     const { getMajors, error, isLoading, onSubmit, onError, defaultData } = props;
 
     const [majors, setMajors] = useState(undefined);
+    const [selectedMajors, setSelectedMajors] = useState([]);
     const { register, handleSubmit, errors } = useForm({ defaultValues: defaultData });
 
     const onSubmitting = (data) => {
@@ -17,6 +18,16 @@ export function TeacherForm(props) {
     useEffect(() => {
         getMajors().then(listResponse => setMajors(listResponse.items))
     }, [getMajors]);
+
+    const handleSelectMajor = (item) => {
+        if (!selectedMajors.includes(item)) {
+            setSelectedMajors([...selectedMajors, item])
+        }
+    }
+
+    const handleRemoveMajor = (itemToRemove) => {
+        setSelectedMajors(selectedMajors.filter(_ => _ !== itemToRemove));
+    }
 
     return (
         <>
@@ -96,7 +107,14 @@ export function TeacherForm(props) {
                         type="checkbox"
                         ref={register({ required: false })}
                     />
-                    <MultiSelector name="Majors" optionList={majors && majors.map(x => x.Name)} />
+                    <MultiSelector
+                        defaultValue={"Select a Major"}
+                        name="Majors"
+                        optionList={majors && majors.map(x => x.Name)}
+                        selectedItems={selectedMajors}
+                        handleSelectItem={handleSelectMajor}
+                        handleRemoveItem={handleRemoveMajor}
+                    />
                     {error && <div className="item-padding validationerror tx-lred">{`A technical error has occurred. Details: ${error.message}`}</div>}
                     <input className="button-withoutmargin item-margin" disabled={isLoading} type="submit" />
                 </div>
