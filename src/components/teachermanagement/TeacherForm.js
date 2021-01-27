@@ -31,6 +31,7 @@ export function TeacherForm(props) {
     }, [defaultData])
 
     const handleSelectMajor = (name) => {
+        console.log(name)
         if (!selectedMajors.includes(name)) {
             setSelectedMajors([...selectedMajors, name])
         }
@@ -39,9 +40,6 @@ export function TeacherForm(props) {
     const handleRemoveMajor = (itemToRemove) => {
         setSelectedMajors(selectedMajors.filter(_ => _ !== itemToRemove));
     }
-
-    console.log(defaultData)
-    console.log(selectedMajors)
 
     return (
         <>
@@ -132,7 +130,7 @@ export function TeacherForm(props) {
                         defaultData={defaultData && defaultData.item.majors}
                         defaultValue={"Select a Major"}
                         name="Majors"
-                        optionList={majors && majors.map(_ => _.Name)}
+                        optionList={majors && majors.map(_ => _.Name).filter(x => !selectedMajors.includes(x))}
                         selectedItems={selectedMajors}
                         handleSelectItem={handleSelectMajor}
                         handleRemoveItem={handleRemoveMajor}

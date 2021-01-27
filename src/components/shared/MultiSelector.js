@@ -7,15 +7,22 @@ export function MultiSelector(props) {
 
     const selectInput = createRef();
 
+    const handleSelectionChange = (value) => {
+        if (optionList.includes(value)) {
+            handleSelectItem(value);
+            value = "";
+        }
+    }
+
     return (
         <div className={`${isInline ? "item-padding inline-block" : "item-padding"}`}>
             <label className={labelClass ? labelClass : "block-label"} />
             {labelText === undefined ? name : labelText}:
             {selectedItems && selectedItems.map((x, idx) => <Item value={x} key={"b" + idx} handleRemove={handleRemoveItem} />)}
-            <select defaultValue={defaultValue} ref={selectInput} name={name} onChange={() => handleSelectItem(selectInput.current.value)}>
-                <option value={defaultValue} disabled="disabled">{defaultValue}</option>
-                {optionList && optionList.map((_, idx) => <option key={idx} defaultValue={_}>{_}</option>)}
-            </select>
+            <input placeholder={defaultValue} list="majorlist" defaultValue={""} ref={selectInput} onBlur={() => handleSelectionChange(selectInput.current.value)} />
+            <datalist id="majorlist" name={name}>
+                {optionList && optionList.map((_, idx) => <option key={idx} value={_}>{_}</option>)}
+            </datalist>
         </div >
     )
 }
