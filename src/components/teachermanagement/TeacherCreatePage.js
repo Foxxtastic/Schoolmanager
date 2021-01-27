@@ -20,7 +20,7 @@ export function TeacherCreatePage(props) {
         <>
             <MainHeader text="Create new Teacher" />
             <MainContent>
-                <TeacherForm getMajors={getMajors} error={error} isLoading={isLoading} onSubmit={handleFormSubmit} />
+                <TeacherForm getMajors={getMajors} error={error} isLoading={isLoading} onSubmit={handleFormSubmit} isCreate={true} />
             </MainContent>
         </>
     );

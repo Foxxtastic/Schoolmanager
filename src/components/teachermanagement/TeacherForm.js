@@ -5,13 +5,18 @@ import Input from '../shared/Input';
 import { MultiSelector } from '../shared/MultiSelector';
 
 export function TeacherForm(props) {
-    const { getMajors, error, isLoading, onSubmit, onError, defaultData } = props;
+    const { getMajors, error, isLoading, onSubmit, onError, defaultData, isCreate } = props;
 
     const [majors, setMajors] = useState(undefined);
     const [selectedMajors, setSelectedMajors] = useState([]);
-    const { register, handleSubmit, errors } = useForm({ defaultValues: defaultData });
+    const { register, handleSubmit, errors } = useForm();
 
     const onSubmitting = (data) => {
+        const selectedMajorsWithId = majors.filter(x => selectedMajors.includes(x.Name));
+        data = {
+            ...data,
+            Majors: selectedMajorsWithId
+        }
         onSubmit(data);
     }
 
@@ -19,9 +24,15 @@ export function TeacherForm(props) {
         getMajors().then(listResponse => setMajors(listResponse.items))
     }, [getMajors]);
 
-    const handleSelectMajor = (item) => {
-        if (!selectedMajors.includes(item)) {
-            setSelectedMajors([...selectedMajors, item])
+    useEffect(() => {
+        if (defaultData && defaultData.item.majors) {
+            setSelectedMajors(defaultData.item.majors.map(x => x.MajorName));
+        }
+    }, [defaultData])
+
+    const handleSelectMajor = (name) => {
+        if (!selectedMajors.includes(name)) {
+            setSelectedMajors([...selectedMajors, name])
         }
     }
 
@@ -29,12 +40,16 @@ export function TeacherForm(props) {
         setSelectedMajors(selectedMajors.filter(_ => _ !== itemToRemove));
     }
 
+    console.log(defaultData)
+    console.log(selectedMajors)
+
     return (
         <>
             <form className={`component ${isLoading ? "loading" : ""}`} onSubmit={handleSubmit(onSubmitting, onError)}>
                 <Loader isLoading={isLoading} />
                 <div className="component-data createitem bg-lgray">
                     <Input
+                        defaultValue={defaultData && defaultData.item.FirstName}
                         isInline={true}
                         labelText="First Name"
                         name="FirstName"
@@ -43,6 +58,7 @@ export function TeacherForm(props) {
                         errors={errors}
                     />
                     <Input
+                        defaultValue={defaultData && defaultData.item.LastName}
                         isInline={true}
                         labelText="Last Name"
                         name="LastName"
@@ -51,6 +67,7 @@ export function TeacherForm(props) {
                         errors={errors}
                     />
                     <Input
+                        defaultValue={defaultData && defaultData.item.BirthDate}
                         labelText="Birth Date"
                         name="BirthDate"
                         type="date"
@@ -59,6 +76,7 @@ export function TeacherForm(props) {
                         errors={errors}
                     />
                     <Input
+                        defaultValue={defaultData && defaultData.item.Nationality}
                         isInline={true}
                         name="Nationality"
                         isValidatable={true}
@@ -66,6 +84,7 @@ export function TeacherForm(props) {
                         errors={errors}
                     />
                     <Input
+                        defaultValue={defaultData && defaultData.item.SecondNationality}
                         isInline={true}
                         labelText="Second Nationality"
                         name="SecondNationality"
@@ -73,17 +92,19 @@ export function TeacherForm(props) {
                         lineBreak={true}
                     />
                     <Input
+                        defaultValue={defaultData && defaultData.item.City}
                         isInline={true}
                         name="City"
                         ref={register({ required: false })}
                     />
                     <Input
+                        defaultValue={defaultData && defaultData.item.Address}
                         isInline={true}
                         name="Address"
                         ref={register({ required: false })}
                         lineBreak={true}
                     />
-                    <Input
+                    {isCreate && <Input
                         isInline={true}
                         labelText="Email Address"
                         name="EmailAddress"
@@ -91,26 +112,27 @@ export function TeacherForm(props) {
                         isValidatable={true}
                         ref={register({ required: true })}
                         errors={errors}
-                    />
-                    <Input
+                    />}
+                    {isCreate && <Input
                         isInline={true}
                         name="Password"
                         type="password"
                         ref={register({ required: true })}
                         isValidatable={true}
                         errors={errors}
-                    />
-                    <Input
+                    />}
+                    {isCreate && <Input
                         labelClass="inline-label"
                         labelText="Is Active"
                         name="IsActive"
                         type="checkbox"
                         ref={register({ required: false })}
-                    />
+                    />}
                     <MultiSelector
+                        defaultData={defaultData && defaultData.item.majors}
                         defaultValue={"Select a Major"}
                         name="Majors"
-                        optionList={majors && majors.map(x => x.Name)}
+                        optionList={majors && majors.map(_ => _.Name)}
                         selectedItems={selectedMajors}
                         handleSelectItem={handleSelectMajor}
                         handleRemoveItem={handleRemoveMajor}

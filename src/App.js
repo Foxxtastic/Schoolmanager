@@ -6,7 +6,6 @@ import { history } from './history';
 import { Login } from './components/loginmanagement/Login';
 import { Home } from './components/shared/Home';
 import { SchoolManagement } from './components/schoolmanagement/SchoolManagement';
-import { PersonManagement } from './components/personmanagement/PersonManagement';
 import { UserManagement } from './components/usermanagement/UserManagement';
 import { MajorManagement } from './components/majormanagement/MajorManagement';
 import { TeacherManagement } from './components/teachermanagement/TeacherManagement';
@@ -27,10 +26,6 @@ const menuItems = [
       {
         text: 'Schools',
         link: '/schools'
-      },
-      {
-        text: 'Persons',
-        link: '/persons'
       },
       {
         text: 'Users',
@@ -62,7 +57,6 @@ function App() {
         />
         <Home />
         <SchoolManagement />
-        <PersonManagement />
         <UserManagement />
         <MajorManagement />
         <TeacherManagement />

@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { pageSize } from '../../config';
 import { Button } from "../shared/Button";
 import { ConfirmPopup } from "../shared/ConfirmPopup";
 import { DataTable } from "../shared/DataTable";
-import { ValidationErrors } from "../shared/ValidationErrors";
 import { usePageNumber } from '../../hooks/usePageNumber';
 import { useSorting } from "../../hooks/useSorting";
 import { useSortingDirection } from "../../hooks/useSortingDirection";
@@ -15,7 +13,6 @@ import { updateSearch } from '../../helpers/updateSearch';
 import moment from "moment";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import DatePicker from "../shared/DatePicker";
 
 const headers = [
     { text: "First Name", propertyName: 'FirstName', isSortable: true },
@@ -34,12 +31,6 @@ function calculateMaxPage(listResponse) {
 }
 
 export function TeacherList(props) {
-
-    const { register, handleSubmit, errors } = useForm();
-    const [editor, setEditor] = useState({
-        isEditMode: false,
-        rowKey: null
-    });
 
     let activePageNumber = usePageNumber();
     activePageNumber = activePageNumber === null ? 1 : activePageNumber;
@@ -60,7 +51,7 @@ export function TeacherList(props) {
     let filterValue = useFilterValue();
     filterValue = filterValue === null ? '' : filterValue;
 
-    const { error, afterUpdate, afterDelete, afterPaging, linkToCreate, onUpdate, onDelete, isLoading } = props;
+    const { error, afterDelete, afterPaging, linkToCreate, onDelete, isLoading } = props;
 
     const setTeachersFromServer = (listResponse) => {
         setMaxPageNumber(calculateMaxPage(listResponse));
@@ -78,43 +69,6 @@ export function TeacherList(props) {
             setMaxPageNumber(maxPage);
         });
     }, [activePageNumber, afterPaging, sortingProperty, isDescending, filterProperty, filterValue]);
-
-    const openEditor = (id) => {
-        setEditor({
-            isEditMode: true,
-            rowKey: id
-        })
-    }
-
-    const closeEditor = () => {
-        setEditor({
-            isEditMode: false,
-            rowKey: null
-        })
-    }
-
-    const fireAfterUpdateEvent = () => {
-        if (afterUpdate !== undefined) {
-            afterUpdate(activePageNumber, sortingProperty, isDescending, filterProperty, filterValue)
-                .then(setTeachersFromServer);
-        }
-    }
-
-    const onSubmit = (id, formData) => {
-        const closeEditorAfterUpdate = () => {
-            closeEditor();
-            fireAfterUpdateEvent();
-        }
-
-        if (onUpdate === undefined) {
-            closeEditorAfterUpdate();
-        }
-
-        onUpdate(id, formData)
-            .then(() => {
-                closeEditorAfterUpdate();
-            });
-    }
 
     const handleDeleteModalShown = (id) => {
         setIsModalVisible(true);
@@ -152,7 +106,6 @@ export function TeacherList(props) {
                 activePageNumber={activePageNumber}
                 maxPageNumber={maxPageNumber}
                 getRowForItem={(teacher, idx) => {
-                    const isEditing = editor.isEditMode && editor.rowKey === teacher.Id;
                     return (
                         <tr key={idx}>
                             {error && error.rowidx === teacher.Id &&
@@ -168,71 +121,36 @@ export function TeacherList(props) {
                             {error && error.rowidx !== teacher.Id &&
                                 <td className="error"></td>}
                             <td>
-                                {isEditing ?
-                                    <>
-                                        <input name="FirstName" defaultValue={teacher.FirstName} ref={register({ required: true })} />
-                                        <ValidationErrors name="FirstName" errors={errors} />
-                                    </> :
-                                    <span>{teacher.FirstName}</span>}
+                                <span>{teacher.FirstName}</span>
                             </td>
                             <td>
-                                {isEditing ?
-                                    <>
-                                        <input name="LastName" defaultValue={teacher.LastName} ref={register({ required: true })} />
-                                        <ValidationErrors name="LastName" errors={errors} />
-                                    </> :
-                                    <span>{teacher.LastName}</span>}
+                                <span>{teacher.LastName}</span>
                             </td>
                             <td>
-                                {isEditing ?
-                                    <>
-                                        <DatePicker name="BirthDate" defaultValue={moment(teacher.BirthDate).format("YYYY-MM-DD")} ref={register({ required: true })} />
-                                        <ValidationErrors name="BirthDate" errors={errors} />
-                                    </> :
-                                    <span>{moment(teacher.BirthDate).format("YYYY-MM-DD")}</span>}
+                                <span>{moment(teacher.BirthDate).format("YYYY-MM-DD")}</span>
                             </td>
                             <td>
-                                {isEditing ?
-                                    <>
-                                        <input name="Nationality" defaultValue={teacher.Nationality} ref={register({ required: true })} />
-                                        <ValidationErrors name="Nationality" errors={errors} />
-                                    </> :
-                                    <span>{teacher.Nationality}</span>}
+                                <span>{teacher.Nationality}</span>
                             </td>
                             <td>
-                                {isEditing ?
-                                    <>
-                                        <input name="SecondNationality" defaultValue={teacher.SecondNationality} ref={register({ required: false })} />
-                                    </> :
-                                    <span>{teacher.SecondNationality}</span>}
+                                <span>{teacher.SecondNationality}</span>
                             </td>
                             <td>
-                                {isEditing ?
-                                    <>
-                                        <input name="City" defaultValue={teacher.City} ref={register({ required: false })} />
-                                    </> :
-                                    <span>{teacher.City}</span>}
+                                <span>{teacher.City}</span>
                             </td>
                             <td>
-                                {isEditing ?
-                                    <>
-                                        <input name="Address" defaultValue={teacher.Address} ref={register({ required: false })} />
-                                    </> :
-                                    <span>{teacher.Address}</span>}
+                                <span>{teacher.Address}</span>
                             </td>
                             <td>
-                                <span>{teacher.majors.map(_ => _.MajorName).join(', ')}</span>
+                                {teacher.majors !== undefined && <span>{teacher.majors.map(_ => _.MajorName).join(', ')}</span>}
                             </td>
                             <td>
-                                {isEditing ?
-                                    <>
-                                        <Button disabled={isLoading} text="Ok" handleClick={handleSubmit((formData) => onSubmit(teacher.Id, formData))} />
-                                        <Button disabled={isLoading} text="Cancel" handleClick={() => closeEditor()} />
-                                    </> :
-                                    <>
-                                        <Button disabled={isLoading} text="Edit" handleClick={() => openEditor(teacher.Id)} />
-                                        <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(teacher.Id)} />
-                                    </>}
+                                <>
+                                    <Link to={`/teachers/${teacher.Id}/update`} >
+                                        <Button text="Edit" />
+                                    </Link>
+                                    <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(teacher.Id)} />
+                                </>
                             </td>
                         </tr>
                     );

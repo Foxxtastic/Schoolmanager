@@ -211,7 +211,7 @@ async function createTeacher(teacherDto) {
         values
         (
             ${teacherDto.EmailAddress},
-            HASHBYTES('SHA2_512', '${studentDto.Password}'),
+            HASHBYTES('SHA2_512', '${teacherDto.Password}'),
             ${teacherDto.IsActive},
             null
         );
@@ -237,22 +237,37 @@ async function createTeacher(teacherDto) {
             );
         
         insert into Teachers(PersonId)
-            @id;`;
+            select @id;`;
+
+    let teacherId = await sql.query`
+        select t.Id
+            from Persons p
+            inner join Users u on u.Id = p.UserId
+            inner join Teachers t on t.PersonId = p.Id
+        where u.EmailAddress = ${teacherDto.EmailAddress}`
+
+    teacherId = teacherId.recordset[0].Id
+
+    for (let i = 0; i < teacherDto.Majors.length; i++) {
+        result = await sql.query`
+            insert into MajorTeacher
+            select ${teacherDto.Majors[i].Id}, ${teacherId}`;
+    }
 
     result = await sql.query`
-        select top 1 Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address
-            from Teachers t
+        select top 1 t.Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address
+        from Teachers t
             inner join Persons p on p.id = t.PersonId
-        order by Id desc`;
+            order by Id desc`;
 
     return result.recordset;
 }
 
-async function updateTeacher(id, personDto) {
-    const person = await getTeacherById(id);
+async function updateTeacher(id, teacherDto) {
+    const teacher = await getTeacherById(id);
 
-    if (person === undefined) {
-        const error = new Error(`No Person with Id = ${id} !`);
+    if (teacher === undefined) {
+        const error = new Error(`No Teacher with Id = ${id} !`);
         error.status = 404;
         throw error;
     }
@@ -260,30 +275,70 @@ async function updateTeacher(id, personDto) {
     await sql.connect(databaseConnection);
 
     result = await sql.query`
-    update Persons
-    set
-    FirstName = ${personDto.FirstName},
-    LastName = ${personDto.LastName},
-    BirthDate = ${personDto.BirthDate},
-    Nationality = ${personDto.Nationality},
-    SecondNationality = ${personDto.SecondNationality},
-    City = ${personDto.City},
-    Address = ${personDto.Address}
-    where
-    Id = ${id} `;
+        declare @id int
+            set @id = 
+            (
+                select p.Id
+                    from Persons p
+                    inner join Teachers t on t.PersonId = p.Id
+                where t.Id = ${id}
+            );
+
+        update Persons
+            set
+                FirstName = ${teacherDto.FirstName},
+                LastName = ${teacherDto.LastName},
+                BirthDate = ${teacherDto.BirthDate},
+                Nationality = ${teacherDto.Nationality},
+                SecondNationality = ${teacherDto.SecondNationality},
+                City = ${teacherDto.City},
+                Address = ${teacherDto.Address}
+        where Id = @id;
+        
+        delete
+            from MajorTeacher
+        where TeacherId = ${id};`;
+
+    for (let i = 0; i < teacherDto.Majors.length; i++) {
+        result = await sql.query`
+            insert into MajorTeacher
+            select ${teacherDto.Majors[i].Id}, ${id}`;
+    }
 
     return await getTeacherById(id);
 }
 
-async function deleteById(personId) {
+async function deleteById(teacherId) {
     await sql.connect(databaseConnection);
+    const personAndUserId = await sql.query`
+        select t.PersonId, p.UserId
+            from Teachers t
+                inner join Persons p
+                on t.PersonId = p.Id
+        where t.Id = ${teacherId};`
+
+    const personId = personAndUserId.recordset[0].PersonId;
+    const userId = personAndUserId.recordset[0].UserId;
+
     const result = await sql.query`
-    delete
-        from Persons
-    where Id = ${personId} `;
+        delete
+            from MajorTeacher
+        where TeacherId = ${teacherId};
+
+        delete
+            from Teachers
+        where Id = ${teacherId};
+
+        delete
+            from Persons
+        where Id = ${personId};
+
+        delete 
+            from Users
+        where Id = ${userId};`
 
     if (result.rowsAffected[0] === 0) {
-        const error = new Error(`No Person with Id = ${personId} !`);
+        const error = new Error(`No Teacher with Id = ${Id} !`);
         error.status = 404;
         throw error;
     }

@@ -4,6 +4,7 @@ import { history } from '../../history'
 import { TeacherListPage } from './TeacherListPage';
 import { TeacherCreatePage } from './TeacherCreatePage';
 import { pageSize } from '../../config';
+import TeacherUpdatePage from './TeacherUpdatePage';
 
 export function TeacherManagement(props) {
     const [isLoading, setIsLoading] = useState(false);
@@ -24,6 +25,26 @@ export function TeacherManagement(props) {
             `&sorting=${sortingProperty}&isDescending=${isDescending}` +
             `&filterProperty=${filterProperty}&filterValue=${filterValue}`)
             .then(res => res.json())
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }, []);
+
+    const getDataById = useCallback((idToUpdate) => {
+        setIsLoading(true);
+        return fetch(`/api/teacher/${idToUpdate}`)
+            .then(res => res.json())
+            .then(jsonResponse => {
+                if (jsonResponse.error) {
+                    throw new Error(jsonResponse.error.message);
+                }
+                setError(undefined);
+                return jsonResponse;
+            })
+            .catch((err) => {
+                setError({ message: err.message });
+                throw err;
+            })
             .finally(() => {
                 setIsLoading(false);
             });
@@ -122,6 +143,16 @@ export function TeacherManagement(props) {
                     afterCreate={() => {
                         history.push("/teachers");
                     }}
+                />
+            </Route>
+            <Route path="/teachers/:id/update">
+                <TeacherUpdatePage
+                    getMajors={getMajors}
+                    error={error}
+                    isLoading={isLoading}
+                    getDataById={getDataById}
+                    onUpdate={handleTeacherUpdate}
+                    afterUpdate={() => history.push("/teachers")}
                 />
             </Route>
         </Switch>

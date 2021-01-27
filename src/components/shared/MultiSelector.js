@@ -1,4 +1,4 @@
-import { createRef, useEffect } from "react"
+import { createRef } from "react"
 import { Item } from "../customcomponents/Item";
 
 export function MultiSelector(props) {

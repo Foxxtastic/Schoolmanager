@@ -22,7 +22,7 @@ function UserUpdatePage(props) {
         <>
             <MainHeader text={`Update User with Id ${id}`} />
             <MainContent>
-                {userToUpdate !== undefined && <UserForm isLoading={isLoading} onSubmit={handleFormSubmit} defaultData={userToUpdate} />}
+                {userToUpdate && <UserForm isLoading={isLoading} onSubmit={handleFormSubmit} defaultData={userToUpdate} />}
             </MainContent>
         </>
     );
