@@ -4,7 +4,7 @@ import { MainHeader } from "../shared/MainHeader";
 import { MajorList } from './MajorList';
 
 export function MajorListPage(props) {
-    const { error, isLoading, afterPaging, afterDelete, afterCreate, afterUpdate, onDelete, onUpdate } = props;
+    const { error, isLoading, afterPaging, afterDelete, afterCreate, afterUpdate, onDelete, onUpdate, onCreate } = props;
 
     return (
         <>
@@ -19,6 +19,7 @@ export function MajorListPage(props) {
                     afterDelete={afterDelete}
                     onDelete={onDelete}
                     onUpdate={onUpdate}
+                    onCreate={onCreate}
                 />
             </MainContent>
         </>

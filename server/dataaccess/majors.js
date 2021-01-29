@@ -122,7 +122,7 @@ async function createMajor(majorDto) {
     let result = await sql.query`
         insert into Majors(Name)
         values(
-            ${majorDto.Name}`
+            ${majorDto.Name});`
 
     result = await sql.query`
         select top 1 Id, Name

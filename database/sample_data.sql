@@ -1,6 +1,6 @@
 INSERT INTO [DBO].[Schools](EduId, Name, Country, City, Address)
 VALUES ('031603','Neumann János Középiskola','Hungary','Eger','Rákóczi út 48.'),
-	   ('15823443206','Kiss ferenc Erdészeti Technikum','Hungary','Szeged','József Attila tér 6721.'),
+	   ('15823443206','Kiss Ferenc Erdészeti Technikum','Hungary','Szeged','József Attila tér 6721.'),
 	   ('120606','Kőrösi Csoma Sándor Gimnázium, Szakközép-, Szakképző Iskola és Kollégium','Hungary','Hajdúnánás','Bocskai utca 29.'),
 	   ('FI 80798','Eötvös Loránd University','Hungary','Budapest','Egyetem tér 1-3.'),
 	   ('FI 23344','Budapest University of Technology and Economics','Hungary','Budapest','Műegyetem rkp. 3.'),
@@ -23,7 +23,7 @@ VALUES ('031603','Neumann János Középiskola','Hungary','Eger','Rákóczi út 
 
 INSERT INTO [dbo].[Users] (EmailAddress, PasswordHash, IsActive, LastLogin)
 VALUES ('admin@schools.com', HASHBYTES('SHA2_512', 'ad52mAx17y'), 1, NULL),
-	   ('zsolt@schools.com', HASHBYTES('SHA2_512', 'zs99Ca47yo'), 1, NULL),
+       ('zsolt@schools.com', HASHBYTES('SHA2_512', 'zs99Ca47yo'), 1, NULL),
 	   ('mihaly.csombor@hajdunanas.com', HASHBYTES('SHA2_512', 'td62zsydwz'), 1, NULL),
 	   ('katalin.hajdu@hajdunanas.com', HASHBYTES('SHA2_512', 'gg11amohdb'), 1, NULL),
 	   ('aniko.kelemen@hajunanas.com', HASHBYTES('SHA2_512', 'gi13mywjvy'), 1, NULL),
@@ -112,7 +112,48 @@ VALUES ('admin@schools.com', HASHBYTES('SHA2_512', 'ad52mAx17y'), 1, NULL),
 	   ('krisztian.lengyel@budapest.com', HASHBYTES('SHA2_512', 'sb23qghygg'), 1, NULL),
 	   ('geza.illes@budapest.com', HASHBYTES('SHA2_512', 'ef26nmckdl'), 1, NULL),
 	   ('kristof.torok@budapest.com', HASHBYTES('SHA2_512', 'ob24swtraf'), 1, NULL),
-	   ('dominik.torok@budapest.com', HASHBYTES('SHA2_512', 'bi77ffhoyp'), 1, NULL)
+	   ('dominik.torok@budapest.com', HASHBYTES('SHA2_512', 'bi77ffhoyp'), 1, NULL),
+	   ('akos.lukacs@szeged.com', HASHBYTES('SHA2_512', 'tp94usylaj'), 1, NULL),
+	   ('jozsef.varga@roszke.com', HASHBYTES('SHA2_512', 'ya36dtrune'), 1, NULL),
+	   ('csaba.novak@algyo.com', HASHBYTES('SHA2_512', 'hn69elvycl'), 1, NULL),
+	   ('bence.faragó@szeged.com', HASHBYTES('SHA2_512', 'my71rfuqao'),	1,	NULL),
+	   ('marko.budai@szeged.com', HASHBYTES('SHA2_512', 'dy59uhvybk'),	1,	NULL),
+	   ('mario.vass@szeged.com', HASHBYTES('SHA2_512', 'sq36xjrmbk'),	1,	NULL),
+	   ('vilmos.kovacs@szeged.com', HASHBYTES('SHA2_512', 'qu52gdpbub'),	1,	NULL),
+	   ('endre.orosz@szeged.com', HASHBYTES('SHA2_512', 'tz38zdyhan'),	1,	NULL),
+	   ('donat.feher@szeged.com', HASHBYTES('SHA2_512', 'zy50lbaxdc'),	1,	NULL),
+	   ('domonkos.major@szeged.com', HASHBYTES('SHA2_512', 'vo47errqdn'),	1,	NULL),
+	   ('csenge.egyed@szeged.com', HASHBYTES('SHA2_512', 'pj9nqvmqu'),	1,	NULL),
+	   ('karoly.fulop@szeged.com', HASHBYTES('SHA2_512', 'gf65dmfsuj'),	1,	NULL),
+	   ('henrietta.torok@szeged.com', HASHBYTES('SHA2_512', 'xc11stmxpg'),	1,	NULL),
+	   ('sandor.marton@szeged.com', HASHBYTES('SHA2_512', 'zv4tsbvbk'),	1,	NULL),
+	   ('akos.kis@szeged.com', HASHBYTES('SHA2_512', 'jz54lyhora'),	1,	NULL),
+	   ('vanessza.kelemen@szeged.com', HASHBYTES('SHA2_512', 'vn71pupqpi'),	1,	NULL),
+	   ('blanka.orsos@szeged.com', HASHBYTES('SHA2_512', 'ez76mmhigo'),	1,	NULL),
+	   ('gergely.szekeres@szeged.com', HASHBYTES('SHA2_512', 'vs40ghtjbm'),	1,	NULL),
+	   ('marton.jakab@szeged.com', HASHBYTES('SHA2_512', 'pt23lwhhao'),	1,	NULL),
+	   ('barnabás.gal@szeged.com', HASHBYTES('SHA2_512', 'mz86afaptt'),	1,	NULL),
+	   ('andrás.gulyas@szeged.com', HASHBYTES('SHA2_512', 'hk27gcxwjc'),	1,	NULL),
+	   ('antal.meszaros@domaszek.com', HASHBYTES('SHA2_512', 'zf67hrdryb'),	1,	NULL),
+	   ('krisztofer.vaszoly@szeged.com', HASHBYTES('SHA2_512', 'le95wiaxzl'),	1,	NULL),
+	   ('alexander.orban@szeged.com', HASHBYTES('SHA2_512', 'uj62hiyhxj'),	1,	NULL),
+	   ('nandor.major@szatymaz.com', HASHBYTES('SHA2_512', 'ww26jfeedg'),	1,	NULL),
+	   ('dominik.vincze@maroslele.com', HASHBYTES('SHA2_512', 'py58dilksz'),	1,	NULL),
+	   ('patrik.kis@kiszombor.com', HASHBYTES('SHA2_512', 'xe99zyfutq'),	1,	NULL),
+	   ('dezso.barna@maroslele.com', HASHBYTES('SHA2_512', 'sy66pxzjan'),	1,	NULL),
+	   ('karoly.halasz@csanadpalota.com', HASHBYTES('SHA2_512', 'jr11ayembt'),	1,	NULL),
+	   ('renato.lengyel@szeged.com', HASHBYTES('SHA2_512', 'su41igfxfn'),	1,	NULL),
+	   ('kinga.veres@algyo.com', HASHBYTES('SHA2_512', 'if96pexsup'),	1,	NULL),
+	   ('armand.bodnar@szeged.com', HASHBYTES('SHA2_512', 'ba87klgtfm'),	1,	NULL),
+	   ('renato.lakatos@kiszombor.com', HASHBYTES('SHA2_512', 'mb37mkqwpc'),	1,	NULL),
+	   ('dorina.barna@szeged.com', HASHBYTES('SHA2_512', 'tm44ckuqnd'),	1,	NULL),
+	   ('endre.kende@szeged.com', HASHBYTES('SHA2_512', 'bq45lmrada'),	1,	NULL),
+	   ('noel.simon@szeged.com', HASHBYTES('SHA2_512', 'qj31jzyvng'),	1,	NULL),
+	   ('tibor.dobos@szeged.com', HASHBYTES('SHA2_512', 'ay28njxakd'),	1,	NULL),
+	   ('janos.bakos@szeged.com', HASHBYTES('SHA2_512', 'hl62jzqgnn'),	1,	NULL),
+	   ('vivien.novak@szeged.com', HASHBYTES('SHA2_512', 'ay87wkwpjm'),	1,	NULL),
+	   ('monika.nemeth@szeged.com', HASHBYTES('SHA2_512', 'bz68cahksq'),	1,	NULL)
+
 
 INSERT INTO [DBO].[Persons](FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, UserId) 
 SELECT 'Mihály', 'Csombor', '1974-12-17', 'Hungary', Null, 'Hajdúnánás', 'Erzsébet utca 44.', u.Id FROM Users u WHERE EmailAddress = 'mihaly.csombor@hajdunanas.com' UNION
@@ -203,7 +244,47 @@ SELECT 'Milán', 'Zobor', '1999-09-05', 'Hungary', Null, 'Budapest', 'BerdaJózs
 SELECT 'Krisztián', 'Lengyel', '1998-07-03', 'Hungary', Null, 'Budapest', 'Thököly út 12.', u.Id FROM Users u WHERE EmailAddress = 'krisztian.lengyel@budapest.com' UNION
 SELECT 'Géza', 'Illés', '1997-10-30', 'Hungary', Null, 'Budapest', 'Szent Mihály utca 17.', u.Id FROM Users u WHERE EmailAddress = 'geza.illes@budapest.com' UNION
 SELECT 'Kristóf', 'Török', '2002-05-28', 'Hungary', Null, 'Budapest', 'Fő út 40.', u.Id FROM Users u WHERE EmailAddress = 'kristof.torok@budapest.com' UNION
-SELECT 'Dominik', 'Török', '1999-09-20', 'Hungary', Null, 'Budapest', 'Fő út 40.', u.Id FROM Users u WHERE EmailAddress = 'dominik.torok@budapest.com'
+SELECT 'Dominik', 'Török', '1999-09-20', 'Hungary', Null, 'Budapest', 'Fő út 40.', u.Id FROM Users u WHERE EmailAddress = 'dominik.torok@budapest.com' UNION
+SELECT 'Ákos', 'Lukács', '2003-08-17', 'Hungary', Null, 'Szeged', 'Fő fasor, 56.', u.Id FROM Users u WHERE EmailAddress = 'akos.lukacs@szeged.com' UNION
+SELECT 'József', 'Varga', '2005-09-04', 'Hungary', Null, 'Röszke', 'Felszabadulás utca 90.', u.Id FROM Users u WHERE EmailAddress = 'jozsef.varga@roszke.com' UNION
+SELECT 'Csaba', 'Novák', '2003-02-09', 'Hungary', Null, 'Algyő', 'Búvár utca 9.', u.Id FROM Users u WHERE EmailAddress = 'csaba.novak@algyo.com' UNION
+SELECT 'Bence', 'Faragó', '2002-01-16', 'Hungary', Null, 'Szeged', 'Jakab Lajos utca 6. 1 em/4.', u.Id FROM Users u WHERE EmailAddress = 'bence.faragó@szeged.com' UNION
+SELECT 'Márkó', 'Budai', '2004-06-03', 'Hungary', Null, 'Szeged', 'Jakab Lajos utca 2.', u.Id FROM Users u WHERE EmailAddress = 'marko.budai@szeged.com' UNION
+SELECT 'Márió', 'Vass', '2005-11-24', 'Hungary', Null, 'Szeged', 'Hargitai utca 51. 2em/8.', u.Id FROM Users u WHERE EmailAddress = 'mario.vass@szeged.com' UNION
+SELECT 'Vilmos', 'Kovács', '2002-09-20', 'Hungary', Null, 'Szeged', 'József Attila körút 136. 4em/24.', u.Id FROM Users u WHERE EmailAddress = 'vilmos.kovacs@szeged.com' UNION
+SELECT 'Endre', 'Orosz', '2004-02-02', 'Hungary', Null, 'Szeged', 'Kisfaludy utca 17.', u.Id FROM Users u WHERE EmailAddress = 'endre.orosz@szeged.com' UNION
+SELECT 'Donát', 'Fehér', '2005-09-19', 'Hungary', Null, 'Szeged', 'Lengyel utca 5. 2em/8.', u.Id FROM Users u WHERE EmailAddress = 'donat.feher@szeged.com' UNION
+SELECT 'Domonkos', 'Major', '2005-10-18', 'Hungary', Null, 'Szeged', 'Szent Mihály utca 7.', u.Id FROM Users u WHERE EmailAddress = 'domonkos.major@szeged.com' UNION
+SELECT 'Csenge', 'Egyed', '2003-08-27', 'Hungary', Null, 'Szeged', 'Felső Tisza-part 27. 3em/12.', u.Id FROM Users u WHERE EmailAddress = 'csenge.egyed@szeged.com' UNION
+SELECT 'Károly', 'Fülöp', '2002-03-19', 'Hungary', Null, 'Szeged', 'Felső Tisza-part 27. 2em/6.', u.Id FROM Users u WHERE EmailAddress = 'karoly.fulop@szeged.com' UNION
+SELECT 'Henrietta', 'Török', '2006-05-29', 'Hungary', Null, 'Szeged', 'Tápai utca 50. 4em/16.', u.Id FROM Users u WHERE EmailAddress = 'henrietta.torok@szeged.com' UNION
+SELECT 'Sándor', 'Márton', '2002-10-08', 'Hungary', Null, 'Szeged', 'Bite Pál utca 3. 1em/5.', u.Id FROM Users u WHERE EmailAddress = 'sandor.marton@szeged.com' UNION
+SELECT 'Ákos', 'Kis', '2006-01-11', 'Hungary', Null, 'Szeged', 'Május 1 utca 16.', u.Id FROM Users u WHERE EmailAddress = 'akos.kis@szeged.com' UNION
+SELECT 'Vanessza', 'Kelemen', '2005-01-08', 'Hungary', Null, 'Szeged', 'Sólyom utca 9/A. 3Em/13.', u.Id FROM Users u WHERE EmailAddress = 'vanessza.kelemen@szeged.com' UNION
+SELECT 'Blanka', 'Orsós', '2006-07-08', 'Hungary', Null, 'Szeged', 'Sólyom utca 9/A. 3Em/12.', u.Id FROM Users u WHERE EmailAddress = 'blanka.orsos@szeged.com' UNION
+SELECT 'Gergely', 'Szekeres', '2004-07-22', 'Hungary', 'Serbia', 'Szeged', 'Csörlő utca 6. 2em/7.', u.Id FROM Users u WHERE EmailAddress = 'gergely.szekeres@szeged.com' UNION
+SELECT 'Márton', 'Jakab', '2004-03-20', 'Hungary', Null, 'Szeged', 'Kapitány utca 6.', u.Id FROM Users u WHERE EmailAddress = 'marton.jakab@szeged.com' UNION
+SELECT 'Barnabás', 'Gál', '2006-03-26', 'Hungary', Null, 'Szeged', 'Ibolya utca 6.', u.Id FROM Users u WHERE EmailAddress = 'barnabás.gal@szeged.com' UNION
+SELECT 'András', 'Gulyás', '2003-06-10', 'Hungary', Null, 'Szeged', 'Jerney utca 32.', u.Id FROM Users u WHERE EmailAddress = 'andrás.gulyas@szeged.com' UNION
+SELECT 'Antal', 'Mészáros', '2005-03-28', 'Hungary', Null, 'Domaszék', 'József Attila utca 32.', u.Id FROM Users u WHERE EmailAddress = 'antal.meszaros@domaszek.com' UNION
+SELECT 'Krisztofer', 'Vászoly', '2003-08-29', 'Hungary', Null, 'Szeged', 'Blaha Lujza utca 18.', u.Id FROM Users u WHERE EmailAddress = 'krisztofer.vaszoly@szeged.com' UNION
+SELECT 'Alexander', 'Orbán', '2003-10-13', 'Hungary', Null, 'Szeged', 'Blaha Lujza utca 20.', u.Id FROM Users u WHERE EmailAddress = 'alexander.orban@szeged.com' UNION
+SELECT 'Nándor', 'Major', '2004-04-09', 'Hungary', Null, 'Szatymaz', 'Béke utca 64.', u.Id FROM Users u WHERE EmailAddress = 'nandor.major@szatymaz.com' UNION
+SELECT 'Dominik', 'Vincze', '2006-06-02', 'Hungary', Null, 'Maroslele', 'Vásárhelyi utca 31.', u.Id FROM Users u WHERE EmailAddress = 'dominik.vincze@maroslele.com' UNION
+SELECT 'Patrik', 'Kis', '2006-06-18', 'Hungary', Null, 'Kiszombor', 'Szőlő utca 4.', u.Id FROM Users u WHERE EmailAddress = 'patrik.kis@kiszombor.com' UNION
+SELECT 'Dezső', 'Barna', '2005-11-08', 'Hungary', Null, 'Maroslele', 'Dózsa György utca 31.', u.Id FROM Users u WHERE EmailAddress = 'dezso.barna@maroslele.com' UNION
+SELECT 'Károly', 'Halász', '2003-12-13', 'Hungary', Null, 'Csanádpalota', 'Tompa Mihály utca 12.', u.Id FROM Users u WHERE EmailAddress = 'karoly.halasz@csanadpalota.com' UNION
+SELECT 'Renátó', 'Lengyel', '2002-04-06', 'Hungary', Null, 'Szeged', 'Csap utca 42.', u.Id FROM Users u WHERE EmailAddress = 'renato.lengyel@szeged.com' UNION
+SELECT 'Kinga', 'Veres', '2003-01-06', 'Hungary', Null, 'Algyő', 'Búvár utca 8.', u.Id FROM Users u WHERE EmailAddress = 'kinga.veres@algyo.com' UNION
+SELECT 'Armand', 'Bodnár', '2003-11-17', 'Hungary', Null, 'Szeged', 'Réti út 38.', u.Id FROM Users u WHERE EmailAddress = 'armand.bodnar@szeged.com' UNION
+SELECT 'Renátó', 'Lakatos', '2005-06-30', 'Hungary', Null, 'Kiszombor', 'Kör utca 132.', u.Id FROM Users u WHERE EmailAddress = 'renato.lakatos@kiszombor.com' UNION
+SELECT 'Dorina', 'Barna', '2004-08-29', 'Hungary', Null, 'Szeged', 'Csap utca 48.', u.Id FROM Users u WHERE EmailAddress = 'dorina.barna@szeged.com' UNION
+SELECT 'Endre', 'Kende', '2003-10-13', 'Hungary', Null, 'Szeged', 'Árvíz utca 2. fsz/2.', u.Id FROM Users u WHERE EmailAddress = 'endre.kende@szeged.com' UNION
+SELECT 'Noel', 'Simon', '2002-12-31', 'Hungary', Null, 'Szeged', 'Vezér utca 14.', u.Id FROM Users u WHERE EmailAddress = 'noel.simon@szeged.com' UNION
+SELECT 'Tibor', 'Dobos', '2002-01-14', 'Hungary', Null, 'Szeged', 'Ilosvai utca 2.', u.Id FROM Users u WHERE EmailAddress = 'tibor.dobos@szeged.com' UNION
+SELECT 'János', 'Bakos', '2006-01-06', 'Hungary', Null, 'Szeged', 'Kossuth Lajos utca 5.', u.Id FROM Users u WHERE EmailAddress = 'janos.bakos@szeged.com' UNION
+SELECT 'Vivien', 'Novák', '2006-01-01', 'Hungary', 'Serbia', 'Szeged', 'Mozdony utca 45.', u.Id FROM Users u WHERE EmailAddress = 'vivien.novak@szeged.com' UNION
+SELECT 'Mónika', 'Németh', '2005-01-19', 'Hungary', Null, 'Szeged', 'Mozdony utca 49.', u.Id FROM Users u WHERE EmailAddress = 'monika.nemeth@szeged.com'
 
 INSERT INTO [DBO].[Majors](Name)
 VALUES ('Biology'), ('Chemistry'), ('Mathematics'), ('Physics'), ('Gymnastic'), ('Economics'), ('Art'), ('IT'), ('Literature'), ('Grammar'),
@@ -324,7 +405,7 @@ SELECT '2018-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '201
 SELECT '2016-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2010-05-27' AND FirstName = 'Gergely' AND LastName = 'Kerekes' UNION
 SELECT '2013-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2007-11-18' AND FirstName = 'Marcell' AND LastName = 'Hajdú' UNION
 SELECT '2015-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2009-08-08' AND FirstName = 'Lajos' AND LastName = 'Gáspár' UNION
-SELECT '2020-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2006-07-11' AND FirstName = 'Donát' AND LastName = 'Király' UNION
+SELECT '2020-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2005-07-11' AND FirstName = 'Donát' AND LastName = 'Király' UNION
 SELECT '2014-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2008-08-08' AND FirstName = 'György' AND LastName = 'Vörös' UNION
 SELECT '2019-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2013-02-21' AND FirstName = 'Ármin' AND LastName = 'Juhász' UNION
 SELECT '2017-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2011-12-10' AND FirstName = 'Viktor' AND LastName = 'Juhász' UNION
@@ -365,4 +446,119 @@ SELECT '2017-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '199
 SELECT '2016-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '1998-07-03' AND FirstName = 'Krisztián' AND LastName = 'Lengyel' UNION
 SELECT '2015-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '1997-10-30' AND FirstName = 'Géza' AND LastName = 'Illés' UNION
 SELECT '2020-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2002-05-28' AND FirstName = 'Kristóf' AND LastName = 'Török' UNION
-SELECT '2017-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '1999-09-20' AND FirstName = 'Dominik' AND LastName = 'Török'
+SELECT '2017-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '1999-09-20' AND FirstName = 'Dominik' AND LastName = 'Török' UNION
+SELECT '2017-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2003-08-17' AND FirstName = 'Ákos' AND LastName = 'Lukács' UNION
+SELECT '2019-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2005-09-04' AND FirstName = 'József' AND LastName = 'Varga' UNION
+SELECT '2017-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2003-02-09' AND FirstName = 'Csaba' AND LastName = 'Novák' UNION
+SELECT '2020-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2002-01-16' AND FirstName = 'Bence' AND LastName = 'Faragó' UNION
+SELECT '2018-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2004-06-03' AND FirstName = 'Márkó' AND LastName = 'Budai' UNION
+SELECT '2019-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2005-11-24' AND FirstName = 'Márió' AND LastName = 'Vass' UNION
+SELECT '2016-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2002-09-20' AND FirstName = 'Vilmos' AND LastName = 'Kovács' UNION
+SELECT '2018-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2004-02-02' AND FirstName = 'Endre' AND LastName = 'Orosz' UNION
+SELECT '2019-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2005-09-19' AND FirstName = 'Donát' AND LastName = 'Fehér' UNION
+SELECT '2019-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2005-10-18' AND FirstName = 'Domonkos' AND LastName = 'Major' UNION
+SELECT '2017-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2003-08-27' AND FirstName = 'Csenge' AND LastName = 'Egyed' UNION
+SELECT '2020-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2002-03-19' AND FirstName = 'Károly' AND LastName = 'Fülöp' UNION
+SELECT '2020-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2006-05-29' AND FirstName = 'Henrietta' AND LastName = 'Török' UNION
+SELECT '2016-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2002-10-08' AND FirstName = 'Sándor' AND LastName = 'Márton' UNION
+SELECT '2020-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2006-01-11' AND FirstName = 'Ákos' AND LastName = 'Kis' UNION
+SELECT '2019-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2005-01-08' AND FirstName = 'Vanessza' AND LastName = 'Kelemen' UNION
+SELECT '2020-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2006-07-08' AND FirstName = 'Blanka' AND LastName = 'Orsós' UNION
+SELECT '2018-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2004-07-22' AND FirstName = 'Gergely' AND LastName = 'Szekeres' UNION
+SELECT '2018-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2004-03-20' AND FirstName = 'Márton' AND LastName = 'Jakab' UNION
+SELECT '2020-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2006-03-26' AND FirstName = 'Barnabás' AND LastName = 'Gál' UNION
+SELECT '2017-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2003-06-10' AND FirstName = 'András' AND LastName = 'Gulyás' UNION
+SELECT '2019-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2005-03-28' AND FirstName = 'Antal' AND LastName = 'Mészáros' UNION
+SELECT '2017-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2003-08-29' AND FirstName = 'Krisztofer' AND LastName = 'Vászoly' UNION
+SELECT '2017-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2003-10-13' AND FirstName = 'Alexander' AND LastName = 'Orbán' UNION
+SELECT '2018-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2004-04-09' AND FirstName = 'Nándor' AND LastName = 'Major' UNION
+SELECT '2020-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2006-06-02' AND FirstName = 'Dominik' AND LastName = 'Vincze' UNION
+SELECT '2020-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2006-06-18' AND FirstName = 'Patrik' AND LastName = 'Kis' UNION
+SELECT '2019-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2005-11-08' AND FirstName = 'Dezső' AND LastName = 'Barna' UNION
+SELECT '2017-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2003-12-13' AND FirstName = 'Károly' AND LastName = 'Halász' UNION
+SELECT '2020-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2002-04-06' AND FirstName = 'Renátó' AND LastName = 'Lengyel' UNION
+SELECT '2017-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2003-01-06' AND FirstName = 'Kinga' AND LastName = 'Veres' UNION
+SELECT '2017-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2003-11-17' AND FirstName = 'Armand' AND LastName = 'Bodnár' UNION
+SELECT '2019-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2005-06-30' AND FirstName = 'Renátó' AND LastName = 'Lakatos' UNION
+SELECT '2018-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2004-08-29' AND FirstName = 'Dorina' AND LastName = 'Barna' UNION
+SELECT '2017-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2003-10-13' AND FirstName = 'Endre' AND LastName = 'Kende' UNION
+SELECT '2016-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2002-12-31' AND FirstName = 'Noel' AND LastName = 'Simon' UNION
+SELECT '2020-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2002-01-14' AND FirstName = 'Tibor' AND LastName = 'Dobos' UNION
+SELECT '2020-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2006-01-06' AND FirstName = 'János' AND LastName = 'Bakos' UNION
+SELECT '2020-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2006-01-01' AND FirstName = 'Vivien' AND LastName = 'Novák' UNION
+SELECT '2019-09-01', 'true', ps.Id FROM PersonStudents ps WHERE BirthDate = '2005-01-19' AND FirstName = 'Mónika' AND LastName = 'Németh'
+
+INSERT INTO [DBO].[SchoolStudent](SchoolId, StudentId)
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='akos.lukacs@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='jozsef.varga@roszke.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='csaba.novak@algyo.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='bence.faragó@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='marko.budai@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='mario.vass@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='vilmos.kovacs@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='endre.orosz@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='donat.feher@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='domonkos.major@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='csenge.egyed@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='karoly.fulop@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='henrietta.torok@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='sandor.marton@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='akos.kis@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='vanessza.kelemen@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='blanka.orsos@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='gergely.szekeres@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='marton.jakab@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='barnabás.gal@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='andrás.gulyas@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='antal.meszaros@domaszek.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='krisztofer.vaszoly@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='alexander.orban@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='nandor.major@szatymaz.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='dominik.vincze@maroslele.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='patrik.kis@kiszombor.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='dezso.barna@maroslele.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='karoly.halasz@csanadpalota.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='renato.lengyel@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='kinga.veres@algyo.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='armand.bodnar@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='renato.lakatos@kiszombor.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='dorina.barna@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='endre.kende@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='noel.simon@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='tibor.dobos@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='janos.bakos@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='vivien.novak@szeged.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='monika.nemeth@szeged.com' UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='aniko.kelemen@hajunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='aniko.toth@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='veronika.szoke@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='szabina.illes@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='viktoria.dobos@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='ivett.kozma@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='orsolya.pataki@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='dorina.gaspar@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='eva.halasz@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='evelin.orosz@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='adel.biro@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='oliver.orban@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='geza.bogdan@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='kevin.kiraly@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='tamas.aprod@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='dezso.bakos@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='jozsef.sandor@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='gergo.toth@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='gergely.kerekes@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='marcell.hajdu@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='lajos.gaspar@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='donat.kiraly@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='gyorgy.voros@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='armin.juhasz@hajudorog.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='viktor.juhasz@hajudorog.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='balazs.borbely@hajudorog.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='oliver.laszlo@hajudorog.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='bendeguz.bakos@hajudorog.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='renato.torok@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='barnabas.novak@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='milan.kiss@hajdunanas.com'UNION
+SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='laura.borbely@hajdunanas.com'
+

@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSortAlphaUp, faSortAlphaDownAlt, faSearch, faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 import { updateSearch } from '../../../helpers/updateSearch'
 import { useState } from 'react';
+import { CreateRow } from './CreateRow';
+import { Button } from '../Button';
 
 export function DataTable(props) {
 
@@ -20,9 +22,13 @@ export function DataTable(props) {
         isDescending,
         filterProperty,
         filterValue,
+        isInlineCreate,
+        createRow,
+        onCreate
     } = props;
 
     const [openFilter, setOpenFilter] = useState(undefined);
+    const [showCreateRow, setShowCreateRow] = useState(false);
 
     const isSortedHeader = (header) => {
         return header.propertyName && header.propertyName === sortingProperty;
@@ -69,6 +75,7 @@ export function DataTable(props) {
     return (
         <>
             <div className="component-data">
+                {isInlineCreate && <Button customClass="button top-margined" text="Create new" disabled={showCreateRow} handleClick={() => setShowCreateRow(true)} />}
                 <div className="datatable">
                     <Loader isLoading={isLoading} />
                     <table>
@@ -95,6 +102,14 @@ export function DataTable(props) {
                             </tr>
                         </tfoot>
                         <tbody>
+                            {showCreateRow &&
+                                <CreateRow
+                                    isLoading={isLoading}
+                                    customClass={showCreateRow ? "" : "hidden"}
+                                    items={createRow}
+                                    onCreate={onCreate}
+                                    onClose={() => setShowCreateRow(false)}
+                                />}
                             {items.map((item, idx) => getRowForItem(item, idx))}
                         </tbody>
                     </table>

@@ -19,6 +19,10 @@ const headers = [
     { text: "", isSortable: false },
 ];
 
+const createRow = [
+    { name: "Name", type: "text", required: true }
+]
+
 function calculateMaxPage(listResponse) {
     return Math.ceil(listResponse.allItemsCount / pageSize);
 }
@@ -50,7 +54,7 @@ export function MajorList(props) {
     let filterValue = useFilterValue();
     filterValue = filterValue === null ? '' : filterValue;
 
-    const { error, afterUpdate, afterCreate, afterDelete, afterPaging, onUpdate, onDelete, isLoading } = props;
+    const { error, afterUpdate, afterCreate, afterDelete, afterPaging, onUpdate, onDelete, onCreate, isLoading } = props;
 
     const setmajorsFromServer = (listResponse) => {
         setMaxPageNumber(calculateMaxPage(listResponse));
@@ -123,6 +127,12 @@ export function MajorList(props) {
         setIsModalVisible(false);
     }
 
+    const handleCreate = (data) => {
+        onCreate(data);
+        afterCreate(activePageNumber, sortingProperty, isDescending, filterProperty, filterValue)
+            .then(setmajorsFromServer);
+    }
+
     if (majors === undefined) {
         return 'Loading...';
     }
@@ -131,6 +141,9 @@ export function MajorList(props) {
         <div className={`component ${isLoading ? "loading" : ""}`} >
             <ConfirmPopup text="Are you sure?" visible={isModalVisible} onConfirm={handleDeleteModalConfirm} onCancel={handleModalCancel} />
             <DataTable
+                isInlineCreate={true}
+                onCreate={handleCreate}
+                createRow={createRow}
                 error={error}
                 isLoading={isLoading}
                 headers={headers}

@@ -31,7 +31,6 @@ export function TeacherForm(props) {
     }, [defaultData])
 
     const handleSelectMajor = (name) => {
-        console.log(name)
         if (!selectedMajors.includes(name)) {
             setSelectedMajors([...selectedMajors, name])
         }

@@ -69,6 +69,7 @@ export function UserManagement(props) {
 
     const handleUserCreate = (newItem) => {
         setIsLoading(true);
+        console.log(newItem)
         return fetch('/api/user', {
             method: 'POST',
             headers: {

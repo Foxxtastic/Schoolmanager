@@ -45,6 +45,7 @@ export function MajorManagement(props) {
     }
 
     const handleMajorCreate = (newItem) => {
+        console.log(newItem)
         setIsLoading(true);
         return fetch('/api/major', {
             method: 'POST',
@@ -100,8 +101,8 @@ export function MajorManagement(props) {
                     afterDelete={getData}
                     afterCreate={getData}
                     onDelete={handleMajorDelete}
-                    onCreate={handleMajorCreate}
-                    onUpdate={handleMajorUpdate} />
+                    onUpdate={handleMajorUpdate}
+                    onCreate={handleMajorCreate} />
             </Route>
         </Switch>
     )

@@ -85,6 +85,10 @@ table {
   padding: 5px;
 }
 
+.top-margined {
+  margin-top: 1em;
+}
+
 .inline-label {
   display: inline;
   padding: 5px;
@@ -96,6 +100,10 @@ input {
   background-color: #fff;
   padding: 3px 5px;
   box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
+}
+
+#majorlist option{
+  background-color: red;
 }
 
 button {
