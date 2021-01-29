@@ -1,5 +1,5 @@
 import './cssreset.css';
-import './App.css';
+import './App.scss';
 import { Navbar } from './components/shared/Navbar';
 import { Router } from 'react-router-dom';
 import { history } from './history';
@@ -44,7 +44,7 @@ const menuItems = [
         link: '/students'
       }
     ]
-  },
+  }
 ];
 
 function App() {

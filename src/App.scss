@@ -1,3 +1,7 @@
+$lconcrete: #95a5a6;
+$lgray: #ecf0f1;
+$submenu-height: 50px;
+
 html, body, #root { 
   height: 100%; margin: 0; 
 }
@@ -8,56 +12,6 @@ a {
 
 .inline-block {
   display: inline-block;
-}
-
-ul {
-	list-style: none;
-	margin: 0;
-  padding-left: 0;
-  background-color: #7f8c8d;
-}
-
-li {
-	color: #fff;
-	display: block;
-	float: left;
-	position: relative;
-	text-decoration: none;
-  transition-duration: 0.5s;
-  margin-bottom: 10px;
-  z-index: 9999;
-}
-
-li:hover,
-li:focus-within {
-	cursor: pointer;
-}
-
-li:focus-within a {
-  outline: none;
-}
-
-ul li ul {
-	visibility: hidden;
-  min-width: 5rem;
-	position: absolute;
-  transition: all 0.5s ease;
-	left: 0;
-  display: none;
-}
-
-ul li:hover > ul,
-ul li:focus-within > ul,
-ul li ul:hover,
-ul li ul:focus {
-  visibility: visible;
-  opacity: 1;
-  display: block;
-}
-
-ul li ul li {
-	clear: both;
-  width: 100%;
 }
 
 .App {
@@ -210,15 +164,19 @@ button {
 #root {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 100px 60px 1fr;
+  grid-template-rows: 100px + $submenu-height 60px 1fr;
   grid-template-areas:
-    "navbar"
+    "navbar-container"
     "main-header"
     "maincontent";
 }
 
+.navbar-container {
+  grid-area: navbar-container;
+  background-color: $lgray;
+}
+
 .navbar { 
-  grid-area: navbar;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -232,6 +190,26 @@ button {
   margin-left: 3rem;
 }
 
+.navbar-subitems {
+  display: inline-block;
+  font-size: 1em;
+  font-weight: bold;
+  line-height: $submenu-height;
+  height: $submenu-height;
+  padding-right: 0.75rem;
+  padding-left: 0.75rem;
+  border-right: solid 1px $lgray;
+
+}
+
+.navbar-subitems:hover {
+  background-color: lighten( $lconcrete, 20% );
+}
+
+.navbar-subitems:last-of-type {
+  border: none;
+}
+
 .navbar-items:hover, .navbar-subitem:hover {
   cursor: pointer;
   color: #d35400;
@@ -243,10 +221,45 @@ button {
   border-bottom: 3px solid #d35400;
 }
 
-.navbar-subitem {
-  font-size: 1.9em;
-  font-weight: bold;
-  margin-left: 1.5em;
+.navbar-sub {
+  background-color: $lconcrete;
+  color: white;
+  display: none;
+  overflow: hidden;
+}
+
+.navbar-sub.shown {
+  display: block;
+  animation-name: expand;
+  animation-duration: 0.4s;
+  animation-fill-mode: forwards;
+}
+
+.navbar-sub.collapsed {
+  display: block;
+  animation-name: collapse;
+  animation-duration: 0.4s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes expand {
+  from {
+    height: 0px;
+  }
+  
+  to {
+    height: 50px;
+  }
+}
+
+@keyframes collapse {
+  from {
+    height: 50px;
+  }
+  
+  to {
+    height: 0px;
+  }
 }
 
 .main-header {
