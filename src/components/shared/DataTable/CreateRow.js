@@ -1,33 +1,22 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Button } from "../Button";
 
 export function CreateRow(props) {
 
-    const { isLoading, customClass, items, onCreate, onClose } = props;
+    const { getColumns, isLoading, customClass, onCreate, onClose } = props;
+    const form = useForm();
+    const { handleSubmit } = form;
 
-    const [data, setData] = useState(undefined);
-
-    const handleDataChange = (key, value) => {
-        let result = data ? data : {};
-        result[key] = value;
-        setData(result);
-    }
-
-    const handleSubmit = () => {
-        if (data !== undefined) {
-            onCreate(data);
-            onClose();
-        }
+    const onSubmit = (formData) => {
+        onCreate(formData)
+            .then(() => onClose());
     }
 
     return (
         <tr className={customClass}>
-            {items.map((item, idx) =>
-                <td key={idx}>
-                    <input type={item.type} name={item.name} onChange={(e) => handleDataChange(item.name, e.target.value)} />
-                </td>)}
+            {getColumns(form)}
             <td>
-                <Button text="Create" handleClick={() => handleSubmit()} disabled={isLoading} />
+                <Button text="Create" handleClick={handleSubmit(onSubmit)} disabled={isLoading} />
                 <Button text="Cancel" handleClick={onClose} />
             </td>
         </tr >

@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
-export function Navbar(props) {
+function Navbar(props) {
 
-    const { menuItems } = props;
+    const { menuItems, location } = props;
     const [activeMenuIndex, setActiveMenuIndex] = useState(undefined);
     const [isShown, setIsShown] = useState(undefined);
     const [previousMenuItem, setPreviousMenuItem] = useState(undefined);
+
+    console.log(location);
 
     const getMenuItem = (item, idx) => {
         const classes = `navbar-items ${activeMenuIndex === idx ? "navbar-items-active" : "tx-lorange"}`
@@ -45,7 +47,10 @@ export function Navbar(props) {
     }
 
     const getLinks = (menuItem) => {
-        return menuItem.subItems.map((item, idx) => <Link to={item.link} key={idx} className="navbar-subitems" >{item.text}</Link>);
+        return menuItem.subItems.map((item, idx) => {
+            const isActive = location.pathname.startsWith(item.link);
+            return <Link to={item.link} key={idx} className={`${isActive ? "navbar-subitems-active" : ""} navbar-subitems`} >{item.text}</Link>
+        })
     }
 
     const subclass = isShown === true ? "navbar-sub shown" : isShown === false ? "navbar-sub collapsed" : "navbar-sub";
@@ -69,3 +74,4 @@ export function Navbar(props) {
         </div>
     );
 }
+export default withRouter(Navbar);

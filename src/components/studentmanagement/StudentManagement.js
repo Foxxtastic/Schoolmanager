@@ -9,12 +9,12 @@ export function StudentManagement(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(undefined);
 
-    const getData = useCallback((pageNumber, sortingProperty, isDescending, filterProperty, filterValue) => {
+    const getData = useCallback((pageNumber, sortingProperty, isDescending, filterProperty, filterValue, schoolId) => {
         setIsLoading(true);
         filterValue = encodeURIComponent(filterValue);
         return fetch(`/api/student?pageNumber=${pageNumber}&pageSize=${pageSize}` +
             `&sorting=${sortingProperty}&isDescending=${isDescending}` +
-            `&filterProperty=${filterProperty}&filterValue=${filterValue}`)
+            `&filterProperty=${filterProperty}&filterValue=${filterValue}&`)
             .then(res => res.json())
             .finally(() => {
                 setIsLoading(false);

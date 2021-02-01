@@ -1,6 +1,6 @@
 import './cssreset.css';
 import './App.scss';
-import { Navbar } from './components/shared/Navbar';
+import Navbar from './components/shared/Navbar';
 import { Router } from 'react-router-dom';
 import { history } from './history';
 import { Login } from './components/loginmanagement/Login';

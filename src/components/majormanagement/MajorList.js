@@ -19,10 +19,6 @@ const headers = [
     { text: "", isSortable: false },
 ];
 
-const createRow = [
-    { name: "Name", type: "text", required: true }
-]
-
 function calculateMaxPage(listResponse) {
     return Math.ceil(listResponse.allItemsCount / pageSize);
 }
@@ -128,8 +124,8 @@ export function MajorList(props) {
     }
 
     const handleCreate = (data) => {
-        onCreate(data);
-        afterCreate(activePageNumber, sortingProperty, isDescending, filterProperty, filterValue)
+        return onCreate(data)
+            .then(() => afterCreate(activePageNumber, sortingProperty, isDescending, filterProperty, filterValue))
             .then(setmajorsFromServer);
     }
 
@@ -141,9 +137,9 @@ export function MajorList(props) {
         <div className={`component ${isLoading ? "loading" : ""}`} >
             <ConfirmPopup text="Are you sure?" visible={isModalVisible} onConfirm={handleDeleteModalConfirm} onCancel={handleModalCancel} />
             <DataTable
+                isInEditMode={editor.isEditMode}
                 isInlineCreate={true}
                 onCreate={handleCreate}
-                createRow={createRow}
                 error={error}
                 isLoading={isLoading}
                 headers={headers}
@@ -154,7 +150,15 @@ export function MajorList(props) {
                 items={majors}
                 activePageNumber={activePageNumber}
                 maxPageNumber={maxPageNumber}
-                getRowForItem={(major, idx) => {
+                getCreateRowColumns={({ register, errors }) =>
+                    <>
+                        <td>
+                            <input type="text" name="Name" ref={register({ required: true })} />
+                            <ValidationErrors name="Name" errors={errors} />
+                        </td>
+                    </>
+                }
+                getRowForItem={(major, idx, isInCreateMode) => {
                     const isEditing = editor.isEditMode && editor.rowKey === major.Id;
 
                     return (
@@ -186,8 +190,8 @@ export function MajorList(props) {
                                         <Button disabled={isLoading} text="Cancel" handleClick={() => closeEditor()} />
                                     </> :
                                     <>
-                                        <Button disabled={isLoading} text="Edit" handleClick={() => openEditor(major.Id)} />
-                                        <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(major.Id)} />
+                                        <Button disabled={isLoading || isInCreateMode} text="Edit" handleClick={() => openEditor(major.Id)} />
+                                        <Button disabled={isLoading || isInCreateMode} text="Delete" handleClick={() => handleDeleteModalShown(major.Id)} />
                                     </>}
                             </td>
                         </tr>

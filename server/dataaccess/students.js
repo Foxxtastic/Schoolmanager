@@ -20,15 +20,19 @@ async function getStudentById(studentId) {
     return result.recordset[0];
 }
 
-async function listAllStudents(sortingProperty = 'Id', isAscending = true, filterProperty = 'FirstName', filter = '') {
+async function listAllStudents(sortingProperty = 'Id', isAscending = true, filterProperty = 'FirstName', filter = '', schoolId) {
     await sql.connect(databaseConnection);
     const isAscendingParam = isAscending === true ? 1 : -1;
+
+    if (schoolId === undefined) {
+        schoolId = null;
+    }
 
     const result = await sql.query`
         with studentsWithRowNum AS
         (
             select
-                s.Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, StartDate, ActiveStatus,
+                s.Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, p.City, p.Address, StartDate, ActiveStatus,
                 row_number() over 
                 (
                     order by
@@ -39,15 +43,19 @@ async function listAllStudents(sortingProperty = 'Id', isAscending = true, filte
                         when 'BirthDate'            then convert(nvarchar(max), BirthDate)
                         when 'Nationality'          then convert(nvarchar(max), Nationality)
                         when 'SecondNationality'    then convert(nvarchar(max), SecondNationality)
-                        when 'City'                 then convert(nvarchar(max), City)
-                        when 'Address'              then convert(nvarchar(max), Address)
+                        when 'City'                 then convert(nvarchar(max), p.City)
+                        when 'Address'              then convert(nvarchar(max), p.Address)
                         when 'StartDate'            then convert(nvarchar(max), StartDate)
                         when 'ActiveStatus'         then convert(nvarchar(max), ActiveStatus)
                     end
                 ) as RowNum
             from
                 Persons p
-                inner join Students s on p.Id = s.PersonId
+                    inner join Students s on p.Id = s.PersonId
+                    inner join SchoolStudent ss on ss.StudentId = s.Id
+                    inner join Schools sc on sc.Id = ss.SchoolId
+                    where ${schoolId} is null and sc.Id in (select Id from Schools)
+				        or ${schoolId} is not null and sc.Id in (${schoolId})
         )
         select Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, StartDate, ActiveStatus
         from
@@ -75,7 +83,7 @@ async function listAllStudents(sortingProperty = 'Id', isAscending = true, filte
     };
 }
 
-async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscending = true, filterProperty = 'FirstName', filter = '') {
+async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscending = true, filterProperty = 'FirstName', filter = '', schoolId) {
     await sql.connect(databaseConnection);
     const offset = (pageNumber === '0') ? 0 : (pageNumber - 1) * pageSize;
     const pageSizeAsNumber = parseInt(pageSize, 10);
@@ -85,7 +93,7 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
     with studentsWithRowNum AS
         (
             select
-                s.Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, StartDate, ActiveStatus,
+                s.Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, p.City, p.Address, StartDate, ActiveStatus,
                 row_number() over 
                 (
                     order by
@@ -96,15 +104,19 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
                         when 'BirthDate'            then convert(nvarchar(max), BirthDate)
                         when 'Nationality'          then convert(nvarchar(max), Nationality)
                         when 'SecondNationality'    then convert(nvarchar(max), SecondNationality)
-                        when 'City'                 then convert(nvarchar(max), City)
-                        when 'Address'              then convert(nvarchar(max), Address)
+                        when 'City'                 then convert(nvarchar(max), p.City)
+                        when 'Address'              then convert(nvarchar(max), p.Address)
                         when 'StartDate'            then convert(nvarchar(max), StartDate)
                         when 'ActiveStatus'         then convert(nvarchar(max), ActiveStatus)
                     end
                 ) as RowNum
             from
                 Persons p
-                inner join Students s on p.Id = s.PersonId
+                    inner join Students s on p.Id = s.PersonId
+                    inner join SchoolStudent ss on ss.StudentId = s.Id
+                    inner join Schools sc on sc.Id = ss.SchoolId
+                    where ${schoolId} is null and sc.Id in (select Id from Schools)
+				        or ${schoolId} is not null and sc.Id in (${schoolId})
         )
         select Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, StartDate, ActiveStatus
         from
@@ -131,10 +143,12 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
     const countResult = await sql.query`
         with studentsWithFilter as
         (
-            select s.Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, StartDate, ActiveStatus
+            select s.Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, p.City, p.Address, StartDate, ActiveStatus
             from
                 Persons p
                 inner join Students s on p.Id = s.PersonId
+                inner join SchoolStudent ss on ss.StudentId = s.Id
+                inner join Schools sc on sc.Id = ss.SchoolId
             where 
                 case ${filterProperty}
                     when 'Id'                   then convert(nvarchar(max), s.Id)
@@ -143,12 +157,12 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
                     when 'BirthDate'            then convert(nvarchar(max), BirthDate)
                     when 'Nationality'          then convert(nvarchar(max), Nationality)
                     when 'SecondNationality'    then convert(nvarchar(max), SecondNationality)
-                    when 'City'                 then convert(nvarchar(max), City)
-                    when 'Address'              then convert(nvarchar(max), Address)
+                    when 'City'                 then convert(nvarchar(max), p.City)
+                    when 'Address'              then convert(nvarchar(max), p.Address)
                     when 'StartDate'            then convert(nvarchar(max), StartDate)
                     when 'ActiveStatus'         then convert(nvarchar(max), ActiveStatus)
             end
-            like '%'+${filter}+'%'
+            like '%'+${filter}+'%' and sc.Id = ${schoolId}
         )
         select count(*) as Count
         from studentsWithFilter;`;

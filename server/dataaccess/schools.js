@@ -179,12 +179,14 @@ async function updateSchool(id, schoolDto) {
 async function deleteById(schoolId) {
     await sql.connect(databaseConnection);
     const result = await sql.query`
-        delete
-        from Schools
-        where Id = ${schoolId}`;
+        delete sc
+            from Schools sc
+            left outer join SchoolStudent scs on sc.Id = scs.SchoolId
+            left outer join SchoolTeacher sct on sc.Id = sct.SchoolId
+        where sc.Id = ${schoolId} and scs.Id is null and sct.SchoolId is null;`;
 
     if (result.rowsAffected[0] === 0) {
-        const error = new Error(`No Product with Id = ${schoolId}!`);
+        const error = new Error(`There is a Person connected to this School or, no School with Id = ${schoolId} !`);
         error.status = 404;
         throw error;
     }

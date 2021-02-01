@@ -1,5 +1,8 @@
 $lconcrete: #95a5a6;
 $lgray: #ecf0f1;
+$mgray: #bdc3c7;
+$dorange: #d35400;
+
 $submenu-height: 50px;
 
 html, body, #root { 
@@ -121,12 +124,21 @@ button {
   position: relative;
   margin: 2em;
   width: 90%;
+
+  color: #000000;
+}
+
+.datatable .createbutton {
+  @extend .base-button;
+  margin: 0 0 15px 0;
+}
+
+.datatable-content {
   background-color: #FFFFFF;
   border-collapse: collapse;
   border-width: 2px;
   border-color: #7ea8f8;
   border-style: solid;
-  color: #000000;
 }
 
 .datatable thead {
@@ -184,10 +196,12 @@ button {
 }
 
 .navbar-items {
+  display: inline-block;
   font-size: 2em;
   font-weight: bold;
   line-height: 100px;
-  margin-left: 3rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 }
 
 .navbar-subitems {
@@ -206,19 +220,27 @@ button {
   background-color: lighten( $lconcrete, 20% );
 }
 
+.navbar-subitems-active {
+  background-color: lighten( $lconcrete, 20% );
+}
+
 .navbar-subitems:last-of-type {
   border: none;
 }
 
-.navbar-items:hover, .navbar-subitem:hover {
+.navbar-items:hover {
+  background-color: lighten($mgray, 5%);
+}
+
+.navbar-items:hover, .navbar-subitems:hover {
   cursor: pointer;
-  color: #d35400;
-  border-bottom: 3px solid #d35400;
+  color: $dorange;
 }
 
 .navbar-items-active {
-  color: #d35400;
-  border-bottom: 3px solid #d35400;
+  color: $dorange;
+  background-color: lighten($mgray, 5%);
+  border-bottom: solid 3px $dorange;
 }
 
 .navbar-sub {
@@ -248,13 +270,13 @@ button {
   }
   
   to {
-    height: 50px;
+    height: $submenu-height;
   }
 }
 
 @keyframes collapse {
   from {
-    height: 50px;
+    height: $submenu-height;
   }
   
   to {
@@ -291,9 +313,13 @@ button {
   margin-left: 2em;
 }
 
-.button {
+.base-button {
   font-size: 1em;
   padding: 3px;
+}
+
+.button {
+  @extend .base-button;
   margin-right: 10px;
   margin-left: 10px;
 }
@@ -303,7 +329,7 @@ button {
   padding: 3px;
 }
 
-.button:disabled {
+.base-button:disabled, .button:disabled {
   background-color: #ecf0f1;
 }
 
@@ -340,7 +366,7 @@ button {
 }
 
 .bg-dorange {
-  background-color: #d35400;
+  background-color: $dorange;
 }
 
 .bg-lblue {
@@ -368,11 +394,11 @@ button {
 }
 
 .bg-lgray {
-  background-color: #ecf0f1;
+  background-color: $lgray;
 }
 
 .bg-mgray {
-  background-color: #bdc3c7;
+  background-color: $mgray;
 }
 
 .bg-lightmidnightblue {
@@ -384,7 +410,7 @@ button {
 }
 
 .bg-lconcrete {
-  background-color: #95a5a6;
+  background-color: $lconcrete;
 }
 
 .bg-dconcrete {
@@ -420,7 +446,7 @@ button {
 }
 
 .tx-dorange {
-  color: #d35400;
+  color: $dorange;
 }
 
 .tx-lblue {
@@ -448,11 +474,11 @@ button {
 }
 
 .tx-lgray {
-  color: #ecf0f1;
+  color: $lgray;
 }
 
 .tx-mgray {
-  color: #bdc3c7;
+  color: $mgray;
 }
 
 .tx-lightmidnightblue {
@@ -464,7 +490,7 @@ button {
 }
 
 .tx-lconcrete {
-  color: #95a5a6;
+  color: $lconcrete;
 }
 
 .tx-dconcrete {
