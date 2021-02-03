@@ -13,6 +13,7 @@ import { updateSearch } from '../../helpers/updateSearch';
 import moment from "moment";
 import { faCheck, faExclamationTriangle, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { LayoutContent } from "../shared/LayoutContent";
 
 const headers = [
     { text: "EmailAddress", propertyName: 'EmailAddress', isSortable: true },
@@ -89,53 +90,55 @@ export function UserList(props) {
     return (
         <div className={`component ${isLoading ? "loading" : ""}`} >
             <ConfirmPopup text="Are you sure?" visible={isModalVisible} onConfirm={handleDeleteModalConfirm} onCancel={handleModalCancel} />
-            <DataTable
-                error={error}
-                isLoading={isLoading}
-                headers={headers}
-                sortingProperty={sortingProperty}
-                isDescending={isDescending}
-                filterProperty={filterProperty}
-                filterValue={filterValue}
-                items={users}
-                activePageNumber={activePageNumber}
-                maxPageNumber={maxPageNumber}
-                getRowForItem={(user, idx) => {
-                    return (
-                        <tr key={idx}>
-                            {error && error.rowidx === user.Id &&
-                                <td className="error">
-                                    <FontAwesomeIcon
-                                        className="tx-lred"
-                                        icon={faExclamationTriangle}
-                                        onMouseEnter={() => setHoveronIcon(error.rowidx)}
-                                        onMouseLeave={() => setHoveronIcon(null)}
-                                    />
-                                    {hoverOnIcon === error.rowidx && <div className="tooltip">{error.message}</div>}
-                                </td>}
-                            {error && error.rowidx !== user.Id &&
-                                <td className="error"></td>}
-                            <td>
-                                <span>{user.EmailAddress}</span>
-                            </td>
-                            <td>
-                                <span>{(user.IsActive === true) ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faTimesCircle} />}</span>
-                            </td>
-                            <td>
-                                <span>{(user.LastLogin !== null) ? moment(user.LastLogin).format("YYYY-MM-DD") : "Not Logged in yet."}</span>
-                            </td>
-                            <td>
-                                <>
-                                    <Link to={`/users/${user.Id}/update`}>
-                                        <Button text="Edit" />
-                                    </Link>
-                                    <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(user.Id)} />
-                                </>
-                            </td>
-                        </tr>
-                    );
-                }}
-            />
+            <LayoutContent>
+                <DataTable
+                    error={error}
+                    isLoading={isLoading}
+                    headers={headers}
+                    sortingProperty={sortingProperty}
+                    isDescending={isDescending}
+                    filterProperty={filterProperty}
+                    filterValue={filterValue}
+                    items={users}
+                    activePageNumber={activePageNumber}
+                    maxPageNumber={maxPageNumber}
+                    getRowForItem={(user, idx) => {
+                        return (
+                            <tr key={idx}>
+                                {error && error.rowidx === user.Id &&
+                                    <td className="error">
+                                        <FontAwesomeIcon
+                                            className="tx-lred"
+                                            icon={faExclamationTriangle}
+                                            onMouseEnter={() => setHoveronIcon(error.rowidx)}
+                                            onMouseLeave={() => setHoveronIcon(null)}
+                                        />
+                                        {hoverOnIcon === error.rowidx && <div className="tooltip">{error.message}</div>}
+                                    </td>}
+                                {error && error.rowidx !== user.Id &&
+                                    <td className="error"></td>}
+                                <td>
+                                    <span>{user.EmailAddress}</span>
+                                </td>
+                                <td>
+                                    <span>{(user.IsActive === true) ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faTimesCircle} />}</span>
+                                </td>
+                                <td>
+                                    <span>{(user.LastLogin !== null) ? moment(user.LastLogin).format("YYYY-MM-DD") : "Not Logged in yet."}</span>
+                                </td>
+                                <td>
+                                    <>
+                                        <Link to={`/users/${user.Id}/update`}>
+                                            <Button text="Edit" />
+                                        </Link>
+                                        <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(user.Id)} />
+                                    </>
+                                </td>
+                            </tr>
+                        );
+                    }}
+                />
+            </LayoutContent>
             <div className="footer">
                 <Link to={linkToCreate}>
                     <Button customClass="button-withoutmargin" text="Create" />

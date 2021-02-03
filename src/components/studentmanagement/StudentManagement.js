@@ -14,10 +14,20 @@ export function StudentManagement(props) {
         filterValue = encodeURIComponent(filterValue);
         return fetch(`/api/student?pageNumber=${pageNumber}&pageSize=${pageSize}` +
             `&sorting=${sortingProperty}&isDescending=${isDescending}` +
-            `&filterProperty=${filterProperty}&filterValue=${filterValue}&`)
+            `&filterProperty=${filterProperty}&filterValue=${filterValue}&schoolId=${schoolId ?? ''}`)
             .then(res => res.json())
             .finally(() => {
                 setIsLoading(false);
+            });
+    }, []);
+
+    const getAllSchools = useCallback(() => {
+        setIsLoading(true);
+
+        return fetch('/api/school/')
+            .then(res => res.json())
+            .finally(() => {
+                setIsLoading(false)
             });
     }, []);
 
@@ -99,9 +109,11 @@ export function StudentManagement(props) {
                 <StudentListPage
                     error={error}
                     isLoading={isLoading}
+                    getAllSchools={getAllSchools}
                     afterPaging={getData}
                     afterUpdate={getData}
                     afterDelete={getData}
+                    afterSelectSchool={getData}
                     onDelete={handleStudentDelete}
                     onUpdate={handleStudentUpdate} />
             </Route>

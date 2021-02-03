@@ -20,13 +20,9 @@ async function getStudentById(studentId) {
     return result.recordset[0];
 }
 
-async function listAllStudents(sortingProperty = 'Id', isAscending = true, filterProperty = 'FirstName', filter = '', schoolId) {
+async function listAllStudents(sortingProperty = 'Id', isAscending = true, filterProperty = 'FirstName', filter = '', schoolId = '') {
     await sql.connect(databaseConnection);
     const isAscendingParam = isAscending === true ? 1 : -1;
-
-    if (schoolId === undefined) {
-        schoolId = null;
-    }
 
     const result = await sql.query`
         with studentsWithRowNum AS
@@ -54,8 +50,8 @@ async function listAllStudents(sortingProperty = 'Id', isAscending = true, filte
                     inner join Students s on p.Id = s.PersonId
                     inner join SchoolStudent ss on ss.StudentId = s.Id
                     inner join Schools sc on sc.Id = ss.SchoolId
-                    where ${schoolId} is null and sc.Id in (select Id from Schools)
-				        or ${schoolId} is not null and sc.Id in (${schoolId})
+                    where ${schoolId} = '' and sc.Id in (select Id from Schools)
+                        or ${schoolId} != '' and sc.Id in (${schoolId})
         )
         select Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, StartDate, ActiveStatus
         from
@@ -83,12 +79,12 @@ async function listAllStudents(sortingProperty = 'Id', isAscending = true, filte
     };
 }
 
-async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscending = true, filterProperty = 'FirstName', filter = '', schoolId) {
+async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscending = true, filterProperty = 'FirstName', filter = '', schoolId = '') {
+    console.log(schoolId)
     await sql.connect(databaseConnection);
     const offset = (pageNumber === '0') ? 0 : (pageNumber - 1) * pageSize;
     const pageSizeAsNumber = parseInt(pageSize, 10);
     const isAscendingParam = isAscending === true ? 1 : -1;
-
     const pageResult = await sql.query`
     with studentsWithRowNum AS
         (
@@ -115,8 +111,8 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
                     inner join Students s on p.Id = s.PersonId
                     inner join SchoolStudent ss on ss.StudentId = s.Id
                     inner join Schools sc on sc.Id = ss.SchoolId
-                    where ${schoolId} is null and sc.Id in (select Id from Schools)
-				        or ${schoolId} is not null and sc.Id in (${schoolId})
+                    where ${schoolId} = '' and sc.Id in (select Id from Schools)
+                        or ${schoolId} != '' and sc.Id in (${schoolId})
         )
         select Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, StartDate, ActiveStatus
         from
@@ -162,7 +158,8 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
                     when 'StartDate'            then convert(nvarchar(max), StartDate)
                     when 'ActiveStatus'         then convert(nvarchar(max), ActiveStatus)
             end
-            like '%'+${filter}+'%' and sc.Id = ${schoolId}
+            like '%'+${filter}+'%' and ${schoolId} = '' and sc.Id in (select Id from Schools)
+                or ${schoolId} != '' and sc.Id in (${schoolId})
         )
         select count(*) as Count
         from studentsWithFilter;`;
@@ -276,6 +273,10 @@ async function deleteById(studentId) {
     const userId = personAndUserId.recordset[0].UserId;
 
     const result = await sql.query`
+        delete
+            from SchoolStudents
+        where StudentId = ${studentId}
+
         delete
             from Students
         where Id = ${studentId};

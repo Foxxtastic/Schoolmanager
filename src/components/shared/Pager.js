@@ -73,6 +73,11 @@ export function Pager(props) {
 
     const links = getLinks(activePageNumber, maxPageNumber, start, end);
 
+    if (links.length === 1) {
+        const onlyPage = links[0];
+        return getPagerButton(onlyPage.isActivePage, 0);    // 0 represents the first (the only) page.
+    }
+
     const result = [];
 
     for (let j = 1; j < links.length; j++) {

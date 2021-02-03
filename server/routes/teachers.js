@@ -4,10 +4,10 @@ const router = express.Router();
 
 router.get('/', async (req, res, next) => {
     try {
-        const { pageNumber, pageSize, sorting, isDescending, filterProperty, filterValue } = req.query;
+        const { pageNumber, pageSize, sorting, isDescending, filterProperty, filterValue, schoolId } = req.query;
         const isAscending = isDescending && isDescending === 'true' ? false : true;
         const teachers = await (pageNumber && pageSize ?
-            dataaccess.listPaged(pageNumber, pageSize, sorting, isAscending, filterProperty, filterValue) :
+            dataaccess.listPaged(pageNumber, pageSize, sorting, isAscending, filterProperty, filterValue, schoolId) :
             dataaccess.listAllTeachers(sorting, isAscending, filterProperty, filterValue));
         res.json(teachers);
     } catch (error) {

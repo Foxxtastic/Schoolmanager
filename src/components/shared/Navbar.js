@@ -8,8 +8,6 @@ function Navbar(props) {
     const [isShown, setIsShown] = useState(undefined);
     const [previousMenuItem, setPreviousMenuItem] = useState(undefined);
 
-    console.log(location);
-
     const getMenuItem = (item, idx) => {
         const classes = `navbar-items ${activeMenuIndex === idx ? "navbar-items-active" : "tx-lorange"}`
         if (item.link === undefined) {

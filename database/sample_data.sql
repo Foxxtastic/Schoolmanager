@@ -987,3 +987,30 @@ SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.Pers
 SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='DE 01200' AND u.EmailAddress='leni.geiszler@oelsnitzerzgeb.com'UNION
 SELECT sc.Id, st.Id FROM Schools sc, Students st INNER JOIN Persons p ON st.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='DE 01100' AND u.EmailAddress='torsten.fleischer@plauenvogtl.com'
 
+INSERT INTO [DBO].[SchoolTeacher](SchoolId, TeacherId)
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='mihaly.csombor@hajdunanas.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='120606' AND u.EmailAddress='katalin.hajdu@hajdunanas.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='FI 80798' AND u.EmailAddress='robert.puzser@budapest.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='FI 80798' AND u.EmailAddress='janos.kovacs@budapest.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='FI 80798' AND u.EmailAddress='janos.kadar@budapest.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='FI 23344' AND u.EmailAddress='barbara.barna@budapest.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='FI 23344' AND u.EmailAddress='ervin.nagy@budaors.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='FI 23344' AND u.EmailAddress='tunde.kobzos@budapest.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='ivan.szakaly@szeged.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='andrea.szel@szeged.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='15823443206' AND u.EmailAddress='laszlo.favago@szeged.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='031603' AND u.EmailAddress='farkas.beke@eger.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='031603' AND u.EmailAddress='elemer.soos@eger.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='031603' AND u.EmailAddress='marianna.szakacs@eger.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='CZ 12345' AND u.EmailAddress='lubomir.cermak@praha.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='CZ 12345' AND u.EmailAddress='kvetoslav.kovac@praha.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='CZ 12345' AND u.EmailAddress='nina.novak@praha.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='CZ 12345' AND u.EmailAddress='alfred.hlavacek@praha.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='AT 22222' AND u.EmailAddress='thomas.wolf@graz.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='AT 22222' AND u.EmailAddress='zuzanna.ostrowski@graz.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='AT 22222' AND u.EmailAddress='gunther.bieber@graz.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='DE 01200' AND u.EmailAddress='ruedi.kaufmann@dresden.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='DE 01200' AND u.EmailAddress='kristin.muller@dresden.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='DE 01100' AND u.EmailAddress='simon.hofmann@leipzig.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='DE 01100' AND u.EmailAddress='roger.burgstaller@leipzig.com'UNION
+SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='DE 01200' AND u.EmailAddress='rudinger.hahn@bannerwitz.com'

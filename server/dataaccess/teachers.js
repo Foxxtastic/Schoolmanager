@@ -51,7 +51,7 @@ async function getTeacherById(teacherId) {
     }
 }
 
-async function listAllTeachers(sortingProperty = 'Id', isAscending = true, filterProperty = 'FirstName', filter = '') {
+async function listAllTeachers(sortingProperty = 'Id', isAscending = true, filterProperty = 'FirstName', filter = '', schoolId = '') {
     await sql.connect(databaseConnection);
     const isAscendingParam = isAscending === true ? 1 : -1;
 
@@ -59,7 +59,7 @@ async function listAllTeachers(sortingProperty = 'Id', isAscending = true, filte
     with teachersWithRowNum AS
         (
             select
-                t.Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, UserId,
+                t.Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, p.City, p.Address, UserId,
                 row_number() over(
                     order by
                         case ${sortingProperty}
@@ -69,13 +69,17 @@ async function listAllTeachers(sortingProperty = 'Id', isAscending = true, filte
                             when 'BirthDate'            then convert(nvarchar(max), BirthDate)
                             when 'Nationality'          then convert(nvarchar(max), Nationality)
                             when 'SecondNationality'    then convert(nvarchar(max), SecondNationality)
-                            when 'City'                 then convert(nvarchar(max), City)
-                            when 'Address'              then convert(nvarchar(max), Address)
+                            when 'City'                 then convert(nvarchar(max), p.City)
+                            when 'Address'              then convert(nvarchar(max), p.Address)
                         end
                 ) as RowNum
             from 
-                Teachers t
-                inner join Persons p on t.PersonId = p.Id   
+                Persons p
+                inner join Teachers t on t.PersonId = p.Id
+                inner join SchoolTeacher st on st.TeacherId = t.Id
+                inner join Schools sc on sc.Id = st.SchoolId
+                where ${schoolId} = '' and sc.Id in (select Id from Schools)
+                    or ${schoolId} != '' and sc.Id in (${schoolId})
         )
     select Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address
     from
@@ -111,7 +115,7 @@ async function listAllTeachers(sortingProperty = 'Id', isAscending = true, filte
     };
 }
 
-async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscending = true, filterProperty = 'FirstName', filter = '') {
+async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscending = true, filterProperty = 'FirstName', filter = '', schoolId) {
     await sql.connect(databaseConnection);
     const offset = (pageNumber === '0') ? 0 : (pageNumber - 1) * pageSize;
     const pageSizeAsNumber = parseInt(pageSize, 10);
@@ -121,7 +125,7 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
         with teachersWithRowNum AS
         (
             select
-                t.Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, UserId,
+                t.Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, p.City, p.Address, UserId,
                 row_number() over
                 (
                     order by
@@ -132,13 +136,17 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
                             when 'BirthDate'            then convert(nvarchar(max), BirthDate)
                             when 'Nationality'          then convert(nvarchar(max), Nationality)
                             when 'SecondNationality'    then convert(nvarchar(max), SecondNationality)
-                            when 'City'                 then convert(nvarchar(max), City)
-                            when 'Address'              then convert(nvarchar(max), Address)
+                            when 'City'                 then convert(nvarchar(max), p.City)
+                            when 'Address'              then convert(nvarchar(max), p.Address)
                         end
                 ) as RowNum
             from 
-                Teachers t
-                inner join Persons p on t.PersonId = p.Id
+                Persons p
+                    inner join Teachers t on t.PersonId = p.Id
+                    inner join SchoolTeacher st on st.TeacherId = t.Id
+                    inner join Schools sc on sc.Id = st.SchoolId
+                where ${schoolId} = '' and sc.Id in (select Id from Schools)
+                    or ${schoolId} != '' and sc.Id in (${schoolId})
         )
         select Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address
         from
@@ -163,11 +171,12 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
     const countResult = await sql.query`
         with teachersWithFilter as
         (
-            select t.Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address
+            select t.Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, p.City, p.Address
             from
-                Teachers t
-                inner join Persons p
-                on t.PersonId = p.Id
+                Persons p
+                    inner join Teachers t on t.PersonId = p.Id
+                    inner join SchoolTeacher st on st.TeacherId = t.Id
+                    inner join Schools sc on sc.Id = st.SchoolId
             where 
                 case ${filterProperty}
                     when 'Id'                   then convert(nvarchar(max), t.Id)
@@ -176,10 +185,11 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
                     when 'BirthDate'            then convert(nvarchar(max), BirthDate)
                     when 'Nationality'          then convert(nvarchar(max), Nationality)
                     when 'SecondNationality'    then convert(nvarchar(max), SecondNationality)
-                    when 'City'                 then convert(nvarchar(max), City)
-                    when 'Address'              then convert(nvarchar(max), Address)
+                    when 'City'                 then convert(nvarchar(max), p.City)
+                    when 'Address'              then convert(nvarchar(max), p.Address)
                 end
-                like '%' + ${filter} +'%'
+                like '%'+${filter}+'%' and ${schoolId} = '' and sc.Id in (select Id from Schools)
+                    or ${schoolId} != '' and sc.Id in (${schoolId})
         )
         select count(*) as Count
         from teachersWithFilter`;
@@ -187,7 +197,10 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
     const count = countResult.recordset[0].Count;
     const teacherIdList = pageResult.recordset.map(x => x.Id);
 
-    const majors = await sql.query`
+    let items = [];
+
+    if (teacherIdList.length !== 0) {
+        const majors = await sql.query`
     select t.Id as TeacherId, m.Id as MajorId, m.Name as MajorName
         from
  	    Teachers t
@@ -195,8 +208,10 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
  	    inner join Majors m on m.Id = mt.MajorId
         where t.Id in (${teacherIdList})`;
 
-    const majorsByTeacherId = convertToList(majors.recordset);
-    let items = pageResult.recordset.map(x => ({ ...x, majors: majorsByTeacherId[x.Id.toString()] }))
+
+        const majorsByTeacherId = convertToList(majors.recordset);
+        items = pageResult.recordset.map(x => ({ ...x, majors: majorsByTeacherId[x.Id.toString()] }))
+    }
 
     return {
         items,
@@ -321,6 +336,10 @@ async function deleteById(teacherId) {
     const userId = personAndUserId.recordset[0].UserId;
 
     const result = await sql.query`
+        delete
+            from SchoolTeachers
+        where TeacherId = ${teacherId}
+    
         delete
             from MajorTeacher
         where TeacherId = ${teacherId};

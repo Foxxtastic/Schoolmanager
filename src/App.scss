@@ -2,11 +2,17 @@ $lconcrete: #95a5a6;
 $lgray: #ecf0f1;
 $mgray: #bdc3c7;
 $dorange: #d35400;
+$color: #3694d7;
+$timing: 0.3s;
+$dropdown-length: 2em;
 
 $submenu-height: 50px;
 
-html, body, #root { 
-  height: 100%; margin: 0; 
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
 }
 
 a {
@@ -32,7 +38,7 @@ table {
 
 .headerbutton {
   border: none;
-  background-color:rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0);
   padding: 0;
   font-size: 1em;
 }
@@ -51,15 +57,15 @@ table {
   padding: 5px;
 }
 
-input {
+.dropdown-input {
   border: 1px solid #c4c4c4;
   border-radius: 5px;
   background-color: #fff;
   padding: 3px 5px;
-  box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
-#majorlist option{
+#majorlist option {
   background-color: red;
 }
 
@@ -108,7 +114,7 @@ button {
   right: 0;
   top: 0;
   bottom: 0;
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .loader-container .loader {
@@ -134,7 +140,7 @@ button {
 }
 
 .datatable-content {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border-collapse: collapse;
   border-width: 2px;
   border-color: #7ea8f8;
@@ -150,7 +156,8 @@ button {
   margin-right: 5px;
 }
 
-.datatable td, .datatable th {
+.datatable td,
+.datatable th {
   border-width: 2px;
   width: 1%;
   border-color: #1abc9c;
@@ -160,7 +167,7 @@ button {
   white-space: nowrap;
 }
 
-.datatable td input {
+.datatable td .dropdown-input {
   width: 100%;
 }
 
@@ -180,7 +187,7 @@ button {
   grid-template-areas:
     "navbar-container"
     "main-header"
-    "maincontent";
+    "main-content";
 }
 
 .navbar-container {
@@ -188,7 +195,7 @@ button {
   background-color: $lgray;
 }
 
-.navbar { 
+.navbar {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -213,15 +220,14 @@ button {
   padding-right: 0.75rem;
   padding-left: 0.75rem;
   border-right: solid 1px $lgray;
-
 }
 
 .navbar-subitems:hover {
-  background-color: lighten( $lconcrete, 20% );
+  background-color: lighten($lconcrete, 20%);
 }
 
 .navbar-subitems-active {
-  background-color: lighten( $lconcrete, 20% );
+  background-color: lighten($lconcrete, 20%);
 }
 
 .navbar-subitems:last-of-type {
@@ -232,7 +238,8 @@ button {
   background-color: lighten($mgray, 5%);
 }
 
-.navbar-items:hover, .navbar-subitems:hover {
+.navbar-items:hover,
+.navbar-subitems:hover {
   cursor: pointer;
   color: $dorange;
 }
@@ -268,7 +275,7 @@ button {
   from {
     height: 0px;
   }
-  
+
   to {
     height: $submenu-height;
   }
@@ -278,7 +285,7 @@ button {
   from {
     height: $submenu-height;
   }
-  
+
   to {
     height: 0px;
   }
@@ -291,7 +298,7 @@ button {
 }
 
 .main-content {
-  grid-area: maincontent; 
+  grid-area: main-content;
 }
 
 .component {
@@ -306,6 +313,7 @@ button {
 
 .component-data {
   grid-area: component-data;
+  position: relative;
 }
 
 .footer {
@@ -329,12 +337,158 @@ button {
   padding: 3px;
 }
 
-.base-button:disabled, .button:disabled {
+.base-button:disabled,
+.button:disabled {
   background-color: #ecf0f1;
 }
 
 .createitem {
   margin: 5em;
+}
+
+.dropdown-container {
+  position: relative;
+  margin-top: 1vh;
+  min-height: $dropdown-length;
+}
+
+.datatable-label {
+  position: relative;
+  display: inline-block;
+  margin-top: $dropdown-length / 1.1;
+  margin-left: $dropdown-length;
+}
+
+.dropdown {
+  margin-top: 1vh;
+  min-width: 12em;
+  position: absolute;
+  z-index: 9999;
+  display: inline-block;
+  margin-left: $dropdown-length / 2;
+  min-height: $dropdown-length;
+  max-height: $dropdown-length;
+  overflow: hidden;
+  top: 0.5em;
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+  color: #444;
+  outline: none;
+  border: 0.06em solid transparent;
+  border-radius: 0.25em;
+  background-color: mix($color, #fff, 25%);
+
+  transition: $timing all ease-in-out;
+
+  .value-holder {
+    display: block;
+    height: $dropdown-length;
+    line-height: $dropdown-length;
+    padding-left: 1em;
+    padding-right: 3em;
+    cursor: pointer;
+    border-bottom: 0.06em solid #d9d9d9;
+  }
+
+  .options {
+    scrollbar-color: $color white;
+    scrollbar-width: thin;
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 0em;
+    top: $dropdown-length;
+    left: 0;
+    right: 0;
+    transition: $timing all ease-in-out;
+  }
+
+  input:focus + label {
+    background: #def;
+  }
+  input {
+    width: 1px;
+    height: 1px;
+    display: inline-block;
+    position: absolute;
+    opacity: 0.01;
+  }
+  label {
+    border-top: 0.06em solid #d9d9d9;
+    display: block;
+    height: $dropdown-length;
+    line-height: $dropdown-length;
+    padding-left: 1em;
+    padding-right: 3em;
+    cursor: pointer;
+    transition: $timing color ease-in-out;
+    &:nth-child(2) {
+      border-top: 0.06em solid #d9d9d9;
+    }
+  }
+  input + label:before {
+    content: attr(data-text);
+    display: block;
+    border-top: none;
+    width: 100%;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: 0.8em;
+    top: 0.9em;
+    border: 0.3em solid $color;
+    border-color: $color transparent transparent transparent;
+    transition: 0.15s all ease-in-out;
+  }
+  &.expanded {
+    border: 0.06em solid $color;
+    background: #fff;
+    border-radius: 0.25em;
+    padding: 0;
+    box-shadow: rgba(0, 0, 0, 0.1) 3px 3px 5px 0px;
+    max-height: unset;
+    overflow: visible;
+
+    .options {
+      max-height: 15em;
+    }
+
+    label {
+      border-top: 0.06em solid #d9d9d9;
+      &:hover {
+        color: $color;
+      }
+    }
+    input:checked + label {
+      color: $color;
+    }
+
+    &::after {
+      transform: rotate(-180deg);
+      top: 0.55em;
+    }
+  }
+}
+
+.options::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}
+
+.options::-webkit-scrollbar {
+  width: 6px;
+  background-color: #f5f5f5;
+}
+
+.options::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: $color;
 }
 
 .bg-lturquoise {
@@ -349,7 +503,7 @@ button {
   background-color: #f1c40f;
 }
 
-.bg-dyellow{
+.bg-dyellow {
   background-color: #f39c12;
 }
 
@@ -429,7 +583,7 @@ button {
   color: #f1c40f;
 }
 
-.tx-dyellow{
+.tx-dyellow {
   color: #f39c12;
 }
 
@@ -519,7 +673,7 @@ button {
   }
 
   100% {
-    border-top: solid rgba(142, 68, 173, 1.0);
+    border-top: solid rgba(142, 68, 173, 1);
   }
 }
 
@@ -562,7 +716,7 @@ button {
   padding: 5px;
 }
 
-.filtermenu-content div{
+.filtermenu-content div {
   text-align: left;
 }
 

@@ -17,8 +17,8 @@ export function MultiSelector(props) {
                 {labelText === undefined ? name : labelText}:
             </label>
             {selectedItems && selectedItems.map((x, idx) => <Item value={x} key={"b" + idx} handleRemove={handleRemoveItem} />)}
-            <input placeholder={defaultValue} list="majorlist" defaultValue={""} onBlur={(e) => handleSelectionChange(e.target.value)} />
-            <datalist id="majorlist" name={name}>
+            <input placeholder={defaultValue} list="list" defaultValue={""} onBlur={(e) => handleSelectionChange(e.target.value)} />
+            <datalist id="list" name={name}>
                 {optionList && optionList.map((_, idx) => <option key={idx} value={_}>{_}</option>)}
             </datalist>
         </div >

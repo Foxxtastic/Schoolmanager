@@ -13,6 +13,9 @@ import { updateSearch } from '../../helpers/updateSearch';
 import moment from "moment";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { LayoutContent } from "../shared/LayoutContent";
+import { useSchoolId } from "../../hooks/useSchoolId";
+import { DropDown } from "../shared/DropDown";
 
 const headers = [
     { text: "First Name", propertyName: 'FirstName', isSortable: true },
@@ -36,6 +39,8 @@ export function TeacherList(props) {
     activePageNumber = activePageNumber === null ? 1 : activePageNumber;
 
     const [teachers, setTeachers] = useState(undefined);
+    const [schools, setSchools] = useState(undefined);
+    const [selectedSchool, setSelectedSchool] = useState(undefined);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [activeIdForDelete, setActiveIdForDelete] = useState(null);
     const [maxPageNumber, setMaxPageNumber] = useState(undefined);
@@ -51,7 +56,9 @@ export function TeacherList(props) {
     let filterValue = useFilterValue();
     filterValue = filterValue === null ? '' : filterValue;
 
-    const { error, afterDelete, afterPaging, linkToCreate, onDelete, isLoading } = props;
+    let schoolId = useSchoolId();
+
+    const { error, afterDelete, afterPaging, linkToCreate, onDelete, isLoading, getAllSchools, afterSelectSchool } = props;
 
     const setTeachersFromServer = (listResponse) => {
         setMaxPageNumber(calculateMaxPage(listResponse));
@@ -70,6 +77,18 @@ export function TeacherList(props) {
         });
     }, [activePageNumber, afterPaging, sortingProperty, isDescending, filterProperty, filterValue]);
 
+    useEffect(() => {
+        getAllSchools().then(listResponse => setSchools([{ Id: '', Name: 'All' }].concat(listResponse.items)));
+    }, [getAllSchools]);
+
+    useEffect(() => {
+        if (schools && schools.find(x => x.Name === selectedSchool)) {
+            schoolId = schools.find(x => x.Name === selectedSchool).Id
+            afterSelectSchool(activePageNumber, sortingProperty, isDescending, filterProperty, filterValue, schoolId)
+                .then(setTeachersFromServer);
+        }
+    }, [selectedSchool, schools, schoolId]);
+
     const handleDeleteModalShown = (id) => {
         setIsModalVisible(true);
         setActiveIdForDelete(id);
@@ -87,6 +106,10 @@ export function TeacherList(props) {
         setIsModalVisible(false);
     }
 
+    const handleSelectSchool = (school) => {
+        setSelectedSchool(school)
+    }
+
     if (teachers === undefined) {
         return 'Loading...';
     }
@@ -94,68 +117,71 @@ export function TeacherList(props) {
     return (
         <div className={`component ${isLoading ? "loading" : ""}`} >
             <ConfirmPopup text="Are you sure?" visible={isModalVisible} onConfirm={handleDeleteModalConfirm} onCancel={handleModalCancel} />
-            <DataTable
-                error={error}
-                isLoading={isLoading}
-                headers={headers}
-                sortingProperty={sortingProperty}
-                isDescending={isDescending}
-                filterProperty={filterProperty}
-                filterValue={filterValue}
-                items={teachers}
-                activePageNumber={activePageNumber}
-                maxPageNumber={maxPageNumber}
-                getRowForItem={(teacher, idx) => {
-                    return (
-                        <tr key={idx}>
-                            {error && error.rowidx === teacher.Id &&
-                                <td className="error">
-                                    <FontAwesomeIcon
-                                        className="tx-lred"
-                                        icon={faExclamationTriangle}
-                                        onMouseEnter={() => setHoveronIcon(error.rowidx)}
-                                        onMouseLeave={() => setHoveronIcon(null)}
-                                    />
-                                    {hoverOnIcon === error.rowidx && <div className="tooltip">{error.message}</div>}
-                                </td>}
-                            {error && error.rowidx !== teacher.Id &&
-                                <td className="error"></td>}
-                            <td>
-                                <span>{teacher.FirstName}</span>
-                            </td>
-                            <td>
-                                <span>{teacher.LastName}</span>
-                            </td>
-                            <td>
-                                <span>{moment(teacher.BirthDate).format("YYYY-MM-DD")}</span>
-                            </td>
-                            <td>
-                                <span>{teacher.Nationality}</span>
-                            </td>
-                            <td>
-                                <span>{teacher.SecondNationality}</span>
-                            </td>
-                            <td>
-                                <span>{teacher.City}</span>
-                            </td>
-                            <td>
-                                <span>{teacher.Address}</span>
-                            </td>
-                            <td>
-                                {teacher.majors !== undefined && <span>{teacher.majors.map(_ => _.MajorName).join(', ')}</span>}
-                            </td>
-                            <td>
-                                <>
-                                    <Link to={`/teachers/${teacher.Id}/update`} >
-                                        <Button text="Edit" />
-                                    </Link>
-                                    <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(teacher.Id)} />
-                                </>
-                            </td>
-                        </tr>
-                    );
-                }}
-            />
+            <LayoutContent>
+                {schools && <DropDown dropDownList={schools} label={"Teachers of"} defaultValue="All" onSelect={handleSelectSchool} />}
+                <DataTable
+                    error={error}
+                    isLoading={isLoading}
+                    headers={headers}
+                    sortingProperty={sortingProperty}
+                    isDescending={isDescending}
+                    filterProperty={filterProperty}
+                    filterValue={filterValue}
+                    items={teachers}
+                    activePageNumber={activePageNumber}
+                    maxPageNumber={maxPageNumber}
+                    getRowForItem={(teacher, idx) => {
+                        return (
+                            <tr key={idx}>
+                                {error && error.rowidx === teacher.Id &&
+                                    <td className="error">
+                                        <FontAwesomeIcon
+                                            className="tx-lred"
+                                            icon={faExclamationTriangle}
+                                            onMouseEnter={() => setHoveronIcon(error.rowidx)}
+                                            onMouseLeave={() => setHoveronIcon(null)}
+                                        />
+                                        {hoverOnIcon === error.rowidx && <div className="tooltip">{error.message}</div>}
+                                    </td>}
+                                {error && error.rowidx !== teacher.Id &&
+                                    <td className="error"></td>}
+                                <td>
+                                    <span>{teacher.FirstName}</span>
+                                </td>
+                                <td>
+                                    <span>{teacher.LastName}</span>
+                                </td>
+                                <td>
+                                    <span>{moment(teacher.BirthDate).format("YYYY-MM-DD")}</span>
+                                </td>
+                                <td>
+                                    <span>{teacher.Nationality}</span>
+                                </td>
+                                <td>
+                                    <span>{teacher.SecondNationality}</span>
+                                </td>
+                                <td>
+                                    <span>{teacher.City}</span>
+                                </td>
+                                <td>
+                                    <span>{teacher.Address}</span>
+                                </td>
+                                <td>
+                                    {teacher.majors !== undefined && <span>{teacher.majors.map(_ => _.MajorName).join(', ')}</span>}
+                                </td>
+                                <td>
+                                    <>
+                                        <Link to={`/teachers/${teacher.Id}/update`} >
+                                            <Button text="Edit" />
+                                        </Link>
+                                        <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(teacher.Id)} />
+                                    </>
+                                </td>
+                            </tr>
+                        );
+                    }}
+                />
+            </LayoutContent>
             <div className="footer">
                 <Link to={linkToCreate}>
                     <Button customClass="button-withoutmargin" text="Create" />

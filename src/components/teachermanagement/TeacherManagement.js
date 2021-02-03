@@ -18,12 +18,22 @@ export function TeacherManagement(props) {
                 setIsLoading(false));
     }, []);
 
-    const getData = useCallback((pageNumber, sortingProperty, isDescending, filterProperty, filterValue) => {
+    const getAllSchools = useCallback(() => {
+        setIsLoading(true);
+
+        return fetch('/api/school/')
+            .then(res => res.json())
+            .finally(() => {
+                setIsLoading(false)
+            });
+    }, []);
+
+    const getData = useCallback((pageNumber, sortingProperty, isDescending, filterProperty, filterValue, schoolId) => {
         setIsLoading(true);
         filterValue = encodeURIComponent(filterValue);
         return fetch(`/api/teacher?pageNumber=${pageNumber}&pageSize=${pageSize}` +
             `&sorting=${sortingProperty}&isDescending=${isDescending}` +
-            `&filterProperty=${filterProperty}&filterValue=${filterValue}`)
+            `&filterProperty=${filterProperty}&filterValue=${filterValue}&schoolId=${schoolId ?? ''}`)
             .then(res => res.json())
             .finally(() => {
                 setIsLoading(false);
@@ -128,6 +138,8 @@ export function TeacherManagement(props) {
                 <TeacherListPage
                     error={error}
                     isLoading={isLoading}
+                    getAllSchools={getAllSchools}
+                    afterSelectSchool={getData}
                     afterPaging={getData}
                     afterUpdate={getData}
                     afterDelete={getData}

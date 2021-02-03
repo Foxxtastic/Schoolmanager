@@ -12,6 +12,7 @@ import { useSortingDirection } from "../../hooks/useSortingDirection";
 import { useFilterProperty } from "../../hooks/useFilterProperty";
 import { useFilterValue } from "../../hooks/useFilterValue";
 import { updateSearch } from '../../helpers/updateSearch';
+import { LayoutContent } from "../shared/LayoutContent";
 
 const headers = [
     { text: "Educational Id", propertyName: 'EduId', isSortable: true },
@@ -132,77 +133,79 @@ export function SchoolList(props) {
     return (
         <div className={`component ${isLoading ? "loading" : ""}`} >
             <ConfirmPopup text="Are you sure?" visible={isModalVisible} onConfirm={handleDeleteModalConfirm} onCancel={handleModalCancel} />
-            <DataTable
-                error={error}
-                isLoading={isLoading}
-                headers={headers}
-                sortingProperty={sortingProperty}
-                isDescending={isDescending}
-                filterProperty={filterProperty}
-                filterValue={filterValue}
-                items={schools}
-                activePageNumber={activePageNumber}
-                maxPageNumber={maxPageNumber}
-                getRowForItem={(school, idx) => {
-                    const isEditing = editor.isEditMode && editor.rowKey === school.Id;
+            <LayoutContent>
+                <DataTable
+                    error={error}
+                    isLoading={isLoading}
+                    headers={headers}
+                    sortingProperty={sortingProperty}
+                    isDescending={isDescending}
+                    filterProperty={filterProperty}
+                    filterValue={filterValue}
+                    items={schools}
+                    activePageNumber={activePageNumber}
+                    maxPageNumber={maxPageNumber}
+                    getRowForItem={(school, idx) => {
+                        const isEditing = editor.isEditMode && editor.rowKey === school.Id;
 
-                    return (
-                        <tr key={idx}>
-                            <td>
-                                {isEditing ?
-                                    <>
-                                        <input name="eduId" defaultValue={school.EduId} ref={register({ required: true })} />
-                                        <ValidationErrors name="eduId" errors={errors} />
-                                    </> :
-                                    <span>{school.EduId}</span>}
-                            </td>
-                            <td>
-                                {isEditing ?
-                                    <>
-                                        <input name="name" defaultValue={school.Name} ref={register({ required: true })} />
-                                        <ValidationErrors name="name" errors={errors} />
-                                    </> :
-                                    <span>{school.Name}</span>}
-                            </td>
-                            <td>
-                                {isEditing ?
-                                    <>
-                                        <input name="country" defaultValue={school.Country} ref={register({ required: true })} />
-                                        <ValidationErrors name="country" errors={errors} />
-                                    </> :
-                                    <span>{school.Country}</span>}
-                            </td>
-                            <td>
-                                {isEditing ?
-                                    <>
-                                        <input name="city" defaultValue={school.City} ref={register({ required: true })} />
-                                        <ValidationErrors name="city" errors={errors} />
-                                    </> :
-                                    <span>{school.City}</span>}
-                            </td>
-                            <td>
-                                {isEditing ?
-                                    <>
-                                        <input name="address" defaultValue={school.Address} ref={register({ required: true })} />
-                                        <ValidationErrors name="address" errors={errors} />
-                                    </> :
-                                    <span>{school.Address}</span>}
-                            </td>
-                            <td>
-                                {isEditing ?
-                                    <>
-                                        <Button disabled={isLoading} text="Ok" handleClick={handleSubmit((formData) => onSubmit(school.Id, formData))} />
-                                        <Button disabled={isLoading} text="Cancel" handleClick={() => closeEditor()} />
-                                    </> :
-                                    <>
-                                        <Button disabled={isLoading} text="Edit" handleClick={() => openEditor(school.Id)} />
-                                        <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(school.Id)} />
-                                    </>}
-                            </td>
-                        </tr>
-                    );
-                }}
-            />
+                        return (
+                            <tr key={idx}>
+                                <td>
+                                    {isEditing ?
+                                        <>
+                                            <input name="eduId" defaultValue={school.EduId} ref={register({ required: true })} />
+                                            <ValidationErrors name="eduId" errors={errors} />
+                                        </> :
+                                        <span>{school.EduId}</span>}
+                                </td>
+                                <td>
+                                    {isEditing ?
+                                        <>
+                                            <input name="name" defaultValue={school.Name} ref={register({ required: true })} />
+                                            <ValidationErrors name="name" errors={errors} />
+                                        </> :
+                                        <span>{school.Name}</span>}
+                                </td>
+                                <td>
+                                    {isEditing ?
+                                        <>
+                                            <input name="country" defaultValue={school.Country} ref={register({ required: true })} />
+                                            <ValidationErrors name="country" errors={errors} />
+                                        </> :
+                                        <span>{school.Country}</span>}
+                                </td>
+                                <td>
+                                    {isEditing ?
+                                        <>
+                                            <input name="city" defaultValue={school.City} ref={register({ required: true })} />
+                                            <ValidationErrors name="city" errors={errors} />
+                                        </> :
+                                        <span>{school.City}</span>}
+                                </td>
+                                <td>
+                                    {isEditing ?
+                                        <>
+                                            <input name="address" defaultValue={school.Address} ref={register({ required: true })} />
+                                            <ValidationErrors name="address" errors={errors} />
+                                        </> :
+                                        <span>{school.Address}</span>}
+                                </td>
+                                <td>
+                                    {isEditing ?
+                                        <>
+                                            <Button disabled={isLoading} text="Ok" handleClick={handleSubmit((formData) => onSubmit(school.Id, formData))} />
+                                            <Button disabled={isLoading} text="Cancel" handleClick={() => closeEditor()} />
+                                        </> :
+                                        <>
+                                            <Button disabled={isLoading} text="Edit" handleClick={() => openEditor(school.Id)} />
+                                            <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(school.Id)} />
+                                        </>}
+                                </td>
+                            </tr>
+                        );
+                    }}
+                />
+            </LayoutContent>
             <div className="footer">
                 <Link to={linkToCreate}>
                     <Button customClass="button-withoutmargin" text="Create" />

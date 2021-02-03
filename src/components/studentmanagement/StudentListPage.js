@@ -4,7 +4,7 @@ import { MainHeader } from "../shared/MainHeader";
 import { StudentList } from "./StudentList";
 
 export function StudentListPage(props) {
-    const { error, isLoading, afterPaging, afterDelete, afterUpdate, onDelete, onUpdate } = props;
+    const { error, isLoading, afterPaging, afterDelete, afterUpdate, onDelete, onUpdate, getAllSchools, afterSelectSchool } = props;
 
     return (
         <>
@@ -13,10 +13,12 @@ export function StudentListPage(props) {
                 <StudentList
                     error={error}
                     isLoading={isLoading}
+                    getAllSchools={getAllSchools}
                     linkToCreate="/students/create"
                     afterPaging={afterPaging}
                     afterUpdate={afterUpdate}
                     afterDelete={afterDelete}
+                    afterSelectSchool={afterSelectSchool}
                     onDelete={onDelete}
                     onUpdate={onUpdate}
                 />

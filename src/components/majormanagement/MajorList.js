@@ -13,6 +13,7 @@ import { useFilterValue } from "../../hooks/useFilterValue";
 import { updateSearch } from '../../helpers/updateSearch';
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { LayoutContent } from "../shared/LayoutContent";
 
 const headers = [
     { text: "Name", propertyName: 'Name', isSortable: true },
@@ -136,68 +137,70 @@ export function MajorList(props) {
     return (
         <div className={`component ${isLoading ? "loading" : ""}`} >
             <ConfirmPopup text="Are you sure?" visible={isModalVisible} onConfirm={handleDeleteModalConfirm} onCancel={handleModalCancel} />
-            <DataTable
-                isInEditMode={editor.isEditMode}
-                isInlineCreate={true}
-                onCreate={handleCreate}
-                error={error}
-                isLoading={isLoading}
-                headers={headers}
-                sortingProperty={sortingProperty}
-                isDescending={isDescending}
-                filterProperty={filterProperty}
-                filterValue={filterValue}
-                items={majors}
-                activePageNumber={activePageNumber}
-                maxPageNumber={maxPageNumber}
-                getCreateRowColumns={({ register, errors }) =>
-                    <>
-                        <td>
-                            <input type="text" name="Name" ref={register({ required: true })} />
-                            <ValidationErrors name="Name" errors={errors} />
-                        </td>
-                    </>
-                }
-                getRowForItem={(major, idx, isInCreateMode) => {
-                    const isEditing = editor.isEditMode && editor.rowKey === major.Id;
+            <LayoutContent>
+                <DataTable
+                    isInEditMode={editor.isEditMode}
+                    isInlineCreate={true}
+                    onCreate={handleCreate}
+                    error={error}
+                    isLoading={isLoading}
+                    headers={headers}
+                    sortingProperty={sortingProperty}
+                    isDescending={isDescending}
+                    filterProperty={filterProperty}
+                    filterValue={filterValue}
+                    items={majors}
+                    activePageNumber={activePageNumber}
+                    maxPageNumber={maxPageNumber}
+                    getCreateRowColumns={({ register, errors }) =>
+                        <>
+                            <td>
+                                <input type="text" name="Name" ref={register({ required: true })} />
+                                <ValidationErrors name="Name" errors={errors} />
+                            </td>
+                        </>
+                    }
+                    getRowForItem={(major, idx, isInCreateMode) => {
+                        const isEditing = editor.isEditMode && editor.rowKey === major.Id;
 
-                    return (
-                        <tr key={idx}>
-                            {error && error.rowidx === major.Id &&
-                                <td className="error">
-                                    <FontAwesomeIcon
-                                        className="tx-lred"
-                                        icon={faExclamationTriangle}
-                                        onMouseEnter={() => setHoveronIcon(error.rowidx)}
-                                        onMouseLeave={() => setHoveronIcon(null)}
-                                    />
-                                    {hoverOnIcon === error.rowidx && <div className="tooltip">{error.message}</div>}
-                                </td>}
-                            {error && error.rowidx !== major.Id &&
-                                <td className="error"></td>}
-                            <td>
-                                {isEditing ?
-                                    <>
-                                        <input name="Name" defaultValue={major.Name} ref={register({ required: true })} />
-                                        <ValidationErrors name="Name" errors={errors} />
-                                    </> :
-                                    <span>{major.Name}</span>}
-                            </td>
-                            <td>
-                                {isEditing ?
-                                    <>
-                                        <Button disabled={isLoading} text="Ok" handleClick={handleSubmit((formData) => onSubmit(major.Id, formData))} />
-                                        <Button disabled={isLoading} text="Cancel" handleClick={() => closeEditor()} />
-                                    </> :
-                                    <>
-                                        <Button disabled={isLoading || isInCreateMode} text="Edit" handleClick={() => openEditor(major.Id)} />
-                                        <Button disabled={isLoading || isInCreateMode} text="Delete" handleClick={() => handleDeleteModalShown(major.Id)} />
-                                    </>}
-                            </td>
-                        </tr>
-                    );
-                }}
-            />
+                        return (
+                            <tr key={idx}>
+                                {error && error.rowidx === major.Id &&
+                                    <td className="error">
+                                        <FontAwesomeIcon
+                                            className="tx-lred"
+                                            icon={faExclamationTriangle}
+                                            onMouseEnter={() => setHoveronIcon(error.rowidx)}
+                                            onMouseLeave={() => setHoveronIcon(null)}
+                                        />
+                                        {hoverOnIcon === error.rowidx && <div className="tooltip">{error.message}</div>}
+                                    </td>}
+                                {error && error.rowidx !== major.Id &&
+                                    <td className="error"></td>}
+                                <td>
+                                    {isEditing ?
+                                        <>
+                                            <input name="Name" defaultValue={major.Name} ref={register({ required: true })} />
+                                            <ValidationErrors name="Name" errors={errors} />
+                                        </> :
+                                        <span>{major.Name}</span>}
+                                </td>
+                                <td>
+                                    {isEditing ?
+                                        <>
+                                            <Button disabled={isLoading} text="Ok" handleClick={handleSubmit((formData) => onSubmit(major.Id, formData))} />
+                                            <Button disabled={isLoading} text="Cancel" handleClick={() => closeEditor()} />
+                                        </> :
+                                        <>
+                                            <Button disabled={isLoading || isInCreateMode} text="Edit" handleClick={() => openEditor(major.Id)} />
+                                            <Button disabled={isLoading || isInCreateMode} text="Delete" handleClick={() => handleDeleteModalShown(major.Id)} />
+                                        </>}
+                                </td>
+                            </tr>
+                        );
+                    }}
+                />
+            </LayoutContent>
         </ div>
     );
 }
