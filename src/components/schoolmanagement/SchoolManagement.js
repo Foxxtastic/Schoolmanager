@@ -1,9 +1,10 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { history } from '../../history'
 import { SchoolListPage } from './SchoolListPage';
 import { SchoolCreatePage } from './SchoolCreatePage';
 import { pageSize } from '../../config';
+import SchoolStaffPage from './SchoolStaffPage';
 
 export function SchoolManagement(props) {
     const [isLoading, setIsLoading] = useState(false);
@@ -16,6 +17,146 @@ export function SchoolManagement(props) {
             `&sorting=${sortingProperty}&isDescending=${isDescending}` +
             `&filterProperty=${filterProperty}&filterValue=${filterValue}`)
             .then(res => res.json())
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }, []);
+
+    const getDataById = useCallback((id) => {
+        setIsLoading(true);
+        return fetch(`/api/school/${id}`)
+            .then(res => res.json())
+            .then(jsonResponse => {
+                if (jsonResponse.error) {
+                    throw new Error(jsonResponse.error.message);
+                }
+                setError(undefined);
+                return jsonResponse;
+            })
+            .catch((err) => {
+                setError({ message: err.message });
+                throw err;
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }, []);
+
+    const getStudentById = useCallback((id) => {
+        setIsLoading(true);
+        return fetch(`/api/student/${id}`)
+            .then(res => res.json())
+            .then(jsonResponse => {
+                if (jsonResponse.error) {
+                    throw new Error(jsonResponse.error.message);
+                }
+                setError(undefined);
+                return jsonResponse;
+            })
+            .catch((err) => {
+                setError({ message: err.message });
+                throw err;
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }, []);
+
+    const getTeacherById = useCallback((id) => {
+        setIsLoading(true);
+        return fetch(`/api/teacher/${id}`)
+            .then(res => res.json())
+            .then(jsonResponse => {
+                if (jsonResponse.error) {
+                    throw new Error(jsonResponse.error.message);
+                }
+                setError(undefined);
+                return jsonResponse;
+            })
+            .catch((err) => {
+                setError({ message: err.message });
+                throw err;
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }, []);
+
+    const getStudentsWithoutSchool = useCallback(() => {
+        setIsLoading(true);
+        return fetch('/api/student?schoolLess=true')
+            .then(res => res.json())
+            .then(jsonResponse => {
+                if (jsonResponse.error) {
+                    throw new Error(jsonResponse.error.message);
+                }
+                setError(undefined);
+                return jsonResponse;
+            })
+            .catch((err) => {
+                setError({ message: err.message });
+                throw err;
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }, []);
+
+    const getTeachersWithoutSchool = useCallback(() => {
+        setIsLoading(true);
+        return fetch('/api/teacher?schoolLess=true')
+            .then(res => res.json())
+            .then(jsonResponse => {
+                if (jsonResponse.error) {
+                    throw new Error(jsonResponse.error.message);
+                }
+                setError(undefined);
+                return jsonResponse;
+            })
+            .catch((err) => {
+                setError({ message: err.message });
+                throw err;
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }, []);
+
+    const getStudentsOfSchool = useCallback((schoolId) => {
+        setIsLoading(true);
+        return fetch(`/api/student?schoolId=${schoolId}`)
+            .then(res => res.json())
+            .then(jsonResponse => {
+                if (jsonResponse.error) {
+                    throw new Error(jsonResponse.error.message);
+                }
+                setError(undefined);
+                return jsonResponse;
+            })
+            .catch((err) => {
+                setError({ message: err.message });
+                throw err;
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }, []);
+
+    const getTeachersOfSchool = useCallback((schoolId) => {
+        setIsLoading(true);
+        return fetch(`/api/teacher?schoolId=${schoolId}`)
+            .then(res => res.json())
+            .then(jsonResponse => {
+                if (jsonResponse.error) {
+                    throw new Error(jsonResponse.error.message);
+                }
+                setError(undefined);
+                return jsonResponse;
+            })
+            .catch((err) => {
+                setError({ message: err.message });
+                throw err;
+            })
             .finally(() => {
                 setIsLoading(false);
             });
@@ -112,6 +253,19 @@ export function SchoolManagement(props) {
                     isLoading={isLoading}
                     onCreate={handleSchoolCreate}
                     afterCreate={() => history.push("/schools")}
+                />
+            </Route>
+            <Route path="/schools/:id">
+                <SchoolStaffPage
+                    error={error}
+                    isLoading={isLoading}
+                    getDataById={getDataById}
+                    getStudentsToAdmit={getStudentsWithoutSchool}
+                    getTeachersToHire={getTeachersWithoutSchool}
+                    getStudentById={getStudentById}
+                    getTeacherById={getTeacherById}
+                    getOwnStudents={getStudentsOfSchool}
+                    getOwnTeachers={getTeachersOfSchool}
                 />
             </Route>
         </Switch>

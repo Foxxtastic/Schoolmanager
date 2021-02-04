@@ -51,6 +51,39 @@ async function getTeacherById(teacherId) {
     }
 }
 
+async function getTeachersWithoutSchool() {
+    await sql.connect(databaseConnection);
+    let result = await sql.query`
+        select t.Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address
+            from Persons p
+            inner join Teachers t on t.PersonId = p.Id
+            left outer join SchoolTeacher st on st.TeacherId = t.Id
+        where st.SchoolId is null`
+
+    const count = result.recordset.length;
+    const teacherIdList = result.recordset.map(x => x.Id);
+
+    let items = [];
+
+    if (teacherIdList.length !== 0) {
+        const majors = await sql.query`
+            select t.Id as TeacherId, m.Id as MajorId, m.Name as MajorName
+                from
+                 Teachers t
+                 inner join MajorTeacher mt on mt.TeacherId = t.Id
+                 inner join Majors m on m.Id = mt.MajorId
+                where t.Id in (${teacherIdList})`;
+
+        const majorsByTeacherId = convertToList(majors.recordset);
+        items = result.recordset.map(x => ({ ...x, majors: majorsByTeacherId[x.Id.toString()] }));
+    }
+
+    return {
+        items,
+        allItemsCount: count
+    };
+}
+
 async function listAllTeachers(sortingProperty = 'Id', isAscending = true, filterProperty = 'FirstName', filter = '', schoolId = '') {
     await sql.connect(databaseConnection);
     const isAscendingParam = isAscending === true ? 1 : -1;
@@ -201,13 +234,11 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
 
     if (teacherIdList.length !== 0) {
         const majors = await sql.query`
-    select t.Id as TeacherId, m.Id as MajorId, m.Name as MajorName
-        from
- 	    Teachers t
- 	    inner join MajorTeacher mt on mt.TeacherId = t.Id
- 	    inner join Majors m on m.Id = mt.MajorId
-        where t.Id in (${teacherIdList})`;
-
+                select t.Id as TeacherId, m.Id as MajorId, m.Name as MajorName
+                    from Teachers t
+ 	                    inner join MajorTeacher mt on mt.TeacherId = t.Id
+ 	                    inner join Majors m on m.Id = mt.MajorId
+                where t.Id in (${teacherIdList})`;
 
         const majorsByTeacherId = convertToList(majors.recordset);
         items = pageResult.recordset.map(x => ({ ...x, majors: majorsByTeacherId[x.Id.toString()] }))
@@ -367,6 +398,7 @@ async function deleteById(teacherId) {
 
 module.exports = {
     getTeacherById,
+    getTeachersWithoutSchool,
     listAllTeachers,
     listPaged,
     createTeacher,

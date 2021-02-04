@@ -2,6 +2,7 @@ $lconcrete: #95a5a6;
 $lgray: #ecf0f1;
 $mgray: #bdc3c7;
 $dorange: #d35400;
+$lgreen: #2ecc71;
 $color: #3694d7;
 $timing: 0.3s;
 $dropdown-length: 2em;
@@ -17,6 +18,7 @@ body,
 
 a {
   text-decoration: none;
+  color: black;
 }
 
 .inline-block {
@@ -48,6 +50,17 @@ table {
   padding: 5px;
 }
 
+.school-data {
+  border: solid 1px black;
+  background-color: $lgreen;
+}
+
+.data {
+  display: inline-block;
+  margin: 0.5em;
+  padding: 10px;
+}
+
 .top-margined {
   margin-top: 1em;
 }
@@ -69,7 +82,8 @@ table {
   background-color: red;
 }
 
-button {
+button,
+.select {
   cursor: pointer;
 }
 
@@ -359,6 +373,56 @@ button {
   margin-left: $dropdown-length;
 }
 
+.listbox-container {
+  position: absolute;
+  top: 4em;
+  left: 5em;
+}
+
+.listbox {
+  display: inline-block;
+  min-height: 40em;
+  max-height: 40em;
+  min-width: 20em;
+  border: solid 2px black;
+  overflow-y: scroll;
+  background-color: $lgray;
+  margin-right: 15em;
+}
+
+.listbox li {
+  cursor: pointer;
+  font-size: 1.5em;
+  padding-top: 0.1em;
+  padding-left: 0.3em;
+  border: solid 1px black;
+}
+
+.persondata {
+  display: inline-block;
+  position: absolute;
+  top: 4em;
+  right: 8em;
+  background-color: $lgreen;
+  padding: 1em;
+  font-size: 1.5em;
+  border: solid 1px black;
+}
+
+.form {
+  display: inline-block;
+}
+
+.form-header {
+  display: inline-block;
+  color: $dorange;
+}
+
+.form-item {
+  white-space: pre-wrap;
+  display: inline-block;
+}
+
 .dropdown {
   margin-top: 1vh;
   min-width: 12em;
@@ -472,19 +536,22 @@ button {
   }
 }
 
-.options::-webkit-scrollbar-track {
+.options::-webkit-scrollbar-track,
+.listbox::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
   background-color: #f5f5f5;
 }
 
-.options::-webkit-scrollbar {
+.options::-webkit-scrollbar,
+.listbox::-webkit-scrollbar {
   width: 6px;
   background-color: #f5f5f5;
 }
 
-.options::-webkit-scrollbar-thumb {
+.options::-webkit-scrollbar-thumb,
+.listbox::-webkit-scrollbar-thumb {
   border-radius: 10px;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
@@ -508,7 +575,7 @@ button {
 }
 
 .bg-lgreen {
-  background-color: #2ecc71;
+  background-color: $lgreen;
 }
 
 .bg-dgreen {
@@ -588,7 +655,7 @@ button {
 }
 
 .tx-lgreen {
-  color: #2ecc71;
+  color: $lgreen;
 }
 
 .tx-dgreen {
@@ -652,28 +719,28 @@ button {
 }
 
 .loading {
-  border-top: solid blue;
+  outline: solid blue;
   animation: change-color 1s infinite;
 }
 @keyframes change-color {
   0% {
-    border-color: transparent;
+    outline: transparent;
   }
 
   25% {
-    border-top: solid rgba(142, 68, 173, 0.25);
+    outline: solid rgba(142, 68, 173, 0.25);
   }
 
   50% {
-    border-top: solid rgba(142, 68, 173, 0.5);
+    outline: solid rgba(142, 68, 173, 0.5);
   }
 
   75% {
-    border-top: solid rgba(142, 68, 173, 0.75);
+    outline: solid rgba(142, 68, 173, 0.75);
   }
 
   100% {
-    border-top: solid rgba(142, 68, 173, 1);
+    outline: solid rgba(142, 68, 173, 1);
   }
 }
 

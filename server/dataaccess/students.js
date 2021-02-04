@@ -20,6 +20,23 @@ async function getStudentById(studentId) {
     return result.recordset[0];
 }
 
+async function getStudentsWithoutSchool() {
+    await sql.connect(databaseConnection);
+    let result = await sql.query`
+        select s.Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address
+            from Persons p
+            inner join Students s on s.PersonId = p.Id
+            left outer join SchoolStudent ss on ss.StudentId = s.Id
+        where ss.SchoolId is null`;
+
+    const count = result.recordset.length;
+
+    return {
+        items: result.recordset,
+        allItemsCount: count
+    };
+}
+
 async function listAllStudents(sortingProperty = 'Id', isAscending = true, filterProperty = 'FirstName', filter = '', schoolId = '') {
     await sql.connect(databaseConnection);
     const isAscendingParam = isAscending === true ? 1 : -1;
@@ -300,6 +317,7 @@ async function deleteById(studentId) {
 
 module.exports = {
     getStudentById,
+    getStudentsWithoutSchool,
     listAllStudents,
     listPaged,
     createStudent,

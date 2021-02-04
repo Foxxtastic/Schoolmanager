@@ -4,9 +4,15 @@ const router = express.Router();
 
 router.get('/', async (req, res, next) => {
     try {
-        const { pageNumber, pageSize, sorting, isDescending, filterProperty, filterValue, schoolId } = req.query;
+        const { pageNumber, pageSize, sorting, isDescending, filterProperty, filterValue, schoolId, schoolLess } = req.query;
         const isAscending = isDescending && isDescending === 'true' ? false : true;
-        console.log(typeof (schoolId));
+
+        if (schoolLess) {
+            const students = await dataaccess.getStudentsWithoutSchool();
+            res.json(students);
+            return;
+        }
+
         const students = await (pageNumber && pageSize ?
             dataaccess.listPaged(pageNumber, pageSize, sorting, isAscending, filterProperty, filterValue, schoolId) :
             dataaccess.listAllStudents(sorting, isAscending, filterProperty, filterValue, schoolId));
