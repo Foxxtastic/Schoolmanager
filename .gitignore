@@ -24,4 +24,5 @@ yarn-error.log*
 .eslintcache
 debug.log
 /randomaddress
-geo.js
+/randomaddress/SouthGermany.geojson
+/geo.js
