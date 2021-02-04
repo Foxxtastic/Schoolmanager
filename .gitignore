@@ -23,6 +23,3 @@ yarn-debug.log*
 yarn-error.log*
 .eslintcache
 debug.log
-/randomaddress
-/randomaddress/SouthGermany.geojson
-/geo.js
