@@ -97,7 +97,6 @@ async function listAllStudents(sortingProperty = 'Id', isAscending = true, filte
 }
 
 async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscending = true, filterProperty = 'FirstName', filter = '', schoolId = '') {
-    console.log(schoolId)
     await sql.connect(databaseConnection);
     const offset = (pageNumber === '0') ? 0 : (pageNumber - 1) * pageSize;
     const pageSizeAsNumber = parseInt(pageSize, 10);

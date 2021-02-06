@@ -44,11 +44,10 @@ async function getTeacherById(teacherId) {
     const majorsByTeacherId = convertToList(majors.recordset);
     const item = result.recordset[0];
 
-    result = { ...item, majors: majorsByTeacherId[item.Id.toString()] }
-
     return {
-        item: result
-    }
+        ...item,
+        Majors: majorsByTeacherId[item.Id.toString()]
+    };
 }
 
 async function getTeachersWithoutSchool() {
@@ -75,7 +74,7 @@ async function getTeachersWithoutSchool() {
                 where t.Id in (${teacherIdList})`;
 
         const majorsByTeacherId = convertToList(majors.recordset);
-        items = result.recordset.map(x => ({ ...x, majors: majorsByTeacherId[x.Id.toString()] }));
+        items = result.recordset.map(x => ({ ...x, Majors: majorsByTeacherId[x.Id.toString()] }));
     }
 
     return {
@@ -133,14 +132,13 @@ async function listAllTeachers(sortingProperty = 'Id', isAscending = true, filte
         RowNum * ${isAscendingParam} `;
 
     const majors = await sql.query`
-        select mt.TeacherId, mt.MajorId, m.Name
+        select mt.TeacherId, mt.MajorId, m.Name as MajorName
             from MajorTeacher mt
-            inner join Majors m
-            on m.Id = mt.MajorId`;
+            inner join Majors m on m.Id = mt.MajorId`;
 
     const majorsByTeacherId = convertToList(majors.recordset);
 
-    let items = result.recordset.map(x => ({ ...x, majors: majorsByTeacherId[x.Id.toString()] }))
+    let items = result.recordset.map(x => ({ ...x, Majors: majorsByTeacherId[x.Id.toString()] }))
 
     return {
         items,
@@ -241,7 +239,7 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
                 where t.Id in (${teacherIdList})`;
 
         const majorsByTeacherId = convertToList(majors.recordset);
-        items = pageResult.recordset.map(x => ({ ...x, majors: majorsByTeacherId[x.Id.toString()] }))
+        items = pageResult.recordset.map(x => ({ ...x, Majors: majorsByTeacherId[x.Id.toString()] }))
     }
 
     return {

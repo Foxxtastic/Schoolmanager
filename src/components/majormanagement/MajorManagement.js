@@ -45,7 +45,6 @@ export function MajorManagement(props) {
     }
 
     const handleMajorCreate = (newItem) => {
-        console.log(newItem)
         setIsLoading(true);
         return fetch('/api/major', {
             method: 'POST',

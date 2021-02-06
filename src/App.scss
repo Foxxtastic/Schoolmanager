@@ -3,6 +3,7 @@ $lgray: #ecf0f1;
 $mgray: #bdc3c7;
 $dorange: #d35400;
 $lgreen: #2ecc71;
+$dgreen: #27ae60;
 $color: #3694d7;
 $timing: 0.3s;
 $dropdown-length: 2em;
@@ -13,6 +14,7 @@ html,
 body,
 #root {
   height: 100%;
+  min-height: 100%;
   margin: 0;
 }
 
@@ -23,6 +25,10 @@ a {
 
 .inline-block {
   display: inline-block;
+}
+
+.bold {
+  font-weight: bold;
 }
 
 .App {
@@ -313,13 +319,14 @@ button,
 
 .main-content {
   grid-area: main-content;
+  overflow: auto;
 }
 
 .component {
   height: 100%;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 300px;
+  grid-template-rows: 1fr 100px;
   grid-template-areas:
     "component-data"
     "footer";
@@ -375,52 +382,86 @@ button,
 
 .listbox-container {
   position: absolute;
+  display: flex;
+  justify-content: space-evenly;
   top: 4em;
   left: 5em;
+  right: 10em;
 }
 
 .listbox {
-  display: inline-block;
   min-height: 40em;
   max-height: 40em;
-  min-width: 20em;
+  min-width: 25em;
   border: solid 2px black;
   overflow-y: scroll;
   background-color: $lgray;
-  margin-right: 15em;
+}
+
+.listbox.draggingover {
+  background-color: $mgray;
 }
 
 .listbox li {
+  display: inline-block;
   cursor: pointer;
+}
+
+.listbox-item {
+  position: relative;
+  display: block;
   font-size: 1.5em;
   padding-top: 0.1em;
   padding-left: 0.3em;
   border: solid 1px black;
 }
 
+.listbox-item .details {
+  display: none;
+}
+
+.listbox-item .details {
+  display: block;
+}
+
+.listbox-item.dragging {
+  background-color: $lgreen;
+}
+
+.listbox-item.selected {
+  background-color: $mgray;
+}
+
+.listbox-item button {
+  cursor: pointer;
+  margin-left: 5px;
+  position: absolute;
+  right: 5px;
+  background-color: $lgray;
+}
+
 .persondata {
   display: inline-block;
-  position: absolute;
-  top: 4em;
-  right: 8em;
-  background-color: $lgreen;
   padding: 1em;
+  font-size: 0.65em;
+
+  .form-header {
+    margin-right: 5px;
+  }
+}
+
+.staffpage-button {
   font-size: 1.5em;
-  border: solid 1px black;
+  position: relative;
+  left: 42%;
 }
 
 .form {
   display: inline-block;
 }
 
-.form-header {
-  display: inline-block;
-  color: $dorange;
-}
-
-.form-item {
-  white-space: pre-wrap;
-  display: inline-block;
+.form-line {
+  margin-bottom: 5px;
 }
 
 .dropdown {
@@ -579,7 +620,7 @@ button,
 }
 
 .bg-dgreen {
-  background-color: #27ae60;
+  background-color: $dgreen;
 }
 
 .bg-lorange {
@@ -659,7 +700,7 @@ button,
 }
 
 .tx-dgreen {
-  color: #27ae60;
+  color: $dgreen;
 }
 
 .tx-lorange {

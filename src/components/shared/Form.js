@@ -6,7 +6,7 @@ export function Form(props) {
         return (
             <div className="form">
                 {headers.map((x, idx) =>
-                    <div key={idx}>
+                    <div key={idx} className="form-line">
                         <label className="form-header">{x.text}: </label>
                         <label className="form-item">{data[idx] ? data[idx] : "none"}</label>
                     </div>)}
