@@ -7,26 +7,29 @@ export function SelectListBox(props) {
     return (
         <Droppable droppableId={droppableId}>
             {(provided, snapshot) => (
-                <div
+                <div className="inline-block"
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                 >
                     <span>{text}</span>
                     <div className={`listbox ${snapshot.isDraggingOver ? "draggingover" : ""}`}>
-                        {items.map((_, idx) =>
-                            <Draggable key={idx} draggableId={dragIdstring + _.Id.toString()} index={idx}>
-                                {(provided, snapshot) => (
-                                    <div
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                        className={`listbox-item ${snapshot.isDragging ? "dragging" : ""}`}
-                                    >
-                                        {getRowContent(_)}
-                                    </div>
-                                )}
-                            </Draggable>
-                        )}
+                        {items && items.map((_, idx) => {
+                            const draggableId = dragIdstring + _.Id.toString();
+                            return (
+                                <Draggable key={draggableId} draggableId={draggableId} index={idx}>
+                                    {(provided, snapshot) => (
+                                        <div
+                                            ref={provided.innerRef}
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                            className={`listbox-item ${snapshot.isDragging ? "dragging" : ""}`}
+                                        >
+                                            {getRowContent(_)}
+                                        </div>
+                                    )}
+                                </Draggable>
+                            );
+                        })}
                         {provided.placeholder}
                     </div>
                 </div >)}

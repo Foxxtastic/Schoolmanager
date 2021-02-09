@@ -162,6 +162,108 @@ export function SchoolManagement(props) {
             });
     }, []);
 
+    const handleStudentDeassign = (schoolId, studentIds) => {
+        setIsLoading(true);
+
+        return fetch(`/api/school/${schoolId}/student/deassign`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(studentIds)
+        })
+            .then(res => res.json())
+            .then(jsonResponse => {
+                if (jsonResponse.error) {
+                    setError({ message: jsonResponse.error.message, rowidx: schoolId });
+                    return;
+                }
+                setError(undefined);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }
+
+    const handleTeacherDeassign = (schoolId, teacherIds) => {
+        setIsLoading(true);
+
+        return fetch(`/api/school/${schoolId}/teacher/deassign`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(teacherIds)
+        })
+            .then(res => res.json())
+            .then(jsonResponse => {
+                if (jsonResponse.error) {
+                    setError({ message: jsonResponse.error.message, rowidx: schoolId });
+                    return;
+                }
+                setError(undefined);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }
+
+    const handleStudentAssign = (schoolId, studentIds) => {
+        setIsLoading(true);
+
+        return fetch(`/api/school/${schoolId}/student/assign`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(studentIds)
+        })
+            .then(res => res.json())
+            .then(jsonResponse => {
+                if (jsonResponse.error) {
+                    throw new Error(jsonResponse.error.message);
+                }
+                setError(undefined);
+                return jsonResponse;
+            })
+            .catch((err) => {
+                setError({ message: err.message });
+                throw err;
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }
+
+    const handleTeacherAssign = (schoolId, teacherIds) => {
+        setIsLoading(true);
+
+        console.log(schoolId, teacherIds)
+
+        return fetch(`/api/school/${schoolId}/teacher/assign`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(teacherIds)
+        })
+            .then(res => res.json())
+            .then(jsonResponse => {
+                if (jsonResponse.error) {
+                    throw new Error(jsonResponse.error.message);
+                }
+                setError(undefined);
+                return jsonResponse;
+            })
+            .catch((err) => {
+                setError({ message: err.message });
+                throw err;
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }
+
     const handleSchoolUpdate = (idToUpdate, school) => {
         setIsLoading(true);
 
@@ -266,6 +368,10 @@ export function SchoolManagement(props) {
                     getTeacherById={getTeacherById}
                     getOwnStudents={getStudentsOfSchool}
                     getOwnTeachers={getTeachersOfSchool}
+                    assignStudents={handleStudentAssign}
+                    assignTeachers={handleTeacherAssign}
+                    deassignStudents={handleStudentDeassign}
+                    deassignTeachers={handleTeacherDeassign}
                 />
             </Route>
         </Switch>

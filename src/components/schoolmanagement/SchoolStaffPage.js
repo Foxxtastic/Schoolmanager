@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
-import { withRouter } from "react-router-dom";
-import { Button } from "../shared/Button";
+import { Route, Switch, withRouter } from "react-router-dom";
 import { MainContent } from "../shared/MainContent";
 import { MainHeader } from "../shared/MainHeader";
-import { SelectListBox } from "../shared/SelectListBox";
 import { DragDropContext } from "react-beautiful-dnd";
-import { TeacherDetails } from "./TeacherDetails";
-import { StudentDetails } from "./StudentDetails";
-import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { SideMenu } from "../shared/SideMenu";
+import { PersonList } from "./PersonList";
 import { history } from "../../history";
 
 function SchoolStaffPage(props) {
@@ -21,17 +17,24 @@ function SchoolStaffPage(props) {
         getStudentsToAdmit,
         getTeachersToHire,
         getOwnStudents,
-        getOwnTeachers
+        getOwnTeachers,
+        assignStudents,
+        assignTeachers,
+        deassignStudents,
+        deassignTeachers
     } = props;
     const id = match.params.id;
+    const links = [{ text: "Students", link: `/schools/${id}/students` }, { text: "Teachers", link: `/schools/${id}/teachers` }];
 
     const [school, setSchool] = useState(undefined);
     const [ownStudents, setOwnStudents] = useState(undefined);
     const [ownTeachers, setOwnTeachers] = useState(undefined);
     const [availableStudents, setAvailableStudents] = useState(undefined);
     const [availableTeachers, setAvailableTeachers] = useState(undefined);
-    const [selectedTopic, setSelectedTopic] = useState(undefined);
-    const [selectedId, setSelectedId] = useState(undefined);
+    const [studentIdsToRemove, setStudentIdsToRemove] = useState(new Set());
+    const [teacherIdsToRemove, setTeacherIdsToRemove] = useState(new Set());
+    const [studentIdsToAdmit, setStudentIdsToAdmit] = useState(new Set());
+    const [teacherIdsToAdmit, setTeacherIdsToAdmit] = useState(new Set());
 
     useEffect(() => {
         getDataById(id).then((schoolJson) => setSchool(schoolJson))
@@ -57,54 +60,42 @@ function SchoolStaffPage(props) {
         }
     }, [getOwnTeachers, school]);
 
-    const getRowContent = (item) => (
-        <>
-            <span>
-                {item.FirstName} {item.LastName}
-            </span>
-            <button
-                onClick={() => handleSetSelectedId(item.Id)}
-                disabled={isLoading}
-            >
-                {selectedId === item.Id ?
-                    <FontAwesomeIcon icon={faChevronUp} /> :
-                    <FontAwesomeIcon icon={faChevronDown} />
-                }
-            </button>
-            { selectedId === item.Id ?
-                selectedTopic === "Teachers" ?
-                    <TeacherDetails teacher={item} /> :
-                    <StudentDetails student={item} /> :
-                null
-            }
-        </>
-    )
+    const handleChangeStudents = () => {
+        let removableIds = new Set(
+            [...studentIdsToRemove].filter(x => !studentIdsToAdmit.has(x)));
+        removableIds = [...removableIds];
+        let admitableIds = new Set(
+            [...studentIdsToAdmit].filter(x => !studentIdsToRemove.has(x)));
+        admitableIds = [...admitableIds];
 
-    const showTeachersWithoutSchool = () => {
-        setSelectedTopic("Teachers");
-        setSelectedId(undefined);
-    }
-
-    const showStudentsWithoutSchool = () => {
-        setSelectedTopic("Students");
-        setSelectedId(undefined);
-    }
-
-    const handleSetSelectedId = (id) => {
-        if (selectedId === id) {
-            setSelectedId(undefined);
-            return;
+        if (removableIds.length !== 0) {
+            deassignStudents(id, removableIds)
+                .then(() => history.push(`/schools/${id}`));
         }
 
-        setSelectedId(id);
+        if (admitableIds.length !== 0) {
+            assignStudents(id, admitableIds)
+                .then(() => history.push(`/schools/${id}`));
+        }
     }
 
-    const handleTransferFromAvailable = (e) => {
+    const handleChangeTeachers = () => {
+        let removableIds = new Set(
+            [...teacherIdsToRemove].filter(x => !teacherIdsToAdmit.has(x)));
+        removableIds = [...removableIds];
+        let admitableIds = new Set(
+            [...teacherIdsToAdmit].filter(x => !teacherIdsToRemove.has(x)));
+        admitableIds = [...admitableIds];
 
-    }
+        if (removableIds.length !== 0) {
+            deassignTeachers(id, removableIds)
+                .then(() => history.push(`/schools/${id}`));
+        }
 
-    const handleTransferFromOwn = (e) => {
-
+        if (admitableIds.length !== 0) {
+            assignTeachers(id, admitableIds)
+                .then(() => history.push(`/schools/${id}`));
+        }
     }
 
     const onDragEnd = (result) => {
@@ -115,33 +106,46 @@ function SchoolStaffPage(props) {
         const idToTransfer = parseInt(result.draggableId.match(/\d+/)[0]);
         const source = result.source.droppableId;
         const destination = result.destination.droppableId;
+        const sourceIndex = result.source.index;
+        const destinationIndex = result.destination.index;
 
         if (source === "availableTeachers" && destination === "assignedTeachers") {
-            const newOwnTeachers = [...ownTeachers, availableTeachers.find(x => x.Id === idToTransfer)];
+            let newOwnTeachers = [...ownTeachers];
+            newOwnTeachers.splice(destinationIndex, 0, availableTeachers[sourceIndex]);
             const newAvailableTeachers = availableTeachers.filter(x => x.Id !== idToTransfer);
             setOwnTeachers(newOwnTeachers);
             setAvailableTeachers(newAvailableTeachers);
+            setTeacherIdsToAdmit(new Set([...teacherIdsToAdmit].concat(idToTransfer)));
+            return;
         }
 
         if (source === "assignedTeachers" && destination === "availableTeachers") {
-            const newAvailableTeachers = [...availableTeachers, ownTeachers.find(x => x.Id === idToTransfer)];
+            let newAvailableTeachers = [...availableTeachers];
+            newAvailableTeachers.splice(destinationIndex, 0, ownTeachers[sourceIndex]);
             const newOwnTeachers = ownTeachers.filter(x => x.Id !== idToTransfer);
             setOwnTeachers(newOwnTeachers);
             setAvailableTeachers(newAvailableTeachers);
+            setTeacherIdsToRemove(new Set([...teacherIdsToRemove].concat(idToTransfer)));
+            return;
         }
 
         if (source === "availableStudents" && destination === "assignedStudents") {
-            const newOwnStudents = [...ownStudents, availableStudents.find(x => x.Id === idToTransfer)]
+            let newOwnStudents = [...ownStudents];
+            newOwnStudents.splice(destinationIndex, 0, availableStudents[sourceIndex]);
             const newAvailableStudents = availableStudents.filter(x => x.Id !== idToTransfer);
             setOwnStudents(newOwnStudents);
             setAvailableStudents(newAvailableStudents);
+            setStudentIdsToAdmit(new Set([...studentIdsToAdmit].concat(idToTransfer)));
+            return;
         }
 
         if (source === "assignedStudents" && destination === "availableStudents") {
-            const newAvailableStudents = [...availableStudents, ownStudents.find(x => x.Id === idToTransfer)]
+            let newAvailableStudents = [...availableStudents];
+            newAvailableStudents.splice(destinationIndex, 0, ownStudents[sourceIndex]);
             const newOwnStudents = ownStudents.filter(x => x.Id !== idToTransfer);
             setOwnStudents(newOwnStudents);
             setAvailableStudents(newAvailableStudents);
+            setStudentIdsToRemove(new Set([...studentIdsToRemove].concat(idToTransfer)));
         }
     }
 
@@ -149,57 +153,41 @@ function SchoolStaffPage(props) {
         <>
             <MainHeader text={school && `${school.Name}, ${school.Country}`} />
             <MainContent>
-                <div className={`component ${isLoading ? "loading" : ""}`} >
+                <div className={`component noselect ${isLoading ? "loading" : ""}`} >
+                    <SideMenu links={links} />
                     <div className="component-data">
-                        <Button text="Manage Teachers" handleClick={showTeachersWithoutSchool} />
-                        <Button text="Manage Student" handleClick={showStudentsWithoutSchool} />
-                        {selectedTopic === "Teachers" &&
-                            <DragDropContext onDragEnd={onDragEnd}>
-                                <div className="listbox-container">
-                                    <SelectListBox
-                                        dragIdstring={"availableteacher"}
-                                        droppableId="availableTeachers"
-                                        text="Available Teachers"
-                                        items={availableTeachers}
-                                        getRowContent={getRowContent}
-                                        onTransfer={handleTransferFromAvailable}
+                        <Switch >
+                            <Route path={`/schools/${id}/teachers`}>
+                                <DragDropContext onDragEnd={onDragEnd}>
+                                    <PersonList
+                                        availableItems={availableTeachers}
+                                        assignedItems={ownTeachers}
+                                        dragIdstringForAvailable={"availableteacher"}
+                                        dragIdstringForassigned={"ownteacher"}
+                                        droppableIdForAvailable={"availableTeachers"}
+                                        droppableIdForAssigned={"assignedTeachers"}
+                                        textForAvailable={"Available Teachers"}
+                                        textForAssigned={"Assigned Teachers"}
+                                        onSubmit={handleChangeTeachers}
                                     />
-                                    <SelectListBox
-                                        dragIdstring={"assignedteacher"}
-                                        droppableId="assignedTeachers"
-                                        text="Own Teachers"
-                                        items={ownTeachers}
-                                        getRowContent={getRowContent}
-                                        onTransfer={handleTransferFromOwn}
+                                </DragDropContext>
+                            </Route>
+                            <Route path={`/schools/${id}/students`}>
+                                <DragDropContext onDragEnd={onDragEnd}>
+                                    <PersonList
+                                        availableItems={availableStudents}
+                                        assignedItems={ownStudents}
+                                        dragIdstringForAvailable={"availablestudent"}
+                                        dragIdstringForAssigned={"ownstudent"}
+                                        droppableIdForAvailable={"availableStudents"}
+                                        droppableIdForAssigned={"assignedStudents"}
+                                        textForAvailable={"Available Students"}
+                                        textForAssigned={"Assigned Students"}
+                                        onSubmit={handleChangeStudents}
                                     />
-                                </div>
-                            </DragDropContext>}
-                        {selectedTopic === "Students" &&
-                            <DragDropContext onDragEnd={onDragEnd}>
-                                <div className="listbox-container">
-                                    <SelectListBox
-                                        dragIdstring={"availablestudent"}
-                                        droppableId="availableStudents"
-                                        text="Available Students"
-                                        items={availableStudents}
-                                        getRowContent={getRowContent}
-                                        onTransfer={handleTransferFromAvailable}
-                                    />
-
-                                    <SelectListBox
-                                        dragIdstring={"ownstudent"}
-                                        droppableId="assignedStudents"
-                                        text="Own Students"
-                                        items={ownStudents}
-                                        getRowContent={getRowContent}
-                                        onTransfer={handleTransferFromOwn}
-                                    />
-                                </div>
-                            </DragDropContext>}
-                    </div>
-                    <div className="footer">
-                        <Button text="Submit" customClass="button staffpage-button" />
-                        <Button text="Back" customClass="button staffpage-button" onClick={() => history.push("/")} />
+                                </DragDropContext>
+                            </Route>
+                        </Switch>
                     </div>
                 </div>
             </MainContent>

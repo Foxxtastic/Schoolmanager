@@ -1,10 +1,13 @@
 $lconcrete: #95a5a6;
 $lgray: #ecf0f1;
 $mgray: #bdc3c7;
+$gray: #bbbbbb;
+$bgray: #acada8;
 $dorange: #d35400;
 $lgreen: #2ecc71;
 $dgreen: #27ae60;
 $color: #3694d7;
+$pampas: #f3f1ef;
 $timing: 0.3s;
 $dropdown-length: 2em;
 
@@ -16,6 +19,15 @@ body,
   height: 100%;
   min-height: 100%;
   margin: 0;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
 
 a {
@@ -150,7 +162,6 @@ button,
   position: relative;
   margin: 2em;
   width: 90%;
-
   color: #000000;
 }
 
@@ -163,12 +174,12 @@ button,
   background-color: #ffffff;
   border-collapse: collapse;
   border-width: 2px;
-  border-color: #7ea8f8;
+  border-color: $bgray;
   border-style: solid;
 }
 
 .datatable thead {
-  background-color: #1abc9c;
+  background-color: $bgray;
   text-align: left;
 }
 
@@ -180,7 +191,7 @@ button,
 .datatable th {
   border-width: 2px;
   width: 1%;
-  border-color: #1abc9c;
+  border-color: $bgray;
   border-style: solid;
   padding: 5px;
   padding-right: 15px;
@@ -318,28 +329,43 @@ button,
 }
 
 .main-content {
+  position: relative;
   grid-area: main-content;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .component {
   height: 100%;
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 100px;
-  grid-template-areas:
-    "component-data"
-    "footer";
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: "sidebar component-data";
+}
+
+.sidebar {
+  grid-area: sidebar;
+  width: 200px;
+  background-color: $pampas;
+  overflow: auto;
+}
+
+.sidebar-item {
+  font-size: 1.3em;
+  display: block;
+  padding: 15px;
+  border: solid 1px $lconcrete;
+}
+
+.sidebar-item:hover,
+.sidebar-item-active {
+  color: $lconcrete;
+  background-color: $lgray;
 }
 
 .component-data {
   grid-area: component-data;
   position: relative;
-}
-
-.footer {
-  grid-area: footer;
-  margin-left: 2em;
+  overflow: auto;
 }
 
 .base-button {
@@ -381,20 +407,19 @@ button,
 }
 
 .listbox-container {
-  position: absolute;
   display: flex;
-  justify-content: space-evenly;
-  top: 4em;
-  left: 5em;
-  right: 10em;
+  justify-content: center;
 }
 
 .listbox {
+  margin-right: 7em;
+  margin-top: 1em;
+  margin-bottom: 1em;
   min-height: 40em;
   max-height: 40em;
   min-width: 25em;
   border: solid 2px black;
-  overflow-y: scroll;
+  overflow: auto;
   background-color: $lgray;
 }
 
@@ -413,6 +438,7 @@ button,
   font-size: 1.5em;
   padding-top: 0.1em;
   padding-left: 0.3em;
+  padding-bottom: 0.1em;
   border: solid 1px black;
 }
 
@@ -452,8 +478,6 @@ button,
 
 .staffpage-button {
   font-size: 1.5em;
-  position: relative;
-  left: 42%;
 }
 
 .form {
@@ -599,6 +623,10 @@ button,
   background-color: $color;
 }
 
+.bg-pampas {
+  background-color: $pampas;
+}
+
 .bg-lturquoise {
   background-color: #1abc9c;
 }
@@ -663,6 +691,14 @@ button,
   background-color: $mgray;
 }
 
+.bg-gray {
+  background-color: $gray;
+}
+
+.bg-bgray {
+  background-color: $bgray;
+}
+
 .bg-lightmidnightblue {
   background-color: #34495e;
 }
@@ -677,6 +713,10 @@ button,
 
 .bg-dconcrete {
   background-color: #7f8c8d;
+}
+
+.tx-pampas {
+  background-color: $pampas;
 }
 
 .tx-lturquoise {
@@ -741,6 +781,14 @@ button,
 
 .tx-mgray {
   color: $mgray;
+}
+
+.tx-gray {
+  color: $gray;
+}
+
+.tx-bgray {
+  color: $bgray;
 }
 
 .tx-lightmidnightblue {

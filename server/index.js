@@ -6,6 +6,8 @@ const userRouter = require('./routes/users.js');
 const majorRouter = require('./routes/majors.js');
 const teacherRouter = require('./routes/teachers.js');
 const studentRouter = require('./routes/students.js');
+const schoolTeacherRouter = require('./routes/schoolTeacher.js');
+const schoolStudentRouter = require('./routes/schoolStudent.js');
 const app = express();
 const port = 5000;
 
@@ -18,6 +20,8 @@ app.use('/api/user', userRouter);
 app.use('/api/major', majorRouter);
 app.use('/api/teacher', teacherRouter);
 app.use('/api/student', studentRouter);
+app.use('/api/', schoolTeacherRouter);
+app.use('/api/', schoolStudentRouter);
 
 app.use((error, _req, res, _next) => {
     res.status(error.status || 500).send({

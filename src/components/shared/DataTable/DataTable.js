@@ -93,7 +93,7 @@ export function DataTable(props) {
                         handleFilterRemove={handleFilterRemove}
                     />
                     <tfoot>
-                        <tr className="datatable-footer bg-lturquoise">
+                        <tr className="datatable-footer bg-bgray">
                             <td colSpan={headers.length + ((error !== undefined) ? 1 : 0)}>
                                 <span>Page: </span>
                                 <FontAwesomeIcon className="icon-wpointer pagerspacing" icon={faAngleLeft} onClick={() => handlePageSwitch(-1)} />

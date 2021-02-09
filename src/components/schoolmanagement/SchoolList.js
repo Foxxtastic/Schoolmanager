@@ -207,12 +207,12 @@ export function SchoolList(props) {
                         );
                     }}
                 />
+                <div className="">
+                    <Link to={linkToCreate}>
+                        <Button customClass="button-withoutmargin" text="Create" />
+                    </Link>
+                </div>
             </LayoutContent>
-            <div className="footer">
-                <Link to={linkToCreate}>
-                    <Button customClass="button-withoutmargin" text="Create" />
-                </Link>
-            </div>
         </ div>
     );
 }
