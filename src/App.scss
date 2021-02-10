@@ -3,15 +3,30 @@ $lgray: #ecf0f1;
 $mgray: #bdc3c7;
 $gray: #bbbbbb;
 $bgray: #acada8;
+$dgray: #242424;
 $dorange: #d35400;
 $lgreen: #2ecc71;
 $dgreen: #27ae60;
-$color: #3694d7;
+$blue: #3694d7;
 $pampas: #f3f1ef;
+$aqua: #7fdbff;
+$black: #000000;
+$dark-gray: rgba($black, 0.8);
+$white: #ffffff;
+$accent: #4285f4;
+
 $timing: 0.3s;
 $dropdown-length: 2em;
 
 $submenu-height: 50px;
+
+// Font Weights
+$thin: 100;
+$light: 300;
+$regular: 400;
+$semibold: 500;
+$bold: 700;
+$ultra: 800;
 
 html,
 body,
@@ -39,6 +54,10 @@ a {
   display: inline-block;
 }
 
+.block {
+  display: block;
+}
+
 .bold {
   font-weight: bold;
 }
@@ -54,6 +73,115 @@ table {
 
 [type="checkbox"] {
   display: inline-block;
+  margin: 0 0.2em 0 0.2em;
+  padding: 0;
+}
+
+.user-form {
+  background: linear-gradient(45deg, rgba(80, 195, 250, 0.8) 0%, rgba(74, 250, 195, 0.4) 100%);
+  input[type="radio"] {
+    display: block;
+  }
+}
+
+.form-label {
+  text-transform: uppercase;
+  position: relative;
+  bottom: 1em;
+  font-weight: $bold;
+  font-size: 1.5em;
+  color: $blue;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.userform {
+  width: 30em;
+  display: inline-block;
+  padding: 4em;
+  background-color: $white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 4px;
+  box-shadow: 0 0 30px rgba($black, 0.1);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.userform-item {
+  margin-top: 1em;
+}
+
+.userform-label {
+  display: block;
+  margin: 0 0 10px;
+  color: $dgray;
+  font-size: 14px;
+  font-weight: $semibold;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.userform [type="text"],
+[type="password"],
+[type="email"] {
+  width: 300px;
+  border-radius: 5px;
+  padding: 4px;
+  background-color: $lgray;
+  margin-bottom: 0.5em;
+  outline: none;
+  display: block;
+  background: rgba($black, 0.1);
+  width: 100%;
+  border: 0;
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding: 12px 20px;
+  color: $dgray;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: $semibold;
+  line-height: inherit;
+  transition: 0.3s ease;
+}
+
+.userform-remember {
+  font-size: 12px;
+  font-weight: $regular;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.userform-button {
+  outline: none;
+  margin-top: 2em;
+  background: $accent;
+  width: 100%;
+  border: 0;
+  border-radius: 4px;
+  padding: 12px 20px;
+  color: $white;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: $semibold;
+  line-height: inherit;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.selector label {
+  display: inline-block;
+  padding: 5px;
+}
+
+input#teacher:checked ~ #sel-teacher,
+input#student:checked ~ #sel-student {
+  background: #fc0;
+  border: 1px solid #f60;
 }
 
 .headerbutton {
@@ -506,7 +634,7 @@ button,
   outline: none;
   border: 0.06em solid transparent;
   border-radius: 0.25em;
-  background-color: mix($color, #fff, 25%);
+  background-color: mix($blue, #fff, 25%);
 
   transition: $timing all ease-in-out;
 
@@ -521,7 +649,7 @@ button,
   }
 
   .options {
-    scrollbar-color: $color white;
+    scrollbar-color: $blue white;
     scrollbar-width: thin;
     overflow-x: hidden;
     overflow-y: auto;
@@ -567,12 +695,12 @@ button,
     position: absolute;
     right: 0.8em;
     top: 0.9em;
-    border: 0.3em solid $color;
-    border-color: $color transparent transparent transparent;
+    border: 0.3em solid $blue;
+    border-color: $blue transparent transparent transparent;
     transition: 0.15s all ease-in-out;
   }
   &.expanded {
-    border: 0.06em solid $color;
+    border: 0.06em solid $blue;
     background: #fff;
     border-radius: 0.25em;
     padding: 0;
@@ -587,11 +715,11 @@ button,
     label {
       border-top: 0.06em solid #d9d9d9;
       &:hover {
-        color: $color;
+        color: $blue;
       }
     }
     input:checked + label {
-      color: $color;
+      color: $blue;
     }
 
     &::after {
@@ -620,7 +748,7 @@ button,
   border-radius: 10px;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background-color: $color;
+  background-color: $blue;
 }
 
 .bg-pampas {

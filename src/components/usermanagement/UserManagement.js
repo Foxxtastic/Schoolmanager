@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { history } from '../../history'
 import { UserListPage } from './UserListPage';
 import { UserCreatePage } from './UserCreatePage';
+import { userCreate } from '../../helpers/fetchFunctions';
 import UserUpdatePage from './UserUpdatePage';
 import { pageSize } from '../../config';
 
@@ -68,29 +69,7 @@ export function UserManagement(props) {
     }
 
     const handleUserCreate = (newItem) => {
-        setIsLoading(true);
-        return fetch('/api/user', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newItem)
-        })
-            .then(res => res.json())
-            .then(jsonResponse => {
-                if (jsonResponse.error) {
-                    throw new Error(jsonResponse.error.message);
-                }
-                setError(undefined);
-                return jsonResponse;
-            })
-            .catch((err) => {
-                setError({ message: err.message });
-                throw err;
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
+        return userCreate(newItem, setIsLoading, setError);
     }
 
     const handleUserDelete = (idToDelete) => {

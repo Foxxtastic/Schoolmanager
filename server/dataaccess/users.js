@@ -144,6 +144,9 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
 }
 
 async function createUser(userDto) {
+    if (userDto.IsActive === undefined) {
+        userDto['IsActive'] = true;
+    }
     await sql.connect(databaseConnection);
     let result = await sql.query`
     insert into Users(EmailAddress, PasswordHash, IsActive, LastLogin)

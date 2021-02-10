@@ -3,11 +3,11 @@ import DatePicker from "./DatePicker"
 import { ValidationErrors } from "./ValidationErrors"
 
 const Input = forwardRef((props, ref) => {
-    const { isInline, labelClass, labelText, name, type, isValidatable, errors, lineBreak, defaultValue } = props;
+    const { customClass, isInline, labelClass, labelText, name, type, isValidatable, errors, lineBreak, defaultValue } = props;
 
     return (
         <>
-            <div className={`${isInline ? "item-padding inline-block" : "item-padding"}`}>
+            <div className={`${customClass ? customClass : "item-padding"} ${isInline ? "inline-block" : ""}`}>
                 <label className={labelClass === undefined ? "block-label" : labelClass} >
                     {labelText === undefined ? name : labelText}:{isValidatable ? '*' : ''}
                 </label>

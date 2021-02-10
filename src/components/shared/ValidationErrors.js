@@ -7,6 +7,7 @@ export function ValidationErrors(props) {
             {errors[name]?.type === "required" && "This field is required"}
             {errors[name]?.type === "minLength" && "Not Long enough!"}
             {errors[name]?.type === "pattern" && "Not valid field-pattern!"}
+            {errors[name]?.type === "validate" && errors[name]?.message}
         </div>
     )
 }

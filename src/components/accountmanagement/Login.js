@@ -9,7 +9,7 @@ export function Login(props) {
         <Switch>
             <Route path="/login" exact>
                 <MainHeader text="Login with email:" />
-                <MainContent>
+                <MainContent customClass="user-form">
                     <LoginForm />
                 </MainContent>
             </Route>

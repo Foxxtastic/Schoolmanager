@@ -3,7 +3,8 @@ import './App.scss';
 import Navbar from './components/shared/Navbar';
 import { Router } from 'react-router-dom';
 import { history } from './history';
-import { Login } from './components/loginmanagement/Login';
+import { Login } from './components/accountmanagement/Login';
+import { Register } from './components/accountmanagement/Register';
 import { Home } from './components/shared/Home';
 import { SchoolManagement } from './components/schoolmanagement/SchoolManagement';
 import { UserManagement } from './components/usermanagement/UserManagement';
@@ -15,6 +16,10 @@ const menuItems = [
   {
     text: 'Home',
     link: '/'
+  },
+  {
+    text: 'Register',
+    link: '/register'
   },
   {
     text: 'Login',
@@ -62,6 +67,8 @@ function App() {
         <TeacherManagement />
         <StudentManagement />
         <Login />
+        <Register />
+
       </Router>
     </>
   );
