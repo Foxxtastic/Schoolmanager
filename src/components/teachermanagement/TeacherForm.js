@@ -5,7 +5,7 @@ import Input from '../shared/Input';
 import { MultiSelector } from '../shared/MultiSelector';
 
 export function TeacherForm(props) {
-    const { getMajors, error, isLoading, onSubmit, onError, defaultData, isCreate } = props;
+    const { getMajors, error, isLoading, onSubmit, onError, defaultData, usedByAdmin } = props;
 
     const [majors, setMajors] = useState(undefined);
     const [selectedMajors, setSelectedMajors] = useState([]);
@@ -44,7 +44,7 @@ export function TeacherForm(props) {
         <>
             <form className={`component ${isLoading ? "loading" : ""}`} onSubmit={handleSubmit(onSubmitting, onError)}>
                 <Loader isLoading={isLoading} />
-                <div className="component-data createitem bg-lgray">
+                <div className={`component-data ${usedByAdmin ? "bg-lgray createitem" : ""}`}>
                     <Input
                         defaultValue={defaultData && defaultData.item.FirstName}
                         isInline={true}
@@ -101,7 +101,7 @@ export function TeacherForm(props) {
                         ref={register({ required: false })}
                         lineBreak={true}
                     />
-                    {isCreate && <Input
+                    {usedByAdmin && <Input
                         isInline={true}
                         labelText="Email Address"
                         name="EmailAddress"
@@ -110,7 +110,7 @@ export function TeacherForm(props) {
                         ref={register({ required: true })}
                         errors={errors}
                     />}
-                    {isCreate && <Input
+                    {usedByAdmin && <Input
                         isInline={true}
                         name="Password"
                         type="password"
@@ -118,7 +118,7 @@ export function TeacherForm(props) {
                         isValidatable={true}
                         errors={errors}
                     />}
-                    {isCreate && <Input
+                    {usedByAdmin && <Input
                         labelClass="inline-label"
                         labelText="Is Active"
                         name="IsActive"
@@ -135,7 +135,7 @@ export function TeacherForm(props) {
                         handleRemoveItem={handleRemoveMajor}
                     />
                     {error && <div className="item-padding validationerror tx-lred">{`A technical error has occurred. Details: ${error.message}`}</div>}
-                    <input className="button-withoutmargin item-margin" disabled={isLoading} type="submit" />
+                    <input className="button-withoutmargin item-margin" disabled={isLoading} type="submit" value="Register" />
                 </div>
             </form>
         </>

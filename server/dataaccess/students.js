@@ -290,7 +290,7 @@ async function deleteById(studentId) {
 
     const result = await sql.query`
         delete
-            from SchoolStudents
+            from SchoolStudent
         where StudentId = ${studentId}
 
         delete

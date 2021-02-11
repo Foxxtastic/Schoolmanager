@@ -3,24 +3,28 @@ import { useForm } from "react-hook-form";
 import { userCreate } from "../../helpers/fetchFunctions";
 import Input from "../shared/Input";
 import { Selector } from "./Selector";
+import { history } from "../../history"
 
 export function RegisterForm(props) {
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(undefined);
+    const { isLoading, setUserToCreate } = props;
+    const [selectedPersonType, setSelectedPersonType] = useState("teacher");
 
     const { register, handleSubmit, errors, watch } = useForm();
     const password = useRef({});
     password.current = watch("Password", "")
 
     const onSubmitting = (data) => {
-        userCreate(data, setIsLoading, setError)
-            .then(alert("Registration Complete"))
-            .catch((err) => console.log(err));
+        setUserToCreate(data);
+        history.push(`/register/${selectedPersonType}`)
     }
 
     const onError = (errors) => {
         console.log(errors)
+    }
+
+    const handleChangePersonType = (newPersonType) => {
+        setSelectedPersonType(newPersonType);
     }
 
     return (
@@ -59,7 +63,8 @@ export function RegisterForm(props) {
                     })}
                     errors={errors}
                 />
-                <input className="userform-button" type="submit" value="register" disabled={isLoading} />
+                <Selector onChange={handleChangePersonType} />
+                <input className="userform-button" type="submit" value="Next" disabled={isLoading} />
             </form>
         </div>
     )

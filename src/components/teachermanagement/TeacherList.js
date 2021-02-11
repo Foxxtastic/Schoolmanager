@@ -167,7 +167,7 @@ export function TeacherList(props) {
                                     <span>{teacher.Address}</span>
                                 </td>
                                 <td>
-                                    {teacher.majors !== undefined && <span>{teacher.majors.map(_ => _.MajorName).join(', ')}</span>}
+                                    {teacher.Majors !== undefined && <span>{teacher.Majors.map(_ => _.MajorName).join(', ')}</span>}
                                 </td>
                                 <td>
                                     <>

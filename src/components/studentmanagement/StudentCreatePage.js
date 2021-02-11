@@ -20,7 +20,7 @@ export function StudentCreatePage(props) {
         <>
             <MainHeader text="Create new Student" />
             <MainContent>
-                <StudentForm error={error} isLoading={isLoading} onSubmit={handleFormSubmit} />
+                <StudentForm error={error} isLoading={isLoading} onSubmit={handleFormSubmit} usedByAdmin={true} />
             </MainContent>
         </>
     );

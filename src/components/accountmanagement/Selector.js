@@ -1,11 +1,13 @@
 export function Selector(props) {
 
+    const { onChange } = props;
+
     return (
-        <div className="selector">
-            <label id="sel-teacher" htmlFor="teacher">Teacher</label>
-            <input id="teacher" type="radio" value="1" name="sel" />
-            <label id="sel-student" htmlFor="student">Student</label>
-            <input id="student" type="radio" value="2" name="sel" />
+        <div className="selector" onChange={(e) => onChange(e.target.value)}>
+            <input type="radio" id="teacher" value="teacher" name="sel" defaultChecked />
+            <label id="sel-teacher" htmlFor="teacher" className="notwide">Teacher</label>
+            <input type="radio" id="student" value="student" name="sel" />
+            <label id="sel-student" htmlFor="student" className="notwide">Student</label>
         </div>
     )
 }

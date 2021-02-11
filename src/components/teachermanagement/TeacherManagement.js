@@ -5,17 +5,14 @@ import { TeacherListPage } from './TeacherListPage';
 import { TeacherCreatePage } from './TeacherCreatePage';
 import { pageSize } from '../../config';
 import TeacherUpdatePage from './TeacherUpdatePage';
+import { getTeacherMajors, teacherCreate } from '../../helpers/fetchFunctions';
 
 export function TeacherManagement(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(undefined);
 
     const getMajors = useCallback(() => {
-        setIsLoading(true);
-        return fetch('/api/major')
-            .then(res => res.json())
-            .finally(() =>
-                setIsLoading(false));
+        return getTeacherMajors(setIsLoading);
     }, []);
 
     const getAllSchools = useCallback(() => {
@@ -88,29 +85,7 @@ export function TeacherManagement(props) {
     }
 
     const handleTeacherCreate = (newItem) => {
-        setIsLoading(true);
-        return fetch('/api/teacher', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newItem)
-        })
-            .then(res => res.json())
-            .then(jsonResponse => {
-                if (jsonResponse.error) {
-                    throw new Error(jsonResponse.error.message);
-                }
-                setError(undefined);
-                return jsonResponse;
-            })
-            .catch((err) => {
-                setError({ message: err.message });
-                throw err;
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
+        return teacherCreate(newItem, setIsLoading, setError);
     }
 
     const handleTeacherDelete = (idToDelete) => {

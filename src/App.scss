@@ -77,10 +77,14 @@ table {
   padding: 0;
 }
 
+.wide {
+  width: 70em;
+}
+
 .user-form {
   background: linear-gradient(45deg, rgba(80, 195, 250, 0.8) 0%, rgba(74, 250, 195, 0.4) 100%);
   input[type="radio"] {
-    display: block;
+    display: none;
   }
 }
 
@@ -96,7 +100,6 @@ table {
 }
 
 .userform {
-  width: 30em;
   display: inline-block;
   padding: 4em;
   background-color: $white;
@@ -108,45 +111,47 @@ table {
   box-shadow: 0 0 30px rgba($black, 0.1);
   box-sizing: border-box;
   overflow: hidden;
+  [type="text"],
+  [type="password"],
+  [type="email"],
+  [type="date"] {
+    width: 300px;
+    border-radius: 5px;
+    padding: 4px;
+    background-color: $lgray;
+    margin-bottom: 0.5em;
+    outline: none;
+    display: block;
+    background: rgba($black, 0.1);
+    border: 0;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 12px 20px;
+    color: $dgray;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: $semibold;
+    line-height: inherit;
+    transition: 0.3s ease;
+  }
+  [type=".date"] {
+    width: 100px !important;
+  }
+
+  label:not(.notwide) {
+    display: block;
+    margin: 0 0 10px;
+    color: $dgray;
+    font-size: 14px;
+    font-weight: $semibold;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
 }
 
 .userform-item {
   margin-top: 1em;
-}
-
-.userform-label {
-  display: block;
-  margin: 0 0 10px;
-  color: $dgray;
-  font-size: 14px;
-  font-weight: $semibold;
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-}
-
-.userform [type="text"],
-[type="password"],
-[type="email"] {
-  width: 300px;
-  border-radius: 5px;
-  padding: 4px;
-  background-color: $lgray;
-  margin-bottom: 0.5em;
-  outline: none;
-  display: block;
-  background: rgba($black, 0.1);
-  width: 100%;
-  border: 0;
-  border-radius: 4px;
-  box-sizing: border-box;
-  padding: 12px 20px;
-  color: $dgray;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: $semibold;
-  line-height: inherit;
-  transition: 0.3s ease;
 }
 
 .userform-remember {
@@ -156,14 +161,16 @@ table {
   text-transform: none;
 }
 
-.userform-button {
+.userform-button,
+.userform [type="submit"] {
   outline: none;
   margin-top: 2em;
   background: $accent;
-  width: 100%;
+  width: 25%;
+  float: right;
   border: 0;
   border-radius: 4px;
-  padding: 12px 20px;
+  padding: 15px 20px 15px 20px;
   color: $white;
   font-family: inherit;
   font-size: inherit;
@@ -175,13 +182,20 @@ table {
 
 .selector label {
   display: inline-block;
+  font-size: 2em;
+  margin-top: 0.2em;
   padding: 5px;
+  border: solid 1px black;
 }
 
-input#teacher:checked ~ #sel-teacher,
-input#student:checked ~ #sel-student {
-  background: #fc0;
-  border: 1px solid #f60;
+#sel-teacher,
+#sel-student {
+  background-color: white;
+}
+
+#teacher:checked ~ #sel-teacher,
+#student:checked ~ #sel-student {
+  background: $blue;
 }
 
 .headerbutton {

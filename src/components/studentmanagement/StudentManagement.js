@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { history } from '../../history'
 import { StudentListPage } from './StudentListPage';
 import { StudentCreatePage } from './StudentCreatePage';
+import { studentCreate } from '../../helpers/fetchFunctions';
 import { pageSize } from '../../config';
 
 export function StudentManagement(props) {
@@ -59,29 +60,7 @@ export function StudentManagement(props) {
     }
 
     const handleStudentCreate = (newItem) => {
-        setIsLoading(true);
-        return fetch('/api/student', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newItem)
-        })
-            .then(res => res.json())
-            .then(jsonResponse => {
-                if (jsonResponse.error) {
-                    throw new Error(jsonResponse.error.message);
-                }
-                setError(undefined);
-                return jsonResponse;
-            })
-            .catch((err) => {
-                setError({ message: err.message });
-                throw err;
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
+        return studentCreate(newItem, isLoading, setError);
     }
 
     const handleStudentDelete = (idToDelete) => {

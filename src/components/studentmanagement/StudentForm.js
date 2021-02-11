@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import Input from '../shared/Input';
 
 export function StudentForm(props) {
-    const { error, isLoading, onSubmit, onError, defaultData } = props;
+    const { error, isLoading, onSubmit, onError, defaultData, usedByAdmin } = props;
 
     const { register, handleSubmit, errors } = useForm({ defaultValues: defaultData });
 
@@ -15,7 +15,7 @@ export function StudentForm(props) {
         <>
             <form className={`component ${isLoading ? "loading" : ""}`} onSubmit={handleSubmit(onSubmitting, onError)}>
                 <Loader isLoading={isLoading} />
-                <div className="component-data createitem bg-lgray">
+                <div className={`component-data ${usedByAdmin ? "bg-lgray createitem" : ""}`}>
                     <Input
                         isInline={true}
                         labelText="First Name"
@@ -65,7 +65,7 @@ export function StudentForm(props) {
                         ref={register({ required: false })}
                         lineBreak={true}
                     />
-                    <Input
+                    {usedByAdmin && <Input
                         isInline={true}
                         labelText="Email Address"
                         name="EmailAddress"
@@ -73,15 +73,15 @@ export function StudentForm(props) {
                         isValidatable={true}
                         ref={register({ required: true })}
                         errors={errors}
-                    />
-                    <Input
+                    />}
+                    {usedByAdmin && <Input
                         isInline={true}
                         name="Password"
                         type="password"
                         ref={register({ required: true })}
                         isValidatable={true}
                         errors={errors}
-                    />
+                    />}
                     <Input
                         labelText="Start Date"
                         name="StartDate"
@@ -98,7 +98,7 @@ export function StudentForm(props) {
                         type="checkbox"
                         ref={register({ required: false })}
                     />
-                    <Input
+                    {usedByAdmin && <Input
                         labelClass="inline-label"
                         isInline={true}
                         labelText="Is Active"
@@ -106,11 +106,11 @@ export function StudentForm(props) {
                         type="checkbox"
                         ref={register({ required: false })}
                         lineBreak={true}
-                    />
-                    {error && <div className="item-padding validationerror tx-lred">{`A technical error has occurred. Details: ${error.message}`}</div>}
+                    />}
+                    {error && <div className="item-padding validationerror tx-lred">{`A technical error has occurred.{error.message}`}</div>}
                     <input className="button-withoutmargin item-margin" disabled={isLoading} type="submit" />
                 </div>
-            </form>
+            </form >
         </>
     );
 }
