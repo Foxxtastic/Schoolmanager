@@ -1,14 +1,18 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useContext } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { history } from '../../history'
 import { SchoolListPage } from './SchoolListPage';
 import { SchoolCreatePage } from './SchoolCreatePage';
 import { pageSize } from '../../config';
 import SchoolStaffPage from './SchoolStaffPage';
+import { UserContext } from '../../contexts/UserContext';
+import { useHttpHeaders } from '../../hooks/useHttpHeaders';
 
 export function SchoolManagement(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(undefined);
+    const { user } = useContext(UserContext);
+    const httpHeaders = useHttpHeaders();
 
     const getData = useCallback((pageNumber, sortingProperty, isDescending, filterProperty, filterValue) => {
         setIsLoading(true);
@@ -296,9 +300,7 @@ export function SchoolManagement(props) {
 
         return fetch('/api/school', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: httpHeaders,
             body: JSON.stringify(newItem)
         })
             .then(res => res.json())

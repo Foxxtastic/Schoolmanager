@@ -1,5 +1,6 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useLoginHandler } from "../../hooks/useLoginHandler";
 import Input from "../shared/Input";
 
 export function LoginForm(props) {
@@ -7,28 +8,12 @@ export function LoginForm(props) {
 
     const [isLoading, setIsLoading] = useState(undefined);
 
-    const [activeUser, setActiveUser] = useState(undefined);
+    const [serverError, setServerError] = useState(undefined);
 
-    const userCheck = useCallback((emailAddress) => {
-        return fetch(`/api/user/${emailAddress}`)
-            .then(res => res.json())
-            .then(jsonResponse => {
-                if (jsonResponse.error) {
-                    throw new Error(jsonResponse.error.message);
-                }
-                return jsonResponse;
-            })
-            .catch((err) => {
-                throw err;
-            })
-            .finally(() => console.log("ok"));
-    }, []);
+    const performLogin = useLoginHandler(setIsLoading, setServerError);
 
-    const onSubmitting = (data) => {
-        const email = data.EmailAddress;
-        userCheck(email)
-            .then(data => setActiveUser(data))
-            .finally(console.log(activeUser));
+    const onSubmitting = (formData) => {
+        performLogin(formData);
     }
 
     const onError = (errors) => {
@@ -59,15 +44,21 @@ export function LoginForm(props) {
                     errors={errors}
                 />
                 <Input
+                    defaultValue={true}
                     customClass={"userform-item"}
                     labelClass="inline-block"
-                    name="remember"
+                    name="Remember"
                     labelText="Remember me"
                     labelClass="userform-remember"
                     type="checkbox"
                     ref={register({ required: false })}
                 />
-                <input className="userform-button" type="submit" value="LOG IN" />
+                {serverError &&
+                    <div className="validationerror tx-lred">
+                        {serverError}
+                    </div>
+                }
+                <input className="userform-button" type="submit" value="LOG IN" disabled={isLoading} />
             </form>
         </div>
     )

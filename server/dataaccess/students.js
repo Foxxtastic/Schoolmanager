@@ -195,7 +195,7 @@ async function createStudent(studentDto) {
         values
         (
             ${studentDto.EmailAddress},
-            HASHBYTES('SHA2_512', '${studentDto.Password}'),
+            HASHBYTES('SHA2_512', ${studentDto.Password}),
             ${studentDto.IsActive},
             null
         );

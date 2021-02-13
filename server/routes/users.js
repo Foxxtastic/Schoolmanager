@@ -15,15 +15,15 @@ router.get('/', async (req, res, next) => {
     }
 });
 
-router.get('/:param', async (req, res) => {
-    const { param } = req.params;
-    const user = (param.includes("@")) ? await dataaccess.getUserByEmailAddress(param) : await dataaccess.getUserById(param);
-    if (user === undefined) {
-        res.sendStatus(404);
-        return;
-    }
-    res.json(user);
-});
+// router.get('/:param', async (req, res) => {
+//     const { param } = req.params;
+//     const user = (param.includes("@")) ? await dataaccess.getUserByEmailAddress(param) : await dataaccess.getUserById(param);
+//     if (user === undefined) {
+//         res.sendStatus(404);
+//         return;
+//     }
+//     res.json(user);
+// });
 
 router.post('/', async (req, res, next) => {
     try {

@@ -37,6 +37,18 @@ async function getUserByEmailAddress(userEmail) {
     return result.recordset[0];
 }
 
+async function isPasswordValid(id, password) {
+    await sql.connect(databaseConnection);
+    const result = await sql.query`
+        select 1
+        from Users
+        where
+            PasswordHash = HASHBYTES('SHA2_512', ${password})
+            and Id = ${id}`;
+
+    return result.recordset.length !== 0;
+}
+
 async function listAllUsers(sortingProperty = 'Id', isAscending = true, filterProperty = 'EmailAddress', filter = '') {
     await sql.connect(databaseConnection);
     const isAscendingParam = isAscending === true ? 1 : -1;
@@ -152,7 +164,7 @@ async function createUser(userDto) {
     insert into Users(EmailAddress, PasswordHash, IsActive, LastLogin)
     values(
         ${userDto.EmailAddress},
-        HASHBYTES('SHA2_512', '${userDto.Password}'),
+        HASHBYTES('SHA2_512', ${userDto.Password}),
         ${userDto.IsActive},
         ${userDto.LastLogin})`;
 
@@ -208,6 +220,7 @@ async function deleteById(userId) {
 module.exports = {
     getUserById,
     getUserByEmailAddress,
+    isPasswordValid,
     listAllUsers,
     listPaged,
     createUser,

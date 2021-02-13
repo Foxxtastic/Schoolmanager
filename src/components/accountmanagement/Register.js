@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import { getTeacherMajors, studentCreate, teacherCreate } from "../../helpers/fetchFunctions";
-import { history } from "../../history";
+import { useLoginHandler } from "../../hooks/useLoginHandler";
 import { MainContent } from "../shared/MainContent";
 import { MainHeader } from "../shared/MainHeader";
 import { StudentForm } from "../studentmanagement/StudentForm";
@@ -14,6 +14,8 @@ export function Register(props) {
     const [user, setUser] = useState(undefined);
     const [isLoading, setIsLoading] = useState(false);
 
+    const performLogin = useLoginHandler(setIsLoading, setError);
+
     const getMajors = useCallback(() => {
         return getTeacherMajors(setIsLoading);
     }, []);
@@ -22,16 +24,19 @@ export function Register(props) {
         setUser(newUser);
     }
 
-    const handleTeacherFormSubmit = (newItem) => {
-        const teacher = {
-            ...newItem,
+    const handleTeacherFormSubmit = (teacherFormData) => {
+        const teacherDto = {
+            ...teacherFormData,
             ...user,
             IsActive: true
         }
-        teacherCreate(teacher, setIsLoading, setError)
+        teacherCreate(teacherDto, setIsLoading, setError)
             .then(() => {
-                alert("Sucess!");
-                history.push("/Home");
+                performLogin({
+                    EmailAddress: user.EmailAddress,
+                    Password: user.Password,
+                    Remember: false
+                });
             })
             .catch((err) => console.log(error));
     };
@@ -44,8 +49,11 @@ export function Register(props) {
         }
         studentCreate(student, setIsLoading, setError)
             .then(() => {
-                alert("Sucess!");
-                history.push("/Home");
+                performLogin({
+                    EmailAddress: user.EmailAddress,
+                    Password: user.Password,
+                    Remember: false
+                });
             })
             .catch((err) => console.log(error));
     };

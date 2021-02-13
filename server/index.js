@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const authRouter = require('./routes/auth.js');
 const schoolRouter = require('./routes/schools.js');
 const userRouter = require('./routes/users.js');
 const majorRouter = require('./routes/majors.js');
@@ -8,6 +9,10 @@ const teacherRouter = require('./routes/teachers.js');
 const studentRouter = require('./routes/students.js');
 const schoolTeacherRouter = require('./routes/schoolTeacher.js');
 const schoolStudentRouter = require('./routes/schoolStudent.js');
+const dotenv = require("dotenv");
+
+dotenv.config();
+
 const app = express();
 const port = 5000;
 
@@ -15,6 +20,7 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(morgan('tiny'));
 
+app.use('/api/auth', authRouter);
 app.use('/api/school', schoolRouter);
 app.use('/api/user', userRouter);
 app.use('/api/major', majorRouter);

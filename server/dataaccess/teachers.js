@@ -255,7 +255,7 @@ async function createTeacher(teacherDto) {
         values
         (
             ${teacherDto.EmailAddress},
-            HASHBYTES('SHA2_512', '${teacherDto.Password}'),
+            HASHBYTES('SHA2_512', ${teacherDto.Password}),
             ${teacherDto.IsActive},
             null
         );

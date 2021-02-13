@@ -1,5 +1,6 @@
 const express = require('express');
 const dataaccess = require('../dataaccess/schools');
+const { authenticate } = require('../middlewares/authenticate');
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
@@ -27,7 +28,7 @@ router.get('/:id', async (req, res) => {
     res.json(school);
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', authenticate, async (req, res, next) => {
     try {
         const schoolDto = req.body;
         const school = await dataaccess.createSchool(schoolDto);

@@ -11,6 +11,9 @@ import { UserManagement } from './components/usermanagement/UserManagement';
 import { MajorManagement } from './components/majormanagement/MajorManagement';
 import { TeacherManagement } from './components/teachermanagement/TeacherManagement';
 import { StudentManagement } from './components/studentmanagement/StudentManagement';
+import { UserContext } from './contexts/UserContext';
+import { getStorageItem } from './helpers/storageHelpers';
+import { useState } from 'react';
 
 const menuItems = [
   {
@@ -54,22 +57,25 @@ const menuItems = [
 
 function App() {
 
+  const [user, setUser] = useState(getStorageItem('user'));
+
   return (
     <>
-      <Router history={history}>
-        <Navbar
-          menuItems={menuItems}
-        />
-        <Home />
-        <SchoolManagement />
-        <UserManagement />
-        <MajorManagement />
-        <TeacherManagement />
-        <StudentManagement />
-        <Login />
-        <Register />
-
-      </Router>
+      <UserContext.Provider value={{ user, setUser }}>
+        <Router history={history}>
+          <Navbar
+            menuItems={menuItems}
+          />
+          <Home />
+          <SchoolManagement />
+          <UserManagement />
+          <MajorManagement />
+          <TeacherManagement />
+          <StudentManagement />
+          <Login />
+          <Register />
+        </Router>
+      </UserContext.Provider>
     </>
   );
 }

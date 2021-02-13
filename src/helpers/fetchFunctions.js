@@ -1,3 +1,24 @@
+export function login(formData, setIsLoading) {
+    setIsLoading(true);
+    return fetch(`/api/auth/login`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+    })
+        .then(res => res.json())
+        .then(jsonResponse => {
+            if (jsonResponse.error) {
+                throw new Error(jsonResponse.error.message);
+            }
+            return jsonResponse;
+        })
+        .finally(() => {
+            setIsLoading(false);
+        });
+}
+
 export function userCreate(newItem, setIsLoading, setError) {
     setIsLoading(true);
     return fetch('/api/user', {

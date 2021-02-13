@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, withRouter } from "react-router-dom";
+import { UserContext } from "../../contexts/UserContext";
 
 function Navbar(props) {
-
     const { menuItems, location } = props;
     const [activeMenuIndex, setActiveMenuIndex] = useState(undefined);
     const [isShown, setIsShown] = useState(undefined);
     const [previousMenuItem, setPreviousMenuItem] = useState(undefined);
+    const { user } = useContext(UserContext);
 
     const getMenuItem = (item, idx) => {
         const classes = `navbar-items ${activeMenuIndex === idx ? "navbar-items-active" : "tx-lorange"}`
@@ -59,6 +60,7 @@ function Navbar(props) {
                 <div className="navbar-main">
                     {menuItems.map((item, idx) => getMenuItem(item, idx))}
                 </div>
+                {user !== null && <div className="username navbar-items tx-lorange">{user.data.EmailAddress}</div>}
             </div>
             <div className={subclass}>
                 {
