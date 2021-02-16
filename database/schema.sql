@@ -130,13 +130,13 @@ IF (NOT EXISTS (SELECT *
 BEGIN
 	CREATE TABLE SchoolTeacher (
 		SchoolId int NOT NULL
-			CONSTRAINT PK_SchoolTeacher_SchoolId
+			CONSTRAINT FK_SchoolTeacher_SchoolId
 			REFERENCES Schools(Id),
 		
 		TeacherId int NOT NULL
-			CONSTRAINT PK_SchoolTeacher_TeacherId
+			CONSTRAINT FK_SchoolTeacher_TeacherId
 			REFERENCES Teachers(Id),
-		CONSTRAINT PK_SchoolTeacher PRIMARY KEY NONCLUSTERED ([SchoolId], [TeacherId])
+		CONSTRAINT FK_SchoolTeacher PRIMARY KEY NONCLUSTERED ([SchoolId], [TeacherId])
 	);    
 END
 
@@ -147,12 +147,34 @@ IF (NOT EXISTS (SELECT *
 BEGIN
 	CREATE TABLE SchoolStudent (
 		SchoolId int NOT NULL
-			CONSTRAINT PK_SchoolStudent_SchoolId
+			CONSTRAINT FK_SchoolStudent_SchoolId
 			REFERENCES Schools(Id),
 		
 		StudentId int NOT NULL
-			CONSTRAINT PK_SchoolStudent_StudentId
+			CONSTRAINT FK_SchoolStudent_StudentId
 			REFERENCES Students(Id),
 		CONSTRAINT PK_SchoolStudent PRIMARY KEY NONCLUSTERED ([SchoolId], [StudentId])
+	);    
+END
+
+IF (NOT EXISTS (SELECT * 
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = 'dbo' 
+                AND  TABLE_NAME = 'StudentRequest'))
+BEGIN
+	CREATE TABLE StudentRequest (
+		SchoolId int NOT NULL
+			CONSTRAINT FK_SchoolStudent_SchoolId
+			REFERENCES Schools(Id),
+		
+		StudentId int NOT NULL
+			CONSTRAINT FK_SchoolStudent_StudentId
+			REFERENCES Students(Id),
+
+		Message nvarchar(500),
+		
+		AprovalRequest bit NOT NULL,
+		IsCompleted bit NOT NULL,
+		CONSTRAINT PK_StudentRequest PRIMARY KEY NONCLUSTERED ([SchoolId], [StudentId])
 	);    
 END

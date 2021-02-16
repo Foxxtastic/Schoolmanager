@@ -1,5 +1,6 @@
 const express = require('express');
 const dataaccess = require('../dataaccess/users');
+const { authenticate } = require('../middlewares/authenticate');
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
@@ -15,17 +16,17 @@ router.get('/', async (req, res, next) => {
     }
 });
 
-// router.get('/:param', async (req, res) => {
-//     const { param } = req.params;
-//     const user = (param.includes("@")) ? await dataaccess.getUserByEmailAddress(param) : await dataaccess.getUserById(param);
-//     if (user === undefined) {
-//         res.sendStatus(404);
-//         return;
-//     }
-//     res.json(user);
-// });
+router.get('/:param', authenticate, async (req, res) => {
+    const { param } = req.params;
+    const user = await dataaccess.getUserById(param);
+    if (user === undefined) {
+        res.sendStatus(404);
+        return;
+    }
+    res.json(user);
+});
 
-router.post('/', async (req, res, next) => {
+router.post('/', authenticate, async (req, res, next) => {
     try {
         const userDto = req.body;
         const user = await dataaccess.createUser(userDto);
@@ -35,7 +36,7 @@ router.post('/', async (req, res, next) => {
     }
 });
 
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', authenticate, async (req, res, next) => {
     const userDto = req.body;
     const { id } = req.params;
     const idAsNumber = parseInt(id, 10);
@@ -48,7 +49,7 @@ router.put('/:id', async (req, res, next) => {
     }
 });
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', authenticate, async (req, res, next) => {
     const { id } = req.params;
     try {
         await dataaccess.deleteById(id);

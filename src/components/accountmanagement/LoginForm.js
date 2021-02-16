@@ -46,10 +46,9 @@ export function LoginForm(props) {
                 <Input
                     defaultValue={true}
                     customClass={"userform-item"}
-                    labelClass="inline-block"
+                    labelClass="inline-block useform-remember"
                     name="Remember"
                     labelText="Remember me"
-                    labelClass="userform-remember"
                     type="checkbox"
                     ref={register({ required: false })}
                 />

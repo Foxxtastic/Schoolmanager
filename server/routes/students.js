@@ -1,8 +1,9 @@
 const express = require('express');
 const dataaccess = require('../dataaccess/students');
+const { authenticate } = require('../middlewares/authenticate');
 const router = express.Router();
 
-router.get('/', async (req, res, next) => {
+router.get('/', authenticate, async (req, res, next) => {
     try {
         const { pageNumber, pageSize, sorting, isDescending, filterProperty, filterValue, schoolId, schoolLess } = req.query;
         const isAscending = isDescending && isDescending === 'true' ? false : true;
@@ -22,7 +23,7 @@ router.get('/', async (req, res, next) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', authenticate, async (req, res) => {
     const { id } = req.params;
     const student = await dataaccess.getStudentById(id);
 
@@ -34,7 +35,7 @@ router.get('/:id', async (req, res) => {
     res.json(student);
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', authenticate, async (req, res, next) => {
     try {
         const studentDto = req.body;
         const student = await dataaccess.createStudent(studentDto);
@@ -44,7 +45,7 @@ router.post('/', async (req, res, next) => {
     }
 });
 
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', authenticate, async (req, res, next) => {
     const studentDto = req.body;
     const { id } = req.params;
     const idAsNumber = parseInt(id, 10);
@@ -57,7 +58,7 @@ router.put('/:id', async (req, res, next) => {
     }
 });
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', authenticate, async (req, res, next) => {
     const { id } = req.params;
     try {
         await dataaccess.deleteById(id);

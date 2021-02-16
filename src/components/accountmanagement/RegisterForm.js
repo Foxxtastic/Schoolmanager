@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { userCreate } from "../../helpers/fetchFunctions";
 import Input from "../shared/Input";
 import { Selector } from "./Selector";
 import { history } from "../../history"

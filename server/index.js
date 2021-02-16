@@ -9,6 +9,7 @@ const teacherRouter = require('./routes/teachers.js');
 const studentRouter = require('./routes/students.js');
 const schoolTeacherRouter = require('./routes/schoolTeacher.js');
 const schoolStudentRouter = require('./routes/schoolStudent.js');
+const studentRequestRouter = require('./routes/StudentRequest.js');
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -28,6 +29,7 @@ app.use('/api/teacher', teacherRouter);
 app.use('/api/student', studentRouter);
 app.use('/api/', schoolTeacherRouter);
 app.use('/api/', schoolStudentRouter);
+app.use('/api/', studentRequestRouter);
 
 app.use((error, _req, res, _next) => {
     res.status(error.status || 500).send({

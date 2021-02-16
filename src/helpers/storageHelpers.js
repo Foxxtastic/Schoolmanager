@@ -14,3 +14,8 @@ export function getStorageItem(key) {
 
     return storageItem === null ? null : JSON.parse(storageItem);
 }
+
+export function deleteStorageItem(key) {
+    localStorage.removeItem(key);
+    sessionStorage.removeItem(key);
+}

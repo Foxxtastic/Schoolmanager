@@ -1,8 +1,9 @@
 const express = require('express');
 const dataaccess = require('../dataaccess/schoolTeacher');
+const { authenticate } = require('../middlewares/authenticate');
 const router = express.Router();
 
-router.post('/school/:id/teacher/assign', async (req, res, next) => {
+router.post('/school/:id/teacher/assign', authenticate, async (req, res, next) => {
     try {
         const { id } = req.params;
         const teacherDto = req.body;
@@ -13,7 +14,7 @@ router.post('/school/:id/teacher/assign', async (req, res, next) => {
     }
 });
 
-router.post('/school/:id/teacher/deassign', async (req, res, next) => {
+router.post('/school/:id/teacher/deassign', authenticate, async (req, res, next) => {
     try {
         const { id } = req.params;
         const teacherDto = req.body;

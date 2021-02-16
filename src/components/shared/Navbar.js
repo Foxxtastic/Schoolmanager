@@ -1,6 +1,9 @@
+import { useEffect } from "react";
 import { useContext, useState } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
+import { deleteStorageItem } from "../../helpers/storageHelpers";
+import { history } from "../../history"
 
 function Navbar(props) {
     const { menuItems, location } = props;
@@ -8,6 +11,11 @@ function Navbar(props) {
     const [isShown, setIsShown] = useState(undefined);
     const [previousMenuItem, setPreviousMenuItem] = useState(undefined);
     const { user } = useContext(UserContext);
+    const [loggedUser, setLoggedUser] = useState(user);
+
+    useEffect(() => {
+        setLoggedUser(user);
+    }, [user])
 
     const getMenuItem = (item, idx) => {
         const classes = `navbar-items ${activeMenuIndex === idx ? "navbar-items-active" : "tx-lorange"}`
@@ -45,6 +53,12 @@ function Navbar(props) {
         }
     }
 
+    const handleLogout = () => {
+        deleteStorageItem('user');
+        setLoggedUser(null);
+        history.push("/home");
+    }
+
     const getLinks = (menuItem) => {
         return menuItem.subItems.map((item, idx) => {
             const isActive = location.pathname.startsWith(item.link);
@@ -60,7 +74,7 @@ function Navbar(props) {
                 <div className="navbar-main">
                     {menuItems.map((item, idx) => getMenuItem(item, idx))}
                 </div>
-                {user !== null && <div className="username navbar-items tx-lorange">{user.data.EmailAddress}</div>}
+                {loggedUser !== null && <div className="username navbar-items tx-lorange" onClick={() => handleLogout()}>{user.data.EmailAddress}</div>}
             </div>
             <div className={subclass}>
                 {
