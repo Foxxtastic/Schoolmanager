@@ -3,7 +3,7 @@ const dataaccess = require('../dataaccess/users');
 const { authenticate } = require('../middlewares/authenticate');
 const router = express.Router();
 
-router.get('/', async (req, res, next) => {
+router.get('/', authenticate, async (req, res, next) => {
     try {
         const { pageNumber, pageSize, sorting, isDescending, filterProperty, filterValue } = req.query;
         const isAscending = isDescending && isDescending === 'true' ? false : true;

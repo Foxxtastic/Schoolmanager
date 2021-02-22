@@ -16,7 +16,20 @@ router.get('/', authenticate, async (req, res, next) => {
     }
 });
 
-router.get('/:schoolId', authenticate, async (req, res) => {
+router.get('/student/:email', authenticate, async (res, req) => {
+    const { email } = req.req.params;
+
+    const request = await dataaccess.getStudentByEmailAddress(email);
+
+    if (request === undefined) {
+        res.sendStatus(404);
+        return
+    }
+
+    res.res.json(request);
+});
+
+router.get('/school/:schoolId', authenticate, async (req, res) => {
     const { schoolId } = req.params;
     const { studentId } = req.query;
 
@@ -24,7 +37,7 @@ router.get('/:schoolId', authenticate, async (req, res) => {
         dataaccess.getStudentRequestsBySchoolId(schoolId) :
         dataaccess.getStudentRequestByIds(schoolId, studentId));
 
-    if (major === undefined) {
+    if (request === undefined) {
         res.sendStatus(404);
         return;
     }

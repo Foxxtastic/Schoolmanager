@@ -29,7 +29,7 @@ app.use('/api/teacher', teacherRouter);
 app.use('/api/student', studentRouter);
 app.use('/api/', schoolTeacherRouter);
 app.use('/api/', schoolStudentRouter);
-app.use('/api/', studentRequestRouter);
+app.use('/api/request', studentRequestRouter);
 
 app.use((error, _req, res, _next) => {
     res.status(error.status || 500).send({

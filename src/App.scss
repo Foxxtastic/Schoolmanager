@@ -81,6 +81,39 @@ table {
   width: 70em;
 }
 
+.requestform {
+  background-color: $lgray;
+  padding: 10px;
+  span {
+    display: flex;
+    margin-bottom: 5px;
+  }
+  p {
+    display: inline-block;
+    width: 100px;
+  }
+  label {
+    padding: 5px;
+    border: solid 1px $lconcrete;
+  }
+  textarea {
+    font-size: 1.5em;
+    resize: none;
+    overflow: auto;
+    padding: 2px;
+    height: 200px;
+    width: 500px;
+  }
+  .button {
+    margin-top: 10px;
+    background-color: $aqua;
+    width: 100px;
+  }
+  input[type="text"] {
+    display: none;
+  }
+}
+
 .user-form {
   background: linear-gradient(45deg, rgba(80, 195, 250, 0.8) 0%, rgba(74, 250, 195, 0.4) 100%);
   input[type="radio"] {

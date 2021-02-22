@@ -1,6 +1,18 @@
 const sql = require('mssql');
 const { databaseConnection } = require('../config');
 
+async function getStudentByEmailAddress(email) {
+    await sql.connect(databaseConnection);
+    const result = await sql.query`
+    select s.Id, FirstName, LastName, Nationality, City, Address
+        from Persons p
+        inner join Students s on s.PersonId = p.Id
+        inner join Users u on u.Id = p.UserId
+    where u.EmailAddress = ${email};`;
+
+    return result.recordset[0];
+}
+
 async function getStudentRequestsBySchoolId(schoolId) {
     await sql.connect(databaseConnection);
     const result = await sql.query`
@@ -49,7 +61,7 @@ async function listAllStudentRequests(sortingProperty = 'Id', isAscending = true
                         when 'SchoolId'         then convert(nvarchar(max), SchoolId)
                         when 'StudentId'        then convert(nvarchar(max), StudentId)
                         when 'Message'          then convert(nvarchar(max), Message)
-                        when 'AprovalRequest    then convert(nvarchar(max), AprovalRequest)
+                        when 'AprovalRequest'   then convert(nvarchar(max), AprovalRequest)
                         when 'IsCompleted'      then convert(nvarchar(max), IsCompleted)
                     end
                 ) as RowNum
@@ -64,7 +76,7 @@ async function listAllStudentRequests(sortingProperty = 'Id', isAscending = true
                 when 'SchoolId'         then convert(nvarchar(max), SchoolId)
                 when 'StudentId'        then convert(nvarchar(max), StudentId)
                 when 'Message'          then convert(nvarchar(max), Message)
-                when 'AprovalRequest    then convert(nvarchar(max), AprovalRequest)
+                when 'AprovalRequest'   then convert(nvarchar(max), AprovalRequest)
                 when 'IsCompleted'      then convert(nvarchar(max), IsCompleted)
             end
             like '%'+${filter}+'%'
@@ -95,7 +107,7 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
                         when 'SchoolId'         then convert(nvarchar(max), SchoolId)
                         when 'StudentId'        then convert(nvarchar(max), StudentId)
                         when 'Message'          then convert(nvarchar(max), Message)
-                        when 'AprovalRequest    then convert(nvarchar(max), AprovalRequest)
+                        when 'AprovalRequest'   then convert(nvarchar(max), AprovalRequest)
                         when 'IsCompleted'      then convert(nvarchar(max), IsCompleted)
                     end
                 ) as RowNum
@@ -110,7 +122,7 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
                 when 'SchoolId'         then convert(nvarchar(max), SchoolId)
                 when 'StudentId'        then convert(nvarchar(max), StudentId)
                 when 'Message'          then convert(nvarchar(max), Message)
-                when 'AprovalRequest    then convert(nvarchar(max), AprovalRequest)
+                when 'AprovalRequest'   then convert(nvarchar(max), AprovalRequest)
                 when 'IsCompleted'      then convert(nvarchar(max), IsCompleted)
             end
             like '%'+${filter}+'%'
@@ -130,7 +142,7 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
                     when 'SchoolId'         then convert(nvarchar(max), SchoolId)
                     when 'StudentId'        then convert(nvarchar(max), StudentId)
                     when 'Message'          then convert(nvarchar(max), Message)
-                    when 'AprovalRequest    then convert(nvarchar(max), AprovalRequest)
+                    when 'AprovalRequest'   then convert(nvarchar(max), AprovalRequest)
                     when 'IsCompleted'      then convert(nvarchar(max), IsCompleted)
             end
             like '%'+${filter}+'%'
@@ -162,13 +174,14 @@ async function createStudentRequest(requestDto) {
             ${requestDto.SchoolId},
             ${requestDto.StudentId},
             ${requestDto.Message},
-            ${requestDto.AprovalRequest},
-            ${requestDto.IsCompleted});`
+            'false',
+            'false'
+        );`
 
     result = await sql.query`
-        select top 1 Id, Name
+        select *
         from StudentRequest
-        order by Id desc`;
+        where SchoolId=${requestDto.SchoolId} and StudentId=${requestDto.StudentId};`;
 
     return result.recordset;
 }
@@ -243,6 +256,7 @@ async function deleteByIds(schoolId, studentId) {
 }
 
 module.exports = {
+    getStudentByEmailAddress,
     getStudentRequestsBySchoolId,
     getStudentRequestByIds,
     listAllStudentRequests,

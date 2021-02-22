@@ -242,8 +242,6 @@ export function SchoolManagement(props) {
     const handleTeacherAssign = (schoolId, teacherIds) => {
         setIsLoading(true);
 
-        console.log(schoolId, teacherIds)
-
         return fetch(`/api/school/${schoolId}/teacher/assign`, {
             method: 'POST',
             headers: {
