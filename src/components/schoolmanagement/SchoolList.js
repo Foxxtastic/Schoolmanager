@@ -145,11 +145,12 @@ export function SchoolList(props) {
                     items={schools}
                     activePageNumber={activePageNumber}
                     maxPageNumber={maxPageNumber}
-                    getRowForItem={(school, idx) => {
+                    getRowId={school => school.Id}
+                    getRowForItem={(school) => {
                         const isEditing = editor.isEditMode && editor.rowKey === school.Id;
 
                         return (
-                            <tr key={idx}>
+                            <>
                                 <td>
                                     {isEditing ?
                                         <>
@@ -164,7 +165,7 @@ export function SchoolList(props) {
                                             <input name="name" defaultValue={school.Name} ref={register({ required: true })} />
                                             <ValidationErrors name="name" errors={errors} />
                                         </> :
-                                        <Link to={`/schools/${schools[idx].Id}`}>
+                                        <Link to={`/schools/${school.Id}`}>
                                             <span className="select">{school.Name}</span>
                                         </Link>}
                                 </td>
@@ -200,10 +201,10 @@ export function SchoolList(props) {
                                         </> :
                                         <>
                                             <Button disabled={isLoading} text="Edit" handleClick={() => openEditor(school.Id)} />
-                                            <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(school.Id)} />
+                                            <Button disabled={isLoading} isRed={true} text="Delete" handleClick={() => handleDeleteModalShown(school.Id)} />
                                         </>}
                                 </td>
-                            </tr>
+                            </>
                         );
                     }}
                 />

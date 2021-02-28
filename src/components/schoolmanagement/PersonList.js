@@ -1,5 +1,4 @@
 import { TeacherDetails } from "./TeacherDetails";
-import { StudentDetails } from "./StudentDetails";
 import { SelectListBox } from "../shared/SelectListBox";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -39,7 +38,6 @@ export function PersonList(props) {
             </button>
             { selectedId === item.Id ?
                 <TeacherDetails teacher={item} /> :
-                // <StudentDetails student={item} /> :
                 null
             }
         </>

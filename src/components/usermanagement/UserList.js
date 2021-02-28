@@ -11,7 +11,7 @@ import { useFilterProperty } from "../../hooks/useFilterProperty";
 import { useFilterValue } from "../../hooks/useFilterValue";
 import { updateSearch } from '../../helpers/updateSearch';
 import moment from "moment";
-import { faCheck, faExclamationTriangle, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { LayoutContent } from "../shared/LayoutContent";
 
@@ -35,7 +35,6 @@ export function UserList(props) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [activeIdForDelete, setActiveIdForDelete] = useState(null);
     const [maxPageNumber, setMaxPageNumber] = useState(undefined);
-    const [hoverOnIcon, setHoveronIcon] = useState(null);
 
     let sortingProperty = useSorting();
     sortingProperty = sortingProperty === null ? 'EmailAddress' : sortingProperty;
@@ -102,21 +101,9 @@ export function UserList(props) {
                     items={users}
                     activePageNumber={activePageNumber}
                     maxPageNumber={maxPageNumber}
-                    getRowForItem={(user, idx) => {
+                    getRowForItem={(user) => {
                         return (
-                            <tr key={idx}>
-                                {error && error.rowidx === user.Id &&
-                                    <td className="error">
-                                        <FontAwesomeIcon
-                                            className="tx-lred"
-                                            icon={faExclamationTriangle}
-                                            onMouseEnter={() => setHoveronIcon(error.rowidx)}
-                                            onMouseLeave={() => setHoveronIcon(null)}
-                                        />
-                                        {hoverOnIcon === error.rowidx && <div className="tooltip">{error.message}</div>}
-                                    </td>}
-                                {error && error.rowidx !== user.Id &&
-                                    <td className="error"></td>}
+                            <>
                                 <td>
                                     <span>{user.EmailAddress}</span>
                                 </td>
@@ -131,10 +118,10 @@ export function UserList(props) {
                                         <Link to={`/users/${user.Id}/update`}>
                                             <Button text="Edit" />
                                         </Link>
-                                        <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(user.Id)} />
+                                        <Button disabled={isLoading} isRed={true} text="Delete" handleClick={() => handleDeleteModalShown(user.Id)} />
                                     </>
                                 </td>
-                            </tr>
+                            </>
                         );
                     }}
                 />

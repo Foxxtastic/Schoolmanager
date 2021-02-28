@@ -1,5 +1,3 @@
-import { Form } from "../shared/Form"
-import moment from "moment";
 import { formatAsDate } from "../../helpers/momentHelpers";
 
 export function StudentDetails(props) {
@@ -21,5 +19,5 @@ export function StudentDetails(props) {
                 </div>
             </div>
         </div>
-    )
+    );
 }

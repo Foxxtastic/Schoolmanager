@@ -2,7 +2,7 @@ import { Loader } from '../Loader';
 import { Pager } from '../Pager';
 import { Header } from './Header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSortAlphaUp, faSortAlphaDownAlt, faSearch, faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons'
+import { faSortAlphaUp, faSortAlphaDownAlt, faSearch, faAngleRight, faAngleLeft, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
 import { updateSearch } from '../../../helpers/updateSearch'
 import { useState } from 'react';
 import { CreateRow } from './CreateRow';
@@ -26,11 +26,15 @@ export function DataTable(props) {
         isInlineCreate,
         createRow,
         getCreateRowColumns,
-        onCreate
+        onCreate,
+        getRowId
     } = props;
 
     const [openFilter, setOpenFilter] = useState(undefined);
     const [showCreateRow, setShowCreateRow] = useState(false);
+    const [rowTooltip, setRowTooltip] = useState(null);
+
+    const hasErrorDisplayedInRow = error !== undefined;
 
     const isSortedHeader = (header) => {
         return header.propertyName && header.propertyName === sortingProperty;
@@ -94,7 +98,7 @@ export function DataTable(props) {
                     />
                     <tfoot>
                         <tr className="datatable-footer bg-bgray">
-                            <td colSpan={headers.length + ((error !== undefined) ? 1 : 0)}>
+                            <td colSpan={headers.length + (hasErrorDisplayedInRow ? 1 : 0)}>
                                 <span>Page: </span>
                                 <FontAwesomeIcon className="icon-wpointer pagerspacing" icon={faAngleLeft} onClick={() => handlePageSwitch(-1)} />
                                 <Pager activePageNumber={activePageNumber} maxPageNumber={maxPageNumber} />
@@ -112,7 +116,23 @@ export function DataTable(props) {
                                 onCreate={onCreate}
                                 onClose={() => setShowCreateRow(false)}
                             />}
-                        {items.map((item, idx) => getRowForItem(item, idx, showCreateRow))}
+
+                        {items.map((item, idx) => (<tr key={idx}>
+                            {hasErrorDisplayedInRow &&
+                                <td className="error">
+                                    {error.rowidx === getRowId(item) &&
+                                        <>
+                                            <FontAwesomeIcon
+                                                className="tx-lred"
+                                                icon={faExclamationTriangle}
+                                                onMouseEnter={() => setRowTooltip(error.message)}
+                                                onMouseLeave={() => setRowTooltip(null)}
+                                            />
+                                            <div className={`tooltip ${rowTooltip !== null && 'visible'}`}>{rowTooltip}</div>
+                                        </>}
+                                </td>}
+                            {getRowForItem(item, idx, showCreateRow)}
+                        </tr>))}
                     </tbody>
                 </table>
             </div>

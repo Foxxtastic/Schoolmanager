@@ -5,41 +5,40 @@ import { StudentListPage } from './StudentListPage';
 import { StudentCreatePage } from './StudentCreatePage';
 import { studentCreate } from '../../helpers/fetchFunctions';
 import { pageSize } from '../../config';
+import { useFetch } from '../../hooks/useFetch';
 
 export function StudentManagement(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(undefined);
+    const fetchApi = useFetch();
 
     const getData = useCallback((pageNumber, sortingProperty, isDescending, filterProperty, filterValue, schoolId) => {
         setIsLoading(true);
         filterValue = encodeURIComponent(filterValue);
-        return fetch(`/api/student?pageNumber=${pageNumber}&pageSize=${pageSize}` +
+        return fetchApi(`/api/student?pageNumber=${pageNumber}&pageSize=${pageSize}` +
             `&sorting=${sortingProperty}&isDescending=${isDescending}` +
             `&filterProperty=${filterProperty}&filterValue=${filterValue}&schoolId=${schoolId ?? ''}`)
             .then(res => res.json())
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []);
+    }, [fetchApi]);
 
     const getAllSchools = useCallback(() => {
         setIsLoading(true);
 
-        return fetch('/api/school/')
+        return fetchApi('/api/school/')
             .then(res => res.json())
             .finally(() => {
                 setIsLoading(false)
             });
-    }, []);
+    }, [fetchApi]);
 
     const handleStudentUpdate = (idToUpdate, person) => {
         setIsLoading(true);
 
-        return fetch(`/api/student/${idToUpdate}`, {
+        return fetchApi(`/api/student/${idToUpdate}`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
             body: JSON.stringify(person)
         })
             .then(res => res.json())
@@ -66,7 +65,7 @@ export function StudentManagement(props) {
     const handleStudentDelete = (idToDelete) => {
         setIsLoading(true);
 
-        return fetch(`/api/student/${idToDelete}`, {
+        return fetchApi(`/api/student/${idToDelete}`, {
             method: 'DELETE'
         })
             .then(res => res.json())

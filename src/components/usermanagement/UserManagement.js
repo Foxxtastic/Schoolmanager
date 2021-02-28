@@ -6,26 +6,28 @@ import { UserCreatePage } from './UserCreatePage';
 import { userCreate } from '../../helpers/fetchFunctions';
 import UserUpdatePage from './UserUpdatePage';
 import { pageSize } from '../../config';
+import { useFetch } from '../../hooks/useFetch';
 
 export function UserManagement(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(undefined);
+    const fetchApi = useFetch();
 
     const getData = useCallback((pageNumber, sortingProperty, isDescending, filterProperty, filterValue) => {
         setIsLoading(true);
         filterValue = encodeURIComponent(filterValue);
-        return fetch(`/api/user?pageNumber=${pageNumber}&pageSize=${pageSize}` +
+        return fetchApi(`/api/user?pageNumber=${pageNumber}&pageSize=${pageSize}` +
             `&sorting=${sortingProperty}&isDescending=${isDescending}` +
             `&filterProperty=${filterProperty}&filterValue=${filterValue}`)
             .then(res => res.json())
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []);
+    }, [fetchApi]);
 
     const getDataById = useCallback((idToUpdate) => {
         setIsLoading(true);
-        return fetch(`/api/user/${idToUpdate}`)
+        return fetchApi(`/api/user/${idToUpdate}`)
             .then(res => res.json())
             .then(jsonResponse => {
                 if (jsonResponse.error) {
@@ -41,15 +43,12 @@ export function UserManagement(props) {
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []);
+    }, [fetchApi]);
 
     const handleUserUpdate = (idToUpdate, user) => {
         setIsLoading(true);
-        return fetch(`/api/user/${idToUpdate}`, {
+        return fetchApi(`/api/user/${idToUpdate}`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
             body: JSON.stringify(user)
         })
             .then(res => res.json())
@@ -74,7 +73,7 @@ export function UserManagement(props) {
 
     const handleUserDelete = (idToDelete) => {
         setIsLoading(true);
-        return fetch(`/api/user/${idToDelete}`, {
+        return fetchApi(`/api/user/${idToDelete}`, {
             method: 'DELETE'
         })
             .then(res => res.json())

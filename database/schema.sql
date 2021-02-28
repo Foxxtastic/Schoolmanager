@@ -164,11 +164,11 @@ IF (NOT EXISTS (SELECT *
 BEGIN
 	CREATE TABLE StudentRequest (
 		SchoolId int NOT NULL
-			CONSTRAINT FK_SchoolStudent_SchoolId
+			CONSTRAINT FK_StudentRequest_SchoolId
 			REFERENCES Schools(Id),
 		
 		StudentId int NOT NULL
-			CONSTRAINT FK_SchoolStudent_StudentId
+			CONSTRAINT FK_StudentRequest_StudentId
 			REFERENCES Students(Id),
 
 		Message nvarchar(500),
@@ -177,4 +177,66 @@ BEGIN
 		IsCompleted bit NOT NULL,
 		CONSTRAINT PK_StudentRequest PRIMARY KEY NONCLUSTERED ([SchoolId], [StudentId])
 	);    
+END
+
+IF (NOT EXISTS (SELECT * 
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = 'dbo' 
+                AND  TABLE_NAME = 'Feature'))
+BEGIN
+	CREATE TABLE Feature (
+		Id int NOT NULL IDENTITY(1,1)
+			CONSTRAINT PK_Feature PRIMARY KEY,
+		Name nvarchar(50) NOT NULL
+	);
+END
+
+IF (NOT EXISTS (SELECT * 
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = 'dbo' 
+                AND  TABLE_NAME = 'SecurityGroup'))
+BEGIN
+	CREATE TABLE SecurityGroup (
+		Id int NOT NULL IDENTITY(1,1)
+			CONSTRAINT PK_SecurityGroup PRIMARY KEY,
+		Name nvarchar(50) NOT NULL,
+		IsSchoolRelated bit NOT NULL,
+		IsReadonly bit NOT NULL
+	);
+END
+
+IF (NOT EXISTS (SELECT * 
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = 'dbo' 
+                AND  TABLE_NAME = 'SecurityGroupFeature'))
+BEGIN
+	CREATE TABLE SecurityGroupFeature (
+		GroupId int NOT NULL
+			CONSTRAINT FK_SecurityGroupFeature_GroupId
+			REFERENCES SecurityGroup(Id),
+
+		FeatureId int NOT NULL
+			CONSTRAINT FK_SecurityGroupFeature_FeatureId
+			REFERENCES Feature(Id)
+	);
+END
+
+IF (NOT EXISTS (SELECT * 
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = 'dbo' 
+                AND  TABLE_NAME = 'SecurityGroupMember'))
+BEGIN
+	CREATE TABLE SecurityGroupMember (
+		UserId int NOT NULL
+			CONSTRAINT FK_SecurityGroupMember_UserId
+			REFERENCES Users(Id),
+
+		GroupId int NOT NULL
+			CONSTRAINT FK_SecurityGroupMember_GroupId
+			REFERENCES SecurityGroup(Id),
+
+		SchoolId int NULL
+			CONSTRAINT FK_SecurityGroupMember_SchoolId
+			REFERENCES Schools(Id)
+	);
 END

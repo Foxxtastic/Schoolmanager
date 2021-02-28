@@ -6,10 +6,12 @@ import { TeacherCreatePage } from './TeacherCreatePage';
 import { pageSize } from '../../config';
 import TeacherUpdatePage from './TeacherUpdatePage';
 import { getTeacherMajors, teacherCreate } from '../../helpers/fetchFunctions';
+import { useFetch } from '../../hooks/useFetch';
 
 export function TeacherManagement(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(undefined);
+    const fetchApi = useFetch();
 
     const getMajors = useCallback(() => {
         return getTeacherMajors(setIsLoading);
@@ -18,28 +20,28 @@ export function TeacherManagement(props) {
     const getAllSchools = useCallback(() => {
         setIsLoading(true);
 
-        return fetch('/api/school/')
+        return fetchApi('/api/school/')
             .then(res => res.json())
             .finally(() => {
                 setIsLoading(false)
             });
-    }, []);
+    }, [fetchApi]);
 
     const getData = useCallback((pageNumber, sortingProperty, isDescending, filterProperty, filterValue, schoolId) => {
         setIsLoading(true);
         filterValue = encodeURIComponent(filterValue);
-        return fetch(`/api/teacher?pageNumber=${pageNumber}&pageSize=${pageSize}` +
+        return fetchApi(`/api/teacher?pageNumber=${pageNumber}&pageSize=${pageSize}` +
             `&sorting=${sortingProperty}&isDescending=${isDescending}` +
             `&filterProperty=${filterProperty}&filterValue=${filterValue}&schoolId=${schoolId ?? ''}`)
             .then(res => res.json())
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []);
+    }, [fetchApi]);
 
     const getDataById = useCallback((idToUpdate) => {
         setIsLoading(true);
-        return fetch(`/api/teacher/${idToUpdate}`)
+        return fetchApi(`/api/teacher/${idToUpdate}`)
             .then(res => res.json())
             .then(jsonResponse => {
                 if (jsonResponse.error) {
@@ -55,16 +57,13 @@ export function TeacherManagement(props) {
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []);
+    }, [fetchApi]);
 
     const handleTeacherUpdate = (idToUpdate, teacher) => {
         setIsLoading(true);
 
-        return fetch(`/api/teacher/${idToUpdate}`, {
+        return fetchApi(`/api/teacher/${idToUpdate}`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
             body: JSON.stringify(teacher)
         })
             .then(res => res.json())
@@ -91,7 +90,7 @@ export function TeacherManagement(props) {
     const handleTeacherDelete = (idToDelete) => {
         setIsLoading(true);
 
-        return fetch(`/api/teacher/${idToDelete}`, {
+        return fetchApi(`/api/teacher/${idToDelete}`, {
             method: 'DELETE'
         })
             .then(res => res.json())

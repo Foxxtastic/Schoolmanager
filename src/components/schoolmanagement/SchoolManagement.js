@@ -1,34 +1,32 @@
-import { useState, useCallback, useEffect, useContext } from 'react';
+import { useState, useCallback } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { history } from '../../history'
 import { SchoolListPage } from './SchoolListPage';
 import { SchoolCreatePage } from './SchoolCreatePage';
 import { pageSize } from '../../config';
 import SchoolStaffPage from './SchoolStaffPage';
-import { UserContext } from '../../contexts/UserContext';
-import { useHttpHeaders } from '../../hooks/useHttpHeaders';
+import { useFetch } from '../../hooks/useFetch';
 
 export function SchoolManagement(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(undefined);
-    const { user } = useContext(UserContext);
-    const httpHeaders = useHttpHeaders();
+    const fetchApi = useFetch();
 
     const getData = useCallback((pageNumber, sortingProperty, isDescending, filterProperty, filterValue) => {
         setIsLoading(true);
         filterValue = encodeURIComponent(filterValue);
-        return fetch(`/api/school?pageNumber=${pageNumber}&pageSize=${pageSize}` +
+        return fetchApi(`/api/school?pageNumber=${pageNumber}&pageSize=${pageSize}` +
             `&sorting=${sortingProperty}&isDescending=${isDescending}` +
             `&filterProperty=${filterProperty}&filterValue=${filterValue}`)
             .then(res => res.json())
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []);
+    }, [fetchApi]);
 
     const getDataById = useCallback((id) => {
         setIsLoading(true);
-        return fetch(`/api/school/${id}`)
+        return fetchApi(`/api/school/${id}`)
             .then(res => res.json())
             .then(jsonResponse => {
                 if (jsonResponse.error) {
@@ -44,11 +42,11 @@ export function SchoolManagement(props) {
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []);
+    }, [fetchApi]);
 
     const getStudentById = useCallback((id) => {
         setIsLoading(true);
-        return fetch(`/api/student/${id}`)
+        return fetchApi(`/api/student/${id}`)
             .then(res => res.json())
             .then(jsonResponse => {
                 if (jsonResponse.error) {
@@ -64,11 +62,11 @@ export function SchoolManagement(props) {
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []);
+    }, [fetchApi]);
 
     const getTeacherById = useCallback((id) => {
         setIsLoading(true);
-        return fetch(`/api/teacher/${id}`)
+        return fetchApi(`/api/teacher/${id}`)
             .then(res => res.json())
             .then(jsonResponse => {
                 if (jsonResponse.error) {
@@ -84,11 +82,11 @@ export function SchoolManagement(props) {
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []);
+    }, [fetchApi]);
 
     const getStudentsWithoutSchool = useCallback(() => {
         setIsLoading(true);
-        return fetch('/api/student?schoolLess=true')
+        return fetchApi('/api/student?schoolLess=true')
             .then(res => res.json())
             .then(jsonResponse => {
                 if (jsonResponse.error) {
@@ -104,11 +102,11 @@ export function SchoolManagement(props) {
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []);
+    }, [fetchApi]);
 
     const getTeachersWithoutSchool = useCallback(() => {
         setIsLoading(true);
-        return fetch('/api/teacher?schoolLess=true')
+        return fetchApi('/api/teacher?schoolLess=true')
             .then(res => res.json())
             .then(jsonResponse => {
                 if (jsonResponse.error) {
@@ -124,11 +122,11 @@ export function SchoolManagement(props) {
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []);
+    }, [fetchApi]);
 
     const getStudentsOfSchool = useCallback((schoolId) => {
         setIsLoading(true);
-        return fetch(`/api/student?schoolId=${schoolId}`)
+        return fetchApi(`/api/student?schoolId=${schoolId}`)
             .then(res => res.json())
             .then(jsonResponse => {
                 if (jsonResponse.error) {
@@ -144,11 +142,11 @@ export function SchoolManagement(props) {
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []);
+    }, [fetchApi]);
 
     const getTeachersOfSchool = useCallback((schoolId) => {
         setIsLoading(true);
-        return fetch(`/api/teacher?schoolId=${schoolId}`)
+        return fetchApi(`/api/teacher?schoolId=${schoolId}`)
             .then(res => res.json())
             .then(jsonResponse => {
                 if (jsonResponse.error) {
@@ -164,16 +162,13 @@ export function SchoolManagement(props) {
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []);
+    }, [fetchApi]);
 
     const handleStudentDeassign = (schoolId, studentIds) => {
         setIsLoading(true);
 
-        return fetch(`/api/school/${schoolId}/student/deassign`, {
+        return fetchApi(`/api/school/${schoolId}/student/deassign`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
             body: JSON.stringify(studentIds)
         })
             .then(res => res.json())
@@ -192,11 +187,8 @@ export function SchoolManagement(props) {
     const handleTeacherDeassign = (schoolId, teacherIds) => {
         setIsLoading(true);
 
-        return fetch(`/api/school/${schoolId}/teacher/deassign`, {
+        return fetchApi(`/api/school/${schoolId}/teacher/deassign`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
             body: JSON.stringify(teacherIds)
         })
             .then(res => res.json())
@@ -215,11 +207,8 @@ export function SchoolManagement(props) {
     const handleStudentAssign = (schoolId, studentIds) => {
         setIsLoading(true);
 
-        return fetch(`/api/school/${schoolId}/student/assign`, {
+        return fetchApi(`/api/school/${schoolId}/student/assign`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
             body: JSON.stringify(studentIds)
         })
             .then(res => res.json())
@@ -242,11 +231,8 @@ export function SchoolManagement(props) {
     const handleTeacherAssign = (schoolId, teacherIds) => {
         setIsLoading(true);
 
-        return fetch(`/api/school/${schoolId}/teacher/assign`, {
+        return fetchApi(`/api/school/${schoolId}/teacher/assign`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
             body: JSON.stringify(teacherIds)
         })
             .then(res => res.json())
@@ -269,11 +255,8 @@ export function SchoolManagement(props) {
     const handleSchoolUpdate = (idToUpdate, school) => {
         setIsLoading(true);
 
-        return fetch(`/api/school/${idToUpdate}`, {
+        return fetchApi(`/api/school/${idToUpdate}`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
             body: JSON.stringify(school)
         })
             .then(res => res.json())
@@ -296,9 +279,8 @@ export function SchoolManagement(props) {
     const handleSchoolCreate = (newItem) => {
         setIsLoading(true);
 
-        return fetch('/api/school', {
+        return fetchApi('/api/school', {
             method: 'POST',
-            headers: httpHeaders,
             body: JSON.stringify(newItem)
         })
             .then(res => res.json())
@@ -321,7 +303,7 @@ export function SchoolManagement(props) {
     const handleSchoolDelete = (idToDelete) => {
         setIsLoading(true);
 
-        return fetch(`/api/school/${idToDelete}`, {
+        return fetchApi(`/api/school/${idToDelete}`, {
             method: 'DELETE'
         })
             .then(res => res.json())

@@ -1058,7 +1058,13 @@ button,
 .tooltip {
   position: absolute;
   z-index: 999;
+  padding: 4px;
+  display: none;
   background-color: blanchedalmond;
+
+  &.visible {
+    display: block;
+  }
 }
 
 .username {

@@ -74,9 +74,9 @@ export function SchoolList(props) {
                     items={schools}
                     activePageNumber={activePageNumber}
                     maxPageNumber={maxPageNumber}
-                    getRowForItem={(school, idx) => {
+                    getRowForItem={(school) => {
                         return (
-                            <tr key={idx}>
+                            <>
                                 <td>
                                     <span>{school.EduId}</span>
                                 </td>
@@ -97,7 +97,7 @@ export function SchoolList(props) {
                                         <Button text="Apply" />
                                     </Link>
                                 </td>
-                            </tr>
+                            </>
                         );
                     }}
                 />

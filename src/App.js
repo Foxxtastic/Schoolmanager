@@ -15,6 +15,7 @@ import { UserContext } from './contexts/UserContext';
 import { getStorageItem } from './helpers/storageHelpers';
 import { useState } from 'react';
 import { RequestManagement } from './components/requestmanagement/RequestManagement';
+import { StudentRequestManagement } from './components/administrator/StudentRequestManagement';
 
 const menuItems = [
   {
@@ -62,6 +63,15 @@ const menuItems = [
         link: '/apply'
       }
     ]
+  },
+  {
+    text: 'Administrator',
+    subItems: [
+      {
+        text: 'Requests',
+        link: '/requests'
+      }
+    ]
   }
 ];
 
@@ -85,6 +95,7 @@ function App() {
           <Login />
           <Register />
           <RequestManagement />
+          <StudentRequestManagement />
         </Router>
       </UserContext.Provider>
     </>

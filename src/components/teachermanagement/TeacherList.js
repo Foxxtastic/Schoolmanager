@@ -11,10 +11,7 @@ import { useFilterProperty } from "../../hooks/useFilterProperty";
 import { useFilterValue } from "../../hooks/useFilterValue";
 import { updateSearch } from '../../helpers/updateSearch';
 import moment from "moment";
-import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { LayoutContent } from "../shared/LayoutContent";
-import { useSchoolId } from "../../hooks/useSchoolId";
 import { DropDown } from "../shared/DropDown";
 
 const headers = [
@@ -40,11 +37,10 @@ export function TeacherList(props) {
 
     const [teachers, setTeachers] = useState(undefined);
     const [schools, setSchools] = useState(undefined);
-    const [selectedSchool, setSelectedSchool] = useState(undefined);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [activeIdForDelete, setActiveIdForDelete] = useState(null);
     const [maxPageNumber, setMaxPageNumber] = useState(undefined);
-    const [hoverOnIcon, setHoveronIcon] = useState(null);
+    const [schoolId, setSchoolId] = useState(null);
 
     let sortingProperty = useSorting();
     sortingProperty = sortingProperty === null ? 'FirstName' : sortingProperty;
@@ -55,8 +51,6 @@ export function TeacherList(props) {
 
     let filterValue = useFilterValue();
     filterValue = filterValue === null ? '' : filterValue;
-
-    let schoolId = useSchoolId();
 
     const { error, afterDelete, afterPaging, linkToCreate, onDelete, isLoading, getAllSchools, afterSelectSchool } = props;
 
@@ -82,12 +76,9 @@ export function TeacherList(props) {
     }, [getAllSchools]);
 
     useEffect(() => {
-        if (schools && schools.find(x => x.Name === selectedSchool)) {
-            schoolId = schools.find(x => x.Name === selectedSchool).Id
-            afterSelectSchool(activePageNumber, sortingProperty, isDescending, filterProperty, filterValue, schoolId)
-                .then(setTeachersFromServer);
-        }
-    }, [selectedSchool, schools, schoolId]);
+        afterSelectSchool(activePageNumber, sortingProperty, isDescending, filterProperty, filterValue, schoolId)
+            .then(setTeachersFromServer);
+    }, [schoolId, activePageNumber, afterSelectSchool, filterProperty, filterValue, isDescending, sortingProperty]);
 
     const handleDeleteModalShown = (id) => {
         setIsModalVisible(true);
@@ -106,8 +97,8 @@ export function TeacherList(props) {
         setIsModalVisible(false);
     }
 
-    const handleSelectSchool = (school) => {
-        setSelectedSchool(school)
+    const handleSelectSchool = (schoolId) => {
+        setSchoolId(schoolId);
     }
 
     if (teachers === undefined) {
@@ -118,7 +109,14 @@ export function TeacherList(props) {
         <div className={`component ${isLoading ? "loading" : ""}`} >
             <ConfirmPopup text="Are you sure?" visible={isModalVisible} onConfirm={handleDeleteModalConfirm} onCancel={handleModalCancel} />
             <LayoutContent>
-                {schools && <DropDown dropDownList={schools} label={"Teachers of"} defaultValue="All" onSelect={handleSelectSchool} />}
+                {schools &&
+                    <DropDown
+                        dropDownList={schools}
+                        label="Teachers of"
+                        defaultValue={undefined}
+                        defaultLabel="All"
+                        onSelect={handleSelectSchool}
+                    />}
                 <DataTable
                     error={error}
                     isLoading={isLoading}
@@ -130,21 +128,9 @@ export function TeacherList(props) {
                     items={teachers}
                     activePageNumber={activePageNumber}
                     maxPageNumber={maxPageNumber}
-                    getRowForItem={(teacher, idx) => {
+                    getRowForItem={(teacher) => {
                         return (
-                            <tr key={idx}>
-                                {error && error.rowidx === teacher.Id &&
-                                    <td className="error">
-                                        <FontAwesomeIcon
-                                            className="tx-lred"
-                                            icon={faExclamationTriangle}
-                                            onMouseEnter={() => setHoveronIcon(error.rowidx)}
-                                            onMouseLeave={() => setHoveronIcon(null)}
-                                        />
-                                        {hoverOnIcon === error.rowidx && <div className="tooltip">{error.message}</div>}
-                                    </td>}
-                                {error && error.rowidx !== teacher.Id &&
-                                    <td className="error"></td>}
+                            <>
                                 <td>
                                     <span>{teacher.FirstName}</span>
                                 </td>
@@ -174,10 +160,10 @@ export function TeacherList(props) {
                                         <Link to={`/teachers/${teacher.Id}/update`} >
                                             <Button text="Edit" />
                                         </Link>
-                                        <Button disabled={isLoading} text="Delete" handleClick={() => handleDeleteModalShown(teacher.Id)} />
+                                        <Button disabled={isLoading} isRed={true} text="Delete" handleClick={() => handleDeleteModalShown(teacher.Id)} />
                                     </>
                                 </td>
-                            </tr>
+                            </>
                         );
                     }}
                 />

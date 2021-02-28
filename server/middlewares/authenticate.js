@@ -8,11 +8,11 @@ function authenticate(req, res, next) {
     }
 
     jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-        // if (err) {
-        //     console.log('Invalid Json Web Token');
-        //     console.log(err);
-        //     return res.sendStatus(403); // Forbidden
-        // }
+        if (err) {
+            console.log('Invalid Json Web Token');
+            console.log(err);
+            return res.sendStatus(403); // Forbidden
+        }
         req.user = user;
         next();
     })

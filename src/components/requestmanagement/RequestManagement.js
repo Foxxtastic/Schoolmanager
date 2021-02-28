@@ -1,30 +1,30 @@
 import { useState, useCallback } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { pageSize } from '../../config';
-import { useHttpHeaders } from '../../hooks/useHttpHeaders';
+import { useFetch } from '../../hooks/useFetch';
 import RequestForm from './RequestForm';
 import { SchoolListPage } from './SchoolListPage';
 
 export function RequestManagement(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(undefined);
-    const httpHeaders = useHttpHeaders();
+    const fetchApi = useFetch();
 
     const getData = useCallback((pageNumber, sortingProperty, isDescending, filterProperty, filterValue) => {
         setIsLoading(true);
         filterValue = encodeURIComponent(filterValue);
-        return fetch(`/api/school?pageNumber=${pageNumber}&pageSize=${pageSize}` +
+        return fetchApi(`/api/school?pageNumber=${pageNumber}&pageSize=${pageSize}` +
             `&sorting=${sortingProperty}&isDescending=${isDescending}` +
             `&filterProperty=${filterProperty}&filterValue=${filterValue}`)
             .then(res => res.json())
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []);
+    }, [fetchApi]);
 
     const getSchoolById = useCallback((id) => {
         setIsLoading(true);
-        return fetch(`/api/school/${id}`)
+        return fetchApi(`/api/school/${id}`)
             .then(res => res.json())
             .then(jsonResponse => {
                 if (jsonResponse.error) {
@@ -40,11 +40,11 @@ export function RequestManagement(props) {
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []);
+    }, [fetchApi]);
 
     const getStudentByEmailAddress = useCallback((emailAddress) => {
         setIsLoading(true);
-        return fetch(`/api/request/student/${emailAddress}`)
+        return fetchApi(`/api/request/student/${emailAddress}`)
             .then(res => res.json())
             .then(jsonResponse => {
                 if (jsonResponse.error) {
@@ -60,14 +60,13 @@ export function RequestManagement(props) {
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []);
+    }, [fetchApi]);
 
     const createStudentRequest = useCallback((newItem) => {
         console.log(newItem)
         setIsLoading(true);
-        return fetch(`/api/request`, {
+        return fetchApi(`/api/request`, {
             method: 'POST',
-            headers: httpHeaders,
             body: JSON.stringify(newItem)
         })
 
@@ -86,7 +85,7 @@ export function RequestManagement(props) {
             .finally(() => {
                 setIsLoading(false);
             });
-    }, [])
+    }, [fetchApi])
 
     return (
         <Switch>

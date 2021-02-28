@@ -45,7 +45,7 @@ async function getStudentRequestByIds(schoolId, studentId) {
     return result.recordset[0];
 }
 
-async function listAllStudentRequests(sortingProperty = 'Id', isAscending = true, filterProperty = 'Name', filter = '') {
+async function listAllStudentRequests(sortingProperty = 'StudentId', isAscending = true, filterProperty = 'Message', filter = '', schoolId = '') {
     await sql.connect(databaseConnection);
     const isAscendingParam = isAscending === true ? 1 : -1;
 
@@ -53,7 +53,7 @@ async function listAllStudentRequests(sortingProperty = 'Id', isAscending = true
         with StudentRequestWithRowNum AS
         (
             select
-                *,
+                SchoolId, StudentId, FirstName, LastName, BirthDate, Nationality, City, Message, AprovalRequest, IsCompleted,
                 row_number() over 
                 (
                     order by
@@ -63,12 +63,22 @@ async function listAllStudentRequests(sortingProperty = 'Id', isAscending = true
                         when 'Message'          then convert(nvarchar(max), Message)
                         when 'AprovalRequest'   then convert(nvarchar(max), AprovalRequest)
                         when 'IsCompleted'      then convert(nvarchar(max), IsCompleted)
+                        when 'FirstName'        then convert(nvarchar(max), FirstName)
+                        when 'LastName'         then convert(nvarchar(max), LastName)
+                        when 'BirthDate'        then convert(nvarchar(max), BirthDate)
+                        when 'Nationality'      then convert(nvarchar(max), Nationality)
+                        when 'City'             then convert(nvarchar(max), City)
+                        when 'Message'          then convert(nvarchar(max), Message)
                     end
                 ) as RowNum
             from
-                StudentRequest
+                StudentRequest sr
+                    inner join Students s on s.Id = sr.StudentId
+	                inner join Persons p on p.Id = s.PersonId
+                    where ${schoolId} = '' and sr.SchoolId in (select Id from Schools)
+                        or ${schoolId} != '' and sr.SchoolId in (${schoolId})
         )
-        select SchoolId, StudentId, Message, AprovalRequest, IsCompleted
+        select SchoolId, StudentId, FirstName, LastName, BirthDate, Nationality, City, Message, AprovalRequest, IsCompleted
         from
             StudentRequestWithRowNum
         where 
@@ -78,6 +88,12 @@ async function listAllStudentRequests(sortingProperty = 'Id', isAscending = true
                 when 'Message'          then convert(nvarchar(max), Message)
                 when 'AprovalRequest'   then convert(nvarchar(max), AprovalRequest)
                 when 'IsCompleted'      then convert(nvarchar(max), IsCompleted)
+                when 'FirstName'        then convert(nvarchar(max), FirstName)
+                when 'LastName'         then convert(nvarchar(max), LastName)
+                when 'BirthDate'        then convert(nvarchar(max), BirthDate)
+                when 'Nationality'      then convert(nvarchar(max), Nationality)
+                when 'City'             then convert(nvarchar(max), City)
+                when 'Message'          then convert(nvarchar(max), Message)
             end
             like '%'+${filter}+'%'
         order by
@@ -89,7 +105,7 @@ async function listAllStudentRequests(sortingProperty = 'Id', isAscending = true
     };
 }
 
-async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscending = true, filterProperty = 'Name', filter = '') {
+async function listPaged(pageNumber, pageSize, sortingProperty = 'StudentId', isAscending = true, filterProperty = 'Name', filter = '', schoolId = '') {
     await sql.connect(databaseConnection);
     const offset = (pageNumber === '0') ? 0 : (pageNumber - 1) * pageSize;
     const pageSizeAsNumber = parseInt(pageSize, 10);
@@ -99,7 +115,7 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
     with StudentRequestWithRowNum AS
         (
             select
-                *,
+                SchoolId, StudentId, FirstName, LastName, BirthDate, Nationality, City, Message, AprovalRequest, IsCompleted,
                 row_number() over
                 (
                     order by
@@ -109,12 +125,22 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
                         when 'Message'          then convert(nvarchar(max), Message)
                         when 'AprovalRequest'   then convert(nvarchar(max), AprovalRequest)
                         when 'IsCompleted'      then convert(nvarchar(max), IsCompleted)
+                        when 'FirstName'        then convert(nvarchar(max), FirstName)
+                        when 'LastName'         then convert(nvarchar(max), LastName)
+                        when 'BirthDate'        then convert(nvarchar(max), BirthDate)
+                        when 'Nationality'      then convert(nvarchar(max), Nationality)
+                        when 'City'             then convert(nvarchar(max), City)
+                        when 'Message'          then convert(nvarchar(max), Message)
                     end
                 ) as RowNum
             from
-                StudentRequest
+                StudentRequest sr
+                    inner join Students s on s.Id = sr.StudentId
+                    inner join Persons p on p.Id = s.PersonId
+                    where ${schoolId} = '' and sr.SchoolId in (select Id from Schools)
+                        or ${schoolId} != '' and sr.SchoolId in (${schoolId})
         )   
-        select SchoolId, StudentId, Message, AprovalRequest, IsCompleted
+        select SchoolId, StudentId, FirstName, LastName, BirthDate, Nationality, City, Message, AprovalRequest, IsCompleted
         from
             StudentRequestWithRowNum
         where 
@@ -124,6 +150,12 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
                 when 'Message'          then convert(nvarchar(max), Message)
                 when 'AprovalRequest'   then convert(nvarchar(max), AprovalRequest)
                 when 'IsCompleted'      then convert(nvarchar(max), IsCompleted)
+                when 'FirstName'        then convert(nvarchar(max), FirstName)
+                when 'LastName'         then convert(nvarchar(max), LastName)
+                when 'BirthDate'        then convert(nvarchar(max), BirthDate)
+                when 'Nationality'      then convert(nvarchar(max), Nationality)
+                when 'City'             then convert(nvarchar(max), City)
+                when 'Message'          then convert(nvarchar(max), Message)
             end
             like '%'+${filter}+'%'
         order by
@@ -134,9 +166,11 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
     const countResult = await sql.query`
         with StudentRequestWithFilter as
         (
-        select SchoolId, StudentId, Message, AprovalRequest, IsCompleted
+        select SchoolId, StudentId, FirstName, LastName, BirthDate, Nationality, City, Message, AprovalRequest, IsCompleted
             from
-                StudentRequest
+            StudentRequest sr
+                inner join Students s on s.Id = sr.StudentId
+                inner join Persons p on p.Id = s.PersonId
             where 
                 case ${filterProperty}
                     when 'SchoolId'         then convert(nvarchar(max), SchoolId)
@@ -144,6 +178,12 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
                     when 'Message'          then convert(nvarchar(max), Message)
                     when 'AprovalRequest'   then convert(nvarchar(max), AprovalRequest)
                     when 'IsCompleted'      then convert(nvarchar(max), IsCompleted)
+                    when 'FirstName'        then convert(nvarchar(max), FirstName)
+                    when 'LastName'         then convert(nvarchar(max), LastName)
+                    when 'BirthDate'        then convert(nvarchar(max), BirthDate)
+                    when 'Nationality'      then convert(nvarchar(max), Nationality)
+                    when 'City'             then convert(nvarchar(max), City)
+                    when 'Message'          then convert(nvarchar(max), Message)
             end
             like '%'+${filter}+'%'
         )

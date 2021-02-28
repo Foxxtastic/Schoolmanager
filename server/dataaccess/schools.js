@@ -183,11 +183,11 @@ async function deleteById(schoolId) {
             from Schools sc
             left outer join SchoolStudent scs on sc.Id = scs.SchoolId
             left outer join SchoolTeacher sct on sc.Id = sct.SchoolId
-        where sc.Id = ${schoolId} and scs.Id is null and sct.SchoolId is null;`;
+        where sc.Id = ${schoolId} and scs.SchoolId is null and sct.SchoolId is null;`;
 
     if (result.rowsAffected[0] === 0) {
         const error = new Error(`There is a Person connected to this School or, no School with Id = ${schoolId} !`);
-        error.status = 404;
+        error.status = 500;
         throw error;
     }
 

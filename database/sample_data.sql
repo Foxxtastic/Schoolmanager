@@ -24,6 +24,7 @@ VALUES ('031603','Neumann János Középiskola','Hungary','Eger','Rákóczi út 
 INSERT INTO [dbo].[Users] (EmailAddress, PasswordHash, IsActive, LastLogin)
 VALUES  ('admin@schools.com', HASHBYTES('SHA2_512', N'ad52mAx17y'), 1, NULL),
         ('zsolt@schools.com', HASHBYTES('SHA2_512', N'zs99Ca47yo'), 1, NULL),
+		('admin@neumann.hu', HASHBYTES('SHA2_512', N'nivak'), 1, NULL),
 		('mihaly.csombor@hajdunanas.com', HASHBYTES('SHA2_512', N'ff62sqegsh'), 1, NULL),
 		('katalin.hajdu@hajdunanas.com', HASHBYTES('SHA2_512', N'pu78asziyc'), 1, NULL),
 		('aniko.kelemen@hajunanas.com', HASHBYTES('SHA2_512', N'sa91yvindc'), 1, NULL),
@@ -1016,3 +1017,289 @@ SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.Pers
 SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='DE 01100' AND u.EmailAddress='simon.hofmann@leipzig.com'UNION
 SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='DE 01100' AND u.EmailAddress='roger.burgstaller@leipzig.com'UNION
 SELECT sc.Id, tc.Id FROM Schools sc, Teachers tc INNER JOIN Persons p ON tc.PersonId=p.Id inner join Users u ON u.Id=p.UserId WHERE sc.EduId='DE 01200' AND u.EmailAddress='rudinger.hahn@bannerwitz.com'
+
+INSERT INTO [dbo].[SecurityGroup]([Name] ,[IsSchoolRelated] ,[IsReadonly])
+VALUES 
+('ApplicationAdmin', 0, 1),
+('Student', 1, 0),
+('Teacher', 1, 0),
+('SchoolAdmin', 1, 0)
+
+INSERT INTO [dbo].[Feature]([Name])
+VALUES
+('SchoolManagement'),
+('CreateSchool'),
+('EditSchool'),
+('DeleteSchool'),
+
+('UserManagement'),
+('CreateUser'),
+('EditUser'),
+('DeleteUser'),
+
+('MajorManagement'),
+('CreateMajor'),
+('EditMajor'),
+('DeleteMajor'),
+
+('SchoolDashboard'),
+('EditStudentAssignments'),
+('EditTeacherAssignments'),
+('StudentRequestAssessment'),
+
+('StudentDashboard'),
+('ApplyToSchools'),
+
+('TeacherDashboard')
+
+INSERT INTO [dbo].[SecurityGroupFeature]([GroupId], [FeatureId])
+SELECT g.Id, f.Id FROM SecurityGroup g, Feature f WHERE g.[Name] = 'ApplicationAdmin'
+	and f.[Name] IN (
+		'SchoolManagement',
+		'CreateSchool',
+		'EditSchool',
+		'DeleteSchool',
+		'UserManagement',
+		'CreateUser',
+		'EditUser',
+		'DeleteUser',
+		'MajorManagement',
+		'CreateMajor',
+		'EditMajor',
+		'DeleteMajor'
+	)
+UNION
+SELECT g.Id, f.Id FROM SecurityGroup g, Feature f WHERE g.[Name] = 'SchoolAdmin'
+	and f.[Name] IN (
+		'SchoolDashboard',
+		'EditStudentAssignments',
+		'EditTeacherAssignments',
+		'StudentRequestAssessment'
+	)
+UNION
+SELECT g.Id, f.Id FROM SecurityGroup g, Feature f WHERE g.[Name] = 'Student'
+	and f.[Name] IN (
+		'StudentDashboard',
+		'ApplyToSchools'
+	)
+UNION
+SELECT g.Id, f.Id FROM SecurityGroup g, Feature f WHERE g.[Name] = 'Teacher'
+	and f.[Name] IN (
+		'TeacherDashboard'
+	)
+
+
+INSERT INTO SecurityGroupMember([GroupId], [UserId], [SchoolId])
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='akos.lukacs@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='jozsef.varga@roszke.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='csaba.novak@algyo.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='bence.faragó@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='marko.budai@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='mario.vass@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='vilmos.kovacs@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='endre.orosz@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='donat.feher@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='domonkos.major@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='csenge.egyed@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='karoly.fulop@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='henrietta.torok@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='sandor.marton@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='akos.kis@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='vanessza.kelemen@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='blanka.orsos@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='gergely.szekeres@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='marton.jakab@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='barnabás.gal@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='andrás.gulyas@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='antal.meszaros@domaszek.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='krisztofer.vaszoly@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='alexander.orban@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='nandor.major@szatymaz.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='dominik.vincze@maroslele.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='patrik.kis@kiszombor.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='dezso.barna@maroslele.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='karoly.halasz@csanadpalota.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='renato.lengyel@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='kinga.veres@algyo.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='armand.bodnar@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='renato.lakatos@kiszombor.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='dorina.barna@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='endre.kende@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='noel.simon@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='tibor.dobos@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='janos.bakos@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='vivien.novak@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '15823443206' AND u.EmailAddress='monika.nemeth@szeged.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='aniko.kelemen@hajunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='aniko.toth@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='veronika.szoke@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='szabina.illes@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='viktoria.dobos@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='ivett.kozma@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='orsolya.pataki@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='dorina.gaspar@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='eva.halasz@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='evelin.orosz@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='adel.biro@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='oliver.orban@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='geza.bogdan@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='kevin.kiraly@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='tamas.aprod@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='dezso.bakos@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='jozsef.sandor@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='gergo.toth@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='gergely.kerekes@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='marcell.hajdu@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='lajos.gaspar@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='donat.kiraly@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='gyorgy.voros@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='armin.juhasz@hajudorog.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='viktor.juhasz@hajudorog.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='balazs.borbely@hajudorog.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='oliver.laszlo@hajudorog.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='bendeguz.bakos@hajudorog.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='renato.torok@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='barnabas.novak@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='milan.kiss@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = '120606' AND u.EmailAddress='laura.borbely@hajdunanas.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='hajnalka.nemeth@budapest.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='maria.szekely@budapest.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='szabina.vincze@budapest.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='lilla.olah@budapest.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='sara.peter@budapest.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='anita.fodor@mezômegyer.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='benedek.szalai@budapest.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='laszlo.horvath@budapest.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='bertalan.feher@dunaszeg.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='botond.lukacs@belapatfalva.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='ferenc.bogdan@budapest.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='csaba.gaspar@budapest.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='csongor.kelemen@nagybatony.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='patrik.balla@budapest.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='dominik.magyar@budapest.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='levente.sipos@budapest.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='zsofia.antal@budapest.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='ildiko.gulyas@budapest.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='hajnalka.virag@monor.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='anita.zobor@budapest.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='szabina.biro@lajosmizse.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='fruzsina.papp@budapest.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'FI 80798' AND u.EmailAddress='cintia.veres@budapest.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='gerhardt.tolkien@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='linda.brodbeck@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='ulrike.schuchard@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='micha.bader@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='augusta.vonnegut@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='olivia.gross@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='philipp.wolf@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='irmgard.geier@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='florian.nussbaum@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='linus.ackermann@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='olivia.gross@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='philipp.wolf@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='irmgard.geier@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='florian.nussbaum@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='linus.ackermann@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='tillo.huber@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='sigi.baumer@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='eugen.bauers@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='swanhilda.denzel@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='jo.markwardt@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='gitta.stein@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='traugott.hennig@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='lieselotte.gehring@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='eckhart.muhlfeld@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='sascha.siemon@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='sonja.huffmann@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='marianne.lorentz@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='ernst.sitz@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='waltraud.geiszler@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='gloria.schindler@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='wolf.bachmann@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='petrus.simons@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='anton.kraemer@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='karl-heinz.dieter@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='dominik.suess@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='heidrun.gerstle@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='stefanie.stück@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='judit.jung@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='iris.gerber@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='lian.siegel@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='luzia.behringer@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='miriam.braun@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='gerold.schenk@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='gereon.ferber@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='laura.pahlke@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='brigitte.lowe@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='oliver.wirt@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='else.yount@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='wendel.wirt@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='edmund.suess@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='urs.baumbach@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='maximilian.adam@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='karlmann.krause@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='sabine.denzel@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='werther.schwangau@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='helma.pahlke@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='constanze.buchholz@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='krista.andres@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='eleonore.schuhart@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='hans-gunter.schlosser@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='baldur.essen@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='kerstin.kistler@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='marianne.frei@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='wiltrud.dieter@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='arend.brotz@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='wolfram.gorman@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='kolman.jans@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='nathalie.blumenthal@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='gisbert.roth@dresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='eleonore.jager@leipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='siegward.kroger@ebersbach-neugersdorf.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='irmgard.unkle@pirna.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='carina.kohler@lauter-bernsbach.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='ina.bader@lautabhoyerswerda.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='jessica.achilles@zwonitz.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='sascha.armbruster@freibergsachs.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='korbinian.hiedler@marienbergerzgeb.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='henriette.wehnert@oelsnitzerzgeb.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='gerhold.messner@chemnitzsachs.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='baldur.hertz@rietschen.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='burchard.wahner@vierkirchen.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='theda.morgenstern@kamenz.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='kunigunde.schmitz@torgau.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='hermine.metz@csoswigbdresden.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='sophie.wechsler@sehmatal-cranzahl.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='bastian.hennig@herrnhut.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='anna.junge@bornableipzig.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='eduard.aue@auerbachvogtl.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='babette.knef@schonbachblobau.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='hermenegild.rothenberg@gorlitzneiße.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='mathis.esser@treuenvogtl.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='gisa.aue@chemnitzsachs.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='magda.lehmann@hermsdorferzgeb.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='isaak.voll@oschatz.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='brunhilde.hubert@olbernhau.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='liane.oberst@grimma.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='olaf.leitner@altenbergerzgeb.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='nora.blau@riesa.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01200' AND u.EmailAddress='leni.geiszler@oelsnitzerzgeb.com' UNION
+SELECT g.Id, u.Id, sc.Id FROM SecurityGroup g, Users u, Schools sc WHERE g.[Name] = 'Student' AND sc.EduId = 'DE 01100' AND u.EmailAddress='torsten.fleischer@plauenvogtl.com'
+
+INSERT INTO SecurityGroupMember([GroupId], [UserId], [SchoolId])
+SELECT g.Id, u.Id, NULL as [SchoolId]
+FROM SecurityGroup g, Users u
+WHERE
+	g.[Name] = 'ApplicationAdmin'
+	AND u.EmailAddress in (
+		'admin@schools.com',
+		'zsolt@schools.com'
+	)
+
+INSERT INTO SecurityGroupMember([GroupId], [UserId], [SchoolId])
+SELECT g.Id, u.Id, sc.Id
+FROM SecurityGroup g, Users u, Schools sc
+WHERE
+	g.[Name] = 'SchoolAdmin'
+	AND u.EmailAddress = 'admin@neumann.hu'
+	AND sc.[Name] = 'Neumann János Középiskola'

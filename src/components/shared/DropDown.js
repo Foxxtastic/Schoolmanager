@@ -2,13 +2,15 @@ import { createRef, Fragment, useEffect, useState } from "react";
 
 export function DropDown(props) {
 
-    const { label, dropDownList, defaultValue, onSelect } = props;
+    const { label, dropDownList, defaultValue, defaultLabel, onSelect } = props;
     const length = dropDownList.length;
 
     const [expanded, setExpanded] = useState(false);
     const [inputRefs, setInputRefs] = useState([]);
     const [selectedInput, setSelectedInput] = useState(0);
     const [selectedValue, setSelectedValue] = useState(defaultValue);
+    const selectedItem = dropDownList.find(_ => _.Id.toString() === selectedValue);
+    const selectedLabel = selectedItem ? selectedItem.Name : defaultLabel;
 
     useEffect(() => {
         setInputRefs(inputRefs => (
@@ -24,7 +26,7 @@ export function DropDown(props) {
 
     useEffect(() => {
         onSelect(selectedValue);
-    }, [selectedValue])
+    }, [selectedValue, onSelect]);
 
     const handleExpanding = (event) => {
         event.preventDefault();
@@ -44,7 +46,7 @@ export function DropDown(props) {
         <div className="dropdown-container">
             <label className="datatable-label">{label}</label>
             <span className={`dropdown ${expanded ? "expanded" : ""}`} onClick={(e) => handleExpanding(e)}>
-                <span className="value-holder">{selectedValue ?? "choose"}</span>
+                <span className="value-holder">{selectedLabel ?? "choose"}</span>
                 <div className="options">
                     {dropDownList.map((_, idx) =>
                         <Fragment key={idx}>
@@ -52,7 +54,7 @@ export function DropDown(props) {
                                 id={idx}
                                 ref={inputRefs[idx]}
                                 type="radio" name="sortType"
-                                value={_.Name}
+                                value={_.Id}
                             />
                             <label
                                 value={_.Name}

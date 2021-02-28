@@ -1,31 +1,30 @@
 import { useState, useCallback } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { pageSize } from '../../config';
+import { useFetch } from '../../hooks/useFetch';
 import { MajorListPage } from './MajorListPage';
 
 export function MajorManagement(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(undefined);
+    const fetchApi = useFetch();
 
     const getData = useCallback((pageNumber, sortingProperty, isDescending, filterProperty, filterValue) => {
         setIsLoading(true);
         filterValue = encodeURIComponent(filterValue);
-        return fetch(`/api/major?pageNumber=${pageNumber}&pageSize=${pageSize}` +
+        return fetchApi(`/api/major?pageNumber=${pageNumber}&pageSize=${pageSize}` +
             `&sorting=${sortingProperty}&isDescending=${isDescending}` +
             `&filterProperty=${filterProperty}&filterValue=${filterValue}`)
             .then(res => res.json())
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []);
+    }, [fetchApi]);
 
     const handleMajorUpdate = (idToUpdate, major) => {
         setIsLoading(true);
-        return fetch(`/api/major/${idToUpdate}`, {
+        return fetchApi(`/api/major/${idToUpdate}`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
             body: JSON.stringify(major)
         })
             .then(res => res.json())
@@ -46,11 +45,8 @@ export function MajorManagement(props) {
 
     const handleMajorCreate = (newItem) => {
         setIsLoading(true);
-        return fetch('/api/major', {
+        return fetchApi('/api/major', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
             body: JSON.stringify(newItem)
         })
             .then(res => res.json())
@@ -73,7 +69,7 @@ export function MajorManagement(props) {
     const handleMajorDelete = (idToDelete) => {
         setIsLoading(true);
 
-        return fetch(`/api/major/${idToDelete}`, {
+        return fetchApi(`/api/major/${idToDelete}`, {
             method: 'DELETE'
         })
             .then(res => res.json())

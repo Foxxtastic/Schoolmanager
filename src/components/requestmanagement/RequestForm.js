@@ -10,7 +10,7 @@ function RequestForm(props) {
     const { user } = useContext(UserContext);
     const email = user.data.EmailAddress;
 
-    const { register, handleSubmit, errors } = useForm();
+    const { register, handleSubmit/*, errors*/ } = useForm();
     const { getSchool, getStudent, createRequest, match, onError } = props;
     const [school, setSchool] = useState(undefined);
     const [student, setStudent] = useState(undefined);
@@ -18,7 +18,7 @@ function RequestForm(props) {
 
     useEffect(() => {
         getSchool(id).then(res => setSchool(res));
-    }, [getSchool]);
+    }, [getSchool, id]);
 
     useEffect(() => {
         getStudent(email).then(res => setStudent(res));

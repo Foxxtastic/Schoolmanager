@@ -11,8 +11,6 @@ import { useSortingDirection } from "../../hooks/useSortingDirection";
 import { useFilterProperty } from "../../hooks/useFilterProperty";
 import { useFilterValue } from "../../hooks/useFilterValue";
 import { updateSearch } from '../../helpers/updateSearch';
-import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { LayoutContent } from "../shared/LayoutContent";
 
 const headers = [
@@ -39,7 +37,6 @@ export function MajorList(props) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [activeIdForDelete, setActiveIdForDelete] = useState(null);
     const [maxPageNumber, setMaxPageNumber] = useState(undefined);
-    const [hoverOnIcon, setHoveronIcon] = useState(null);
 
     let sortingProperty = useSorting();
     sortingProperty = sortingProperty === null ? 'Name' : sortingProperty;
@@ -164,19 +161,7 @@ export function MajorList(props) {
                         const isEditing = editor.isEditMode && editor.rowKey === major.Id;
 
                         return (
-                            <tr key={idx}>
-                                {error && error.rowidx === major.Id &&
-                                    <td className="error">
-                                        <FontAwesomeIcon
-                                            className="tx-lred"
-                                            icon={faExclamationTriangle}
-                                            onMouseEnter={() => setHoveronIcon(error.rowidx)}
-                                            onMouseLeave={() => setHoveronIcon(null)}
-                                        />
-                                        {hoverOnIcon === error.rowidx && <div className="tooltip">{error.message}</div>}
-                                    </td>}
-                                {error && error.rowidx !== major.Id &&
-                                    <td className="error"></td>}
+                            <>
                                 <td>
                                     {isEditing ?
                                         <>
@@ -193,10 +178,10 @@ export function MajorList(props) {
                                         </> :
                                         <>
                                             <Button disabled={isLoading || isInCreateMode} text="Edit" handleClick={() => openEditor(major.Id)} />
-                                            <Button disabled={isLoading || isInCreateMode} text="Delete" handleClick={() => handleDeleteModalShown(major.Id)} />
+                                            <Button disabled={isLoading || isInCreateMode} isRed={true} text="Delete" handleClick={() => handleDeleteModalShown(major.Id)} />
                                         </>}
                                 </td>
-                            </tr>
+                            </>
                         );
                     }}
                 />
