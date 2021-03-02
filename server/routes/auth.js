@@ -1,4 +1,5 @@
 const express = require('express');
+const { getFeatures } = require('../dataaccess/features');
 const { getUserByEmailAddress, isPasswordValid } = require('../dataaccess/users');
 const { generateToken } = require('../helpers/generateToken');
 
@@ -27,12 +28,17 @@ router.post('/login', async (req, res, next) => {
             throw error;
         }
 
+        delete user.PasswordHash;
+
+        const availableFeatures = await getFeatures(user.Id);
+
+        user.features = availableFeatures;
+
         const token = generateToken(user);
         res.json({
             token,
-            data: {
-                EmailAddress: user.EmailAddress
-            }
+            emailAddress: user.EmailAddress,
+            features: user.features
         });
     } catch (error) {
         next(error);

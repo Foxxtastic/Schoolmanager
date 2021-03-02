@@ -3,13 +3,14 @@ import { createRef, Fragment, useEffect, useState } from "react";
 export function DropDown(props) {
 
     const { label, dropDownList, defaultValue, defaultLabel, onSelect } = props;
+    console.log(dropDownList);
     const length = dropDownList.length;
 
     const [expanded, setExpanded] = useState(false);
     const [inputRefs, setInputRefs] = useState([]);
     const [selectedInput, setSelectedInput] = useState(0);
     const [selectedValue, setSelectedValue] = useState(defaultValue);
-    const selectedItem = dropDownList.find(_ => _.Id.toString() === selectedValue);
+    const selectedItem = dropDownList.find(_ => _ && _.Id.toString() === selectedValue);
     const selectedLabel = selectedItem ? selectedItem.Name : defaultLabel;
 
     useEffect(() => {
@@ -54,11 +55,11 @@ export function DropDown(props) {
                                 id={idx}
                                 ref={inputRefs[idx]}
                                 type="radio" name="sortType"
-                                value={_.Id}
+                                value={_ && _.Id}
                             />
                             <label
-                                value={_.Name}
-                                data-text={_.Name}
+                                value={_ &&_.Name}
+                                data-text={_ && _.Name}
                                 htmlFor={idx}
                             />
                         </Fragment>

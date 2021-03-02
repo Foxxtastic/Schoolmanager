@@ -1042,6 +1042,16 @@ VALUES
 ('EditMajor'),
 ('DeleteMajor'),
 
+('TeacherManagement'),
+('CreateTeacher'),
+('EditTeacher'),
+('DeleteTeacher'),
+
+('StudentManagement'),
+('CreateStudent'),
+('EditStudent'),
+('DeleteStudent'),
+
 ('SchoolDashboard'),
 ('EditStudentAssignments'),
 ('EditTeacherAssignments'),
@@ -1066,7 +1076,15 @@ SELECT g.Id, f.Id FROM SecurityGroup g, Feature f WHERE g.[Name] = 'ApplicationA
 		'MajorManagement',
 		'CreateMajor',
 		'EditMajor',
-		'DeleteMajor'
+		'DeleteMajor',
+		'TeacherManagement',
+		'CreateTeacher',
+		'EditTeacher',
+		'DeleteTeacher',
+		'StudentManagement',
+		'CreateStudent',
+		'EditStudent',
+		'DeleteStudent'
 	)
 UNION
 SELECT g.Id, f.Id FROM SecurityGroup g, Feature f WHERE g.[Name] = 'SchoolAdmin'
@@ -1303,3 +1321,25 @@ WHERE
 	g.[Name] = 'SchoolAdmin'
 	AND u.EmailAddress = 'admin@neumann.hu'
 	AND sc.[Name] = 'Neumann János Középiskola'
+
+-- add orphan ("school-less") students (if any)
+insert into dbo.SecurityGroupMember([GroupId], [UserId], [SchoolId])
+select g.Id, u.Id, NULL as [SchoolId]
+from
+	SecurityGroup g,
+	Students st
+	inner join Persons p on p.Id = st.PersonId
+	inner join Users u on u.Id = p.UserId
+	left outer join SchoolStudent scst on scst.StudentId = st.Id
+where g.[Name] in ('Student') and scst.SchoolId is null 
+
+-- add orphan ("school-less") teachers (if any)
+insert into dbo.SecurityGroupMember([GroupId], [UserId], [SchoolId])
+select g.Id, u.Id, NULL as [SchoolId]
+from
+	SecurityGroup g,
+	Teachers t
+	inner join Persons p on p.Id = t.PersonId
+	inner join Users u on u.Id = p.UserId
+	left outer join SchoolTeacher sct on sct.TeacherId = t.Id
+where g.[Name] in ('Teacher') and sct.SchoolId is null 

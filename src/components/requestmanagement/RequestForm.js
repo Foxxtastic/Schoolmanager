@@ -8,7 +8,7 @@ import { MainHeader } from "../shared/MainHeader";
 function RequestForm(props) {
 
     const { user } = useContext(UserContext);
-    const email = user.data.EmailAddress;
+    const email = user.emailAddress;
 
     const { register, handleSubmit/*, errors*/ } = useForm();
     const { getSchool, getStudent, createRequest, match, onError } = props;

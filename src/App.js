@@ -16,6 +16,7 @@ import { getStorageItem } from './helpers/storageHelpers';
 import { useState } from 'react';
 import { RequestManagement } from './components/requestmanagement/RequestManagement';
 import { StudentRequestManagement } from './components/administrator/StudentRequestManagement';
+import appFeatures from './appFeatures';
 
 const menuItems = [
   {
@@ -24,52 +25,65 @@ const menuItems = [
   },
   {
     text: 'Register',
-    link: '/register'
+    link: '/register',
+    isVisible: user => user === null
   },
   {
     text: 'Login',
-    link: '/login'
+    link: '/login',
+    isVisible: user => user === null
   },
   {
     text: 'Admin',
+    forUsersWith: [
+      appFeatures.SchoolManagement,
+      appFeatures.UserManagement,
+      appFeatures.MajorManagement,
+      appFeatures.TeacherManagement,
+      appFeatures.StudentManagement,
+      appFeatures.StudentRequestAssessment
+    ],
     subItems: [
       {
         text: 'Schools',
-        link: '/schools'
+        link: '/schools',
+        forUsersWith: [appFeatures.SchoolManagement]
       },
       {
         text: 'Users',
-        link: '/users'
+        link: '/users',
+        forUsersWith: [appFeatures.UserManagement]
       },
       {
         text: 'Majors',
-        link: '/majors'
+        link: '/majors',
+        forUsersWith: [appFeatures.MajorManagement]
       },
       {
         text: 'Teachers',
-        link: '/teachers'
+        link: '/teachers',
+        forUsersWith: [appFeatures.TeacherManagement]
       },
       {
         text: 'Students',
-        link: '/students'
+        link: '/students',
+        forUsersWith: [appFeatures.StudentManagement]
+      },
+      {
+        text: 'Requests',
+        link: '/requests',
+        forUsersWith: [appFeatures.StudentRequestAssessment]
       }
     ]
   },
   {
     text: 'Student',
+    forUsersWith: [appFeatures.StudentDashboard],
     subItems: [
       {
         text: 'Apply',
-        link: '/apply'
-      }
-    ]
-  },
-  {
-    text: 'Administrator',
-    subItems: [
-      {
-        text: 'Requests',
-        link: '/requests'
+        link: '/apply',
+        forUsersWith: [appFeatures.ApplyToSchools]
       }
     ]
   }
