@@ -23,7 +23,7 @@ router.get('/',
 
 router.get('/student/:email',
     authenticate,
-    authorize([features.StudentRequestAssessment]),
+    authorize([features.StudentRequestAssessment, features.ApplyToSchools]),
     async (res, req) => {
         const { email } = req.req.params;
 
@@ -39,12 +39,7 @@ router.get('/student/:email',
 
 router.get('/school/:schoolId',
     authenticate,
-    authorize(
-        [features.StudentRequestAssessment, req => ({ schoolId: req.params.id })],
-        [features.StudentRequestAssessment, req => ({ schoolId: req.params.id })]
-        [features.UserManagement],
-        [features.StudentDashboard]
-    ),
+    authorize(features.StudentRequestAssessment, req => ({ schoolId: req.params.schoolId })),
     async (req, res) => {
         const { schoolId } = req.params;
         const { studentId } = req.query;
@@ -63,7 +58,7 @@ router.get('/school/:schoolId',
 
 router.post('/',
     authenticate,
-    authorize(features.StudentDashboard),
+    authorize(features.ApplyToSchools),
     async (req, res, next) => {
         try {
             const requestDto = req.body;
@@ -76,7 +71,7 @@ router.post('/',
 
 router.put('/:schoolId/:studentId',
     authenticate,
-    authorize(features.StudentRequestAssessment, req => ({ schoolId: req.params.id })),
+    authorize(features.StudentRequestAssessment, req => ({ schoolId: req.params.schoolId })),
     async (req, res, next) => {
         const requestDto = req.body;
         const { schoolId, studentId } = req.params;
@@ -105,7 +100,7 @@ router.put('/:schoolId/:studentId',
 
 router.delete('/:schoolId/:studentId',
     authenticate,
-    authorize(features.StudentRequestAssessment, req => ({ schoolId: req.params.id })),
+    authorize(features.StudentRequestAssessment, req => ({ schoolId: req.params.schoolId })),
     async (req, res, next) => {
         const { schoolId, studentId } = req.params;
         try {

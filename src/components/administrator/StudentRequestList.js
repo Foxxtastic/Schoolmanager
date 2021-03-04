@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-//import { useForm } from "react-hook-form";
-//import { Link } from "react-router-dom";
 import { pageSize } from '../../config';
 import { Button } from "../shared/Button";
 import { DataTable } from "../shared/DataTable";
@@ -11,7 +9,7 @@ import { useFilterProperty } from "../../hooks/useFilterProperty";
 import { useFilterValue } from "../../hooks/useFilterValue";
 import { updateSearch } from '../../helpers/updateSearch';
 import moment from "moment";
-import { faCheck, /*faExclamationTriangle,*/ faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { LayoutContent } from "../shared/LayoutContent";
 import { useSchoolId } from "../../hooks/useSchoolId";
@@ -34,13 +32,10 @@ function calculateMaxPage(listResponse) {
 
 export function StudentRequestList(props) {
 
-    //const { register, handleSubmit, errors } = useForm();
-
     let activePageNumber = usePageNumber();
     activePageNumber = activePageNumber === null ? 1 : activePageNumber;
 
     const [requests, setRequests] = useState(undefined);
-    //const [isModalVisible, setIsModalVisible] = useState(false);
     const [maxPageNumber, setMaxPageNumber] = useState(undefined);
 
     let sortingProperty = useSorting();
@@ -55,7 +50,7 @@ export function StudentRequestList(props) {
 
     let schoolId = useSchoolId();
 
-    const { error, /*afterUpdate, afterDelete,*/ afterPaging,/* linkToCreate, onUpdate, onDelete,*/ isLoading, /*getAllSchools, afterSelectSchool*/ } = props;
+    const { error, afterPaging, afterUpdate, isLoading, decideRequest } = props;
 
     useEffect(() => {
         afterPaging(activePageNumber, sortingProperty, isDescending, filterProperty, filterValue, schoolId).then(listResponse => {
@@ -68,6 +63,23 @@ export function StudentRequestList(props) {
             setMaxPageNumber(maxPage);
         });
     }, [activePageNumber, afterPaging, sortingProperty, isDescending, filterProperty, filterValue, schoolId]);
+
+    const setRequestsFromServer = (listResponse) => {
+        setMaxPageNumber(calculateMaxPage(listResponse));
+        setRequests(listResponse.items);
+    }
+
+    const handleAcceptRequest = (request, studentId) => {
+        decideRequest(request, studentId, true)
+            .then(() => afterUpdate(activePageNumber, sortingProperty, isDescending, filterProperty, filterValue))
+            .then(setRequestsFromServer);
+    }
+
+    const handleRejectRequest = (request, studentId) => {
+        decideRequest(request, studentId, false)
+            .then(() => afterUpdate(activePageNumber, sortingProperty, isDescending, filterProperty, filterValue))
+            .then(setRequestsFromServer);
+    }
 
     if (requests === undefined) {
         return 'Loading...';
@@ -87,6 +99,7 @@ export function StudentRequestList(props) {
                     items={requests}
                     activePageNumber={activePageNumber}
                     maxPageNumber={maxPageNumber}
+                    getRowId={request => request.StudentId}
                     getRowForItem={(request) => {
                         return (
                             <>
@@ -116,8 +129,17 @@ export function StudentRequestList(props) {
                                 </td>
                                 <td>
                                     <>
-                                        <Button disabled={isLoading} text="Aprove" />
-                                        <Button disabled={isLoading} isRed={true} text="Reject" />
+                                        <Button
+                                            disabled={isLoading}
+                                            text="Aprove"
+                                            handleClick={() => handleAcceptRequest(request, request.StudentId, true)}
+                                        />
+                                        <Button
+                                            disabled={isLoading}
+                                            isRed={true}
+                                            text="Reject"
+                                            handleClick={() => handleRejectRequest(request, request.StudentId, false)}
+                                        />
                                     </>
                                 </td>
                             </>

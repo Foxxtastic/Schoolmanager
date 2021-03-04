@@ -257,7 +257,7 @@ async function rejectRequest(schoolId, studentId) {
     result = await sql.query`
     update StudentRequest
     set
-        AprovalRequest = ${false}
+        AprovalRequest = ${false},
         IsCompleted = ${true}
     where 
         SchoolId = ${schoolId} and StudentId = ${studentId} `;
@@ -271,7 +271,7 @@ async function acceptRequest(schoolId, studentId) {
     result = await sql.query`
     update StudentRequest
     set
-        AprovalRequest = ${true}
+        AprovalRequest = ${true},
         IsCompleted = ${true}
     where 
         SchoolId = ${schoolId} and StudentId = ${studentId} `;

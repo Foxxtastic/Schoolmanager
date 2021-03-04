@@ -3,7 +3,7 @@ import { MainHeader } from "../shared/MainHeader";
 import { StudentRequestList } from "./StudentRequestList";
 
 export function StudentRequestListPage(props) {
-    const { error, isLoading, afterPaging, afterUpdate, onUpdate } = props;
+    const { error, isLoading, afterPaging, afterUpdate, onUpdate, decideRequest } = props;
 
     return (
         <>
@@ -15,6 +15,7 @@ export function StudentRequestListPage(props) {
                     afterPaging={afterPaging}
                     afterUpdate={afterUpdate}
                     onUpdate={onUpdate}
+                    decideRequest={decideRequest}
                 />
             </MainContent>
         </>

@@ -23,7 +23,7 @@ router.get('/',
 
 router.get('/:id',
     authenticate,
-    authorize(features.SchoolManagement),
+    authorize([features.SchoolManagement, features.StudentDashboard]),
     async (req, res) => {
         const { id } = req.params;
         const school = await dataaccess.getSchoolById(id);

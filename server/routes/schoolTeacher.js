@@ -7,15 +7,7 @@ const router = express.Router();
 
 router.post('/school/:id/teacher/assign',
     authenticate,
-
-    authorize(
-        [
-            { feature: features.EditTeacherAssigments, getParams: req => ({ schoolId: req.params.id }) },
-            { feature: features.EditTeacherAssigments },
-            { feature: features.EditTeacherAssigments, getParams: req => ({ schoolId: req.params.id }) }
-        ]),
-
-    authorize([features.EditTeacherAssigments], req => ({ schoolId: req.params.id })),
+    authorize(features.EditTeacherAssigments, req => ({ schoolId: req.params.id })),
     async (req, res, next) => {
         try {
             const { id } = req.params;
