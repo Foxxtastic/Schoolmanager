@@ -165,9 +165,7 @@ export function SchoolList(props) {
                                             <input name="name" defaultValue={school.Name} ref={register({ required: true })} />
                                             <ValidationErrors name="name" errors={errors} />
                                         </> :
-                                        <Link to={`/schools/${school.Id}`}>
-                                            <span className="select">{school.Name}</span>
-                                        </Link>}
+                                        <span>{school.Name}</span>}
                                 </td>
                                 <td>
                                     {isEditing ?

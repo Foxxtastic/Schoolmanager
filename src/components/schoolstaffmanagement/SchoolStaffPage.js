@@ -10,9 +10,8 @@ import { history } from "../../history";
 function SchoolStaffPage(props) {
 
     const {
-        error,
+        schoolId,
         isLoading,
-        match,
         getDataById,
         getStudentsToAdmit,
         getTeachersToHire,
@@ -23,8 +22,8 @@ function SchoolStaffPage(props) {
         deassignStudents,
         deassignTeachers
     } = props;
-    const id = match.params.id;
-    const links = [{ text: "Students", link: `/schools/${id}/students` }, { text: "Teachers", link: `/schools/${id}/teachers` }];
+
+    const links = [{ text: "Students", link: `/staff/students` }, { text: "Teachers", link: `/staff/teachers` }];
 
     const [school, setSchool] = useState(undefined);
     const [ownStudents, setOwnStudents] = useState(undefined);
@@ -37,8 +36,8 @@ function SchoolStaffPage(props) {
     const [teacherIdsToAdmit, setTeacherIdsToAdmit] = useState(new Set());
 
     useEffect(() => {
-        getDataById(id).then((schoolJson) => setSchool(schoolJson))
-    }, [id, getDataById])
+        getDataById(schoolId).then((schoolJson) => setSchool(schoolJson))
+    }, [schoolId, getDataById])
 
     useEffect(() => {
         getStudentsToAdmit().then(listResponse => setAvailableStudents(listResponse.items))
@@ -69,13 +68,13 @@ function SchoolStaffPage(props) {
         admitableIds = [...admitableIds];
 
         if (removableIds.length !== 0) {
-            deassignStudents(id, removableIds)
-                .then(() => history.push(`/schools/${id}`));
+            deassignStudents(schoolId, removableIds)
+                .then(() => history.push(`/staff`));
         }
 
         if (admitableIds.length !== 0) {
-            assignStudents(id, admitableIds)
-                .then(() => history.push(`/schools/${id}`));
+            assignStudents(schoolId, admitableIds)
+                .then(() => history.push(`staff/`));
         }
     }
 
@@ -88,13 +87,13 @@ function SchoolStaffPage(props) {
         admitableIds = [...admitableIds];
 
         if (removableIds.length !== 0) {
-            deassignTeachers(id, removableIds)
-                .then(() => history.push(`/schools/${id}`));
+            deassignTeachers(schoolId, removableIds)
+                .then(() => history.push(`/staff`));
         }
 
         if (admitableIds.length !== 0) {
-            assignTeachers(id, admitableIds)
-                .then(() => history.push(`/schools/${id}`));
+            assignTeachers(schoolId, admitableIds)
+                .then(() => history.push(`/staff`));
         }
     }
 
@@ -157,7 +156,7 @@ function SchoolStaffPage(props) {
                     <SideMenu links={links} />
                     <div className="component-data">
                         <Switch >
-                            <Route path={`/schools/${id}/teachers`}>
+                            <Route path={`/staff/teachers`}>
                                 <DragDropContext onDragEnd={onDragEnd}>
                                     <PersonList
                                         availableItems={availableTeachers}
@@ -172,7 +171,7 @@ function SchoolStaffPage(props) {
                                     />
                                 </DragDropContext>
                             </Route>
-                            <Route path={`/schools/${id}/students`}>
+                            <Route path={`/staff/students`}>
                                 <DragDropContext onDragEnd={onDragEnd}>
                                     <PersonList
                                         availableItems={availableStudents}

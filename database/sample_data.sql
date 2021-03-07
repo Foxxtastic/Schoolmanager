@@ -1092,7 +1092,7 @@ SELECT g.Id, f.Id FROM SecurityGroup g, Feature f WHERE g.[Name] = 'SchoolAdmin'
 		'SchoolDashboard',
 		'EditStudentAssignments',
 		'EditTeacherAssignments',
-		'StudentRequestAssessment'
+		'StudentRequestAssessment',
 	)
 UNION
 SELECT g.Id, f.Id FROM SecurityGroup g, Feature f WHERE g.[Name] = 'Student'

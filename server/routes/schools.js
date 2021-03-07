@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/',
     authenticate,
-    authorize([features.SchoolManagement, features.StudentDashboard]),
+    authorize(features.SchoolManagement),
     async (req, res, next) => {
         try {
             const { pageNumber, pageSize, sorting, isDescending, filterProperty, filterValue } = req.query;
@@ -23,7 +23,7 @@ router.get('/',
 
 router.get('/:id',
     authenticate,
-    authorize([features.SchoolManagement, features.StudentDashboard]),
+    authorize([features.SchoolManagement, features.SchoolDashboard]),
     async (req, res) => {
         const { id } = req.params;
         const school = await dataaccess.getSchoolById(id);
