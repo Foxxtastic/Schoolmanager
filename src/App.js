@@ -17,7 +17,7 @@ import { useState } from 'react';
 import { RequestManagement } from './components/requestmanagement/RequestManagement';
 import { StudentRequestManagement } from './components/administrator/StudentRequestManagement';
 import appFeatures from './appFeatures';
-import { SchooolStaffManagement } from './components/schoolstaffmanagement/SchoolStaffManagement';
+import { SchooolDashboardManagement } from './components/schoolstaffmanagement/SchoolDashboardManagement';
 
 const menuItems = [
   {
@@ -71,6 +71,11 @@ const menuItems = [
         forUsersWith: [appFeatures.StudentManagement]
       },
       {
+        text: 'School Data',
+        link: '/schooldata',
+        forUsersWith: [appFeatures.SchoolDashboard]
+      },
+      {
         text: 'Requests',
         link: '/requests',
         forUsersWith: [appFeatures.StudentRequestAssessment]
@@ -116,7 +121,7 @@ function App() {
           <Register />
           <RequestManagement />
           <StudentRequestManagement />
-          <SchooolStaffManagement schoolId={user.features[0].parameters && user.features[0].parameters.schoolId} />
+          <SchooolDashboardManagement schoolId={user.features[0].parameters && user.features[0].parameters.schoolId} />
         </Router>
       </UserContext.Provider>
     </>

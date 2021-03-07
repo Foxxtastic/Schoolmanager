@@ -23,7 +23,6 @@ export function SchoolManagement(props) {
             });
     }, [fetchApi]);
 
-
     const handleSchoolUpdate = (idToUpdate, school) => {
         setIsLoading(true);
 

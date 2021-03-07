@@ -1089,10 +1089,11 @@ SELECT g.Id, f.Id FROM SecurityGroup g, Feature f WHERE g.[Name] = 'ApplicationA
 UNION
 SELECT g.Id, f.Id FROM SecurityGroup g, Feature f WHERE g.[Name] = 'SchoolAdmin'
 	and f.[Name] IN (
+		'EditSchool',
 		'SchoolDashboard',
 		'EditStudentAssignments',
 		'EditTeacherAssignments',
-		'StudentRequestAssessment',
+		'StudentRequestAssessment'
 	)
 UNION
 SELECT g.Id, f.Id FROM SecurityGroup g, Feature f WHERE g.[Name] = 'Student'

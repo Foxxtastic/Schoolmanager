@@ -2,8 +2,10 @@ import { Route } from "react-router-dom";
 import SchoolStaffPage from "./SchoolStaffPage";
 import { useFetch } from '../../hooks/useFetch';
 import { useCallback, useState } from "react";
+import { SchoolDashboard } from "./SchoolDashboard";
+import { history } from "../../history";
 
-export function SchooolStaffManagement(props) {
+export function SchooolDashboardManagement(props) {
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(undefined);
@@ -239,24 +241,61 @@ export function SchooolStaffManagement(props) {
             });
     }
 
-    return (
+    const handleSchoolUpdate = (idToUpdate, school) => {
+        setIsLoading(true);
+        return fetchApi(`/api/school/${idToUpdate}`, {
+            method: 'PUT',
+            body: JSON.stringify(school)
+        })
+            .then(res => res.json())
+            .then(jsonResponse => {
+                if (jsonResponse.error) {
+                    setError({ message: jsonResponse.error.message, rowidx: idToUpdate });
+                    return;
+                }
 
-        < Route path="/staff" >
-            <SchoolStaffPage
-                schoolId={schoolId}
-                isLoading={isLoading}
-                getDataById={getDataById}
-                getStudentsToAdmit={getStudentsWithoutSchool}
-                getTeachersToHire={getTeachersWithoutSchool}
-                getStudentById={getStudentById}
-                getTeacherById={getTeacherById}
-                getOwnStudents={getStudentsOfSchool}
-                getOwnTeachers={getTeachersOfSchool}
-                assignStudents={handleStudentAssign}
-                assignTeachers={handleTeacherAssign}
-                deassignStudents={handleStudentDeassign}
-                deassignTeachers={handleTeacherDeassign}
-            />
-        </Route >
+                setError(undefined);
+            })
+            .catch((err) => {
+                setError({ message: err.message, rowidx: idToUpdate })
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }
+
+    const afterUpdate = () => {
+        history.push("/home");
+    }
+
+    return (
+        <>
+            <Route path="/schooldata">
+                <SchoolDashboard
+                    isLoading={isLoading}
+                    schoolId={schoolId}
+                    getDataById={getDataById}
+                    afterUpdate={afterUpdate}
+                    onUpdate={handleSchoolUpdate}
+                />
+            </Route>
+            < Route path="/staff" >
+                <SchoolStaffPage
+                    schoolId={schoolId}
+                    isLoading={isLoading}
+                    getDataById={getDataById}
+                    getStudentsToAdmit={getStudentsWithoutSchool}
+                    getTeachersToHire={getTeachersWithoutSchool}
+                    getStudentById={getStudentById}
+                    getTeacherById={getTeacherById}
+                    getOwnStudents={getStudentsOfSchool}
+                    getOwnTeachers={getTeachersOfSchool}
+                    assignStudents={handleStudentAssign}
+                    assignTeachers={handleTeacherAssign}
+                    deassignStudents={handleStudentDeassign}
+                    deassignTeachers={handleTeacherDeassign}
+                />
+            </Route >
+        </>
     )
 }

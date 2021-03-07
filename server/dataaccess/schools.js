@@ -165,11 +165,11 @@ async function updateSchool(id, schoolDto) {
     result = await sql.query`
         update Schools
         set
-            EduId = ${schoolDto.eduId},
-            Name = ${schoolDto.name},
-            Country = ${schoolDto.country},
-            City = ${schoolDto.city},
-            Address = ${schoolDto.address}
+            EduId = ${schoolDto.EduId},
+            Name = ${schoolDto.Name},
+            Country = ${schoolDto.Country},
+            City = ${schoolDto.City},
+            Address = ${schoolDto.Address}
         where
             Id = ${id}`;
 
