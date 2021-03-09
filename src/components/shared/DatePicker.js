@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 import { formatAsDate } from "../../helpers/momentHelpers";
 
 const DatePicker = forwardRef((props, ref) => {
-    const { className, name, defaultValue } = props;
+    const { className, name, defaultValue, readOnly } = props;
 
     return (
         <input
@@ -11,6 +11,7 @@ const DatePicker = forwardRef((props, ref) => {
             name={name}
             defaultValue={name === undefined ? "2000-01-01" : formatAsDate(defaultValue)}
             ref={ref}
+            readOnly={readOnly}
         />
     )
 })

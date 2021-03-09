@@ -18,6 +18,7 @@ import { RequestManagement } from './components/requestmanagement/RequestManagem
 import { StudentRequestManagement } from './components/administrator/StudentRequestManagement';
 import appFeatures from './appFeatures';
 import { SchooolDashboardManagement } from './components/schoolstaffmanagement/SchoolDashboardManagement';
+import { StudentDataSheet } from './components/student/StudentDataSheet';
 
 const menuItems = [
   {
@@ -92,6 +93,11 @@ const menuItems = [
     forUsersWith: [appFeatures.StudentDashboard],
     subItems: [
       {
+        text: 'Data sheet',
+        link: '/student',
+        forUsersWith: [appFeatures.StudentDashboard]
+      },
+      {
         text: 'Apply',
         link: '/apply',
         forUsersWith: [appFeatures.ApplyToSchools]
@@ -119,6 +125,7 @@ function App() {
           <StudentManagement />
           <Login />
           <Register />
+          <StudentDataSheet />
           <RequestManagement />
           <StudentRequestManagement />
           <SchooolDashboardManagement schoolId={user.features[0].parameters && user.features[0].parameters.schoolId} />

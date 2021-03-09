@@ -20,6 +20,36 @@ async function getStudentById(studentId) {
     return result.recordset[0];
 }
 
+async function getStudentByEmailAddress(studentEmail) {
+    await sql.connect(databaseConnection);
+    const result = await sql.query`
+        select s.Id,
+            EmailAddress,
+            FirstName,
+            LastName,
+            BirthDate,
+            Nationality,
+            SecondNationality,
+            City,
+            Address,
+            s.StartDate,
+            s.ActiveStatus,
+            u.IsActive
+                from Persons p
+                inner join Students s on p.Id = s.PersonId
+                inner join Users u on u.Id = p.UserId
+        where u.EmailAddress = ${studentEmail};`;
+    if (result.recordset.length === 0) {
+        return undefined;
+    }
+
+    if (result.recordset.length !== 1) {
+        throw new Error(`More than one record with email ${studentEmail}`)
+    }
+
+    return result.recordset[0];
+}
+
 async function getStudentsWithoutSchool() {
     await sql.connect(databaseConnection);
     let result = await sql.query`
@@ -316,6 +346,7 @@ async function deleteById(studentId) {
 
 module.exports = {
     getStudentById,
+    getStudentByEmailAddress,
     getStudentsWithoutSchool,
     listAllStudents,
     listPaged,

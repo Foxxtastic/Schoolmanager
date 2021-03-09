@@ -3,7 +3,7 @@ import DatePicker from "./DatePicker"
 import { ValidationErrors } from "./ValidationErrors"
 
 const Input = forwardRef((props, ref) => {
-    const { customClass, isInline, labelClass, labelText, name, type, isValidatable, errors, lineBreak, defaultValue } = props;
+    const { customClass, isInline, labelClass, labelText, name, type, isValidatable, errors, lineBreak, defaultValue, readOnly } = props;
 
     return (
         <>
@@ -11,8 +11,14 @@ const Input = forwardRef((props, ref) => {
                 <label className={labelClass === undefined ? "block-label" : labelClass} >
                     {labelText === undefined ? name : labelText}:{isValidatable ? '*' : ''}
                 </label>
-                {(type === "date") ? <DatePicker defaultValue={defaultValue} name={name} ref={ref} /> :
-                    <input defaultChecked={type === 'checkbox' && defaultValue} defaultValue={defaultValue} name={name} type={type === undefined ? "text" : type} ref={ref} />}
+                {(type === "date") ? <DatePicker defaultValue={defaultValue} name={name} ref={ref} readOnly={readOnly} /> :
+                    <input
+                        defaultChecked={type === 'checkbox' && defaultValue}
+                        defaultValue={defaultValue}
+                        name={name} type={type === undefined ? "text" : type}
+                        ref={ref}
+                        readOnly={readOnly}
+                    />}
                 {isValidatable && <ValidationErrors name={name} errors={errors} />}
             </div>
             { lineBreak && <div />}

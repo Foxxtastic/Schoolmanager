@@ -36,6 +36,13 @@ body,
   margin: 0;
 }
 
+input[readonly] {
+  pointer-events: none;
+  background-color: $lconcrete !important;
+  border: none;
+  font-size: larger;
+}
+
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
@@ -48,6 +55,10 @@ body,
 a {
   text-decoration: none;
   color: black;
+}
+
+.center {
+  text-align: center;
 }
 
 .inline-block {
