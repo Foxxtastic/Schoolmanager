@@ -44,7 +44,7 @@ export function StudentRequestManagement(props) {
             .finally(() => {
                 setIsLoading(false);
             });
-    }, [fetchApi, user.features]);
+    }, [fetchApi, user && user.features]);
 
     return (
         <Switch>

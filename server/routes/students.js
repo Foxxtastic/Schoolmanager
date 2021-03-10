@@ -58,8 +58,8 @@ router.get('/email/:email',
     });
 
 router.post('/',
-    authenticate,
-    authorize(features.CreateStudent),
+    // authenticate,
+    // authorize(features.CreateStudent),
     async (req, res, next) => {
         try {
             const studentDto = req.body;

@@ -248,13 +248,35 @@ async function createStudent(studentDto) {
         (
             select top 1 p.Id
                 from Persons p
-                order by p.Id desc
+            order by p.Id desc
         );
+        
         insert into Students(StartDate, ActiveStatus, PersonId)
             select
                 ${studentDto.StartDate},
                 ${studentDto.ActiveStatus},
-                @id`
+                @id
+                
+        set @id = 
+        (
+            select top 1 u.Id
+                from Users u
+            order by u.Id desc
+        );
+
+        declare @gid int
+        set @gid = 
+        (
+            select sg.Id
+                from SecurityGroup sg
+            where sg.Name = 'Student'
+        );
+        
+        insert into SecurityGroupMember(UserId, GroupId, SchoolId)
+            select 
+                @id,
+                @gid,
+                NULL;`
 
     result = await sql.query`
         select top 1 s.Id, FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, s.StartDate, s.ActiveStatus
@@ -276,7 +298,7 @@ async function updateStudent(id, studentDto) {
 
     await sql.connect(databaseConnection);
 
-    result = await sql.query`
+    let result = await sql.query`
         declare @id int
             set @id = 
             (
@@ -303,6 +325,24 @@ async function updateStudent(id, studentDto) {
             ActiveStatus = ${studentDto.ActiveStatus}
         where Id=${id};`;
 
+    if (studentDto.EmailAddress !== undefined) {
+        result = await sql.query`
+            declare @id int
+            set @id = 
+            (
+                select u.Id
+                    from Users u
+                    inner join Persons p on p.UserId = u.Id
+                    inner join Students s on s.PersonId = p.Id
+                where s.Id = ${id}
+            );
+
+            update Users
+            set
+                EmailAddress = ${studentDto.EmailAddress},
+                PasswordHash = HASHBYTES('SHA2_512', ${studentDto.Password})
+            where Id = @id;`;
+    }
     return await getStudentById(id);
 }
 

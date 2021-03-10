@@ -191,7 +191,7 @@ async function updateUser(id, userDto) {
     update Users
     set
     EmailAddress = ${userDto.EmailAddress},
-    PasswordHash = HASHBYTES('SHA2_512', '${userDto.Password}'),
+   
         IsActive = ${userDto.IsActive},
     LastLogin = ${userDto.LastLogin}
     where

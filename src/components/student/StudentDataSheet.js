@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { Route } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import { formatAsDate } from "../../helpers/momentHelpers";
+import { history } from "../../history";
 import { useFetch } from '../../hooks/useFetch';
 import Input from "../shared/Input";
 import { Loader } from "../shared/Loader";
@@ -32,9 +33,15 @@ export function StudentDataSheet(props) {
     const studentUpdate = (idToUpdate, person) => {
         setIsLoading(true);
 
+        const newPerson = {
+            ...person,
+            ActiveStatus: student.ActiveStatus,
+            IsActive: student.IsActive
+        }
+
         return fetchApi(`/api/student/${idToUpdate}`, {
             method: 'PUT',
-            body: JSON.stringify(person)
+            body: JSON.stringify(newPerson)
         })
             .then(res => res.json())
             .then(jsonResponse => {
@@ -54,8 +61,10 @@ export function StudentDataSheet(props) {
     }
 
     useEffect(() => {
-        getData(user.emailAddress).then(res => setStudent(res))
-            .catch(err => alert(err.message))
+        if (history.location.pathname === "/student") {
+            getData(user && user.emailAddress).then(res => setStudent(res))
+                .catch(err => alert(err.message))
+        }
     }, [user, getData]);
 
     useEffect(() => {
@@ -66,7 +75,6 @@ export function StudentDataSheet(props) {
                 StartDate: formatAsDate(student.StartDate)
             }
             reset(newStudent);
-            console.log(newStudent)
         }
     }, [student, reset]);
 
@@ -105,9 +113,19 @@ export function StudentDataSheet(props) {
                             errors={errors}
                         />
                         <Input
+                            isInline={true}
                             labelText="Birth Date"
                             name="BirthDate"
                             type="date"
+                            isValidatable={true}
+                            ref={register({ required: true })}
+                            errors={errors}
+                        />
+                        <Input
+                            isInline={true}
+                            labelText="Email Address"
+                            name="EmailAddress"
+                            type="email"
                             isValidatable={true}
                             ref={register({ required: true })}
                             errors={errors}
@@ -139,21 +157,20 @@ export function StudentDataSheet(props) {
                         />
                         <Input
                             isInline={true}
-                            labelText="Email Address"
-                            name="EmailAddress"
-                            type="email"
-                            isValidatable={true}
-                            ref={register({ required: true })}
-                            errors={errors}
-                        />
-                        <Input
-                            isInline={true}
                             labelText="Start Date"
                             name="StartDate"
                             type="date"
                             ref={register({ required: true })}
                             errors={errors}
                             readOnly={true}
+                        />
+                        <Input
+                            isInline={true}
+                            name="Password"
+                            type="password"
+                            isValidatable={true}
+                            ref={register({ required: true })}
+                            errors={errors}
                         />
                         <div className="item-padding center inline-block">
                             <label className="block-label">Active Status:</label>
@@ -162,7 +179,7 @@ export function StudentDataSheet(props) {
                                 <FontAwesomeIcon icon={faTimes} size={"2x"} color={"#d35400"} />
                             }
                         </div>
-                        <div className="item-padding center inline-block">
+                        <div className="center inline-block">
                             <label className="block-label">User is active:</label>
                             {student && student.IsActive ?
                                 <FontAwesomeIcon icon={faCheck} size={"2x"} color={"#4285f4"} /> :

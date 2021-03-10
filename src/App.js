@@ -128,7 +128,9 @@ function App() {
           <StudentDataSheet />
           <RequestManagement />
           <StudentRequestManagement />
-          <SchooolDashboardManagement schoolId={user.features[0].parameters && user.features[0].parameters.schoolId} />
+          <SchooolDashboardManagement
+            schoolId={user && user.features[0] && user.features[0].parameters && user.features[0].parameters && user.features[0].parameters.schoolId}
+          />
         </Router>
       </UserContext.Provider>
     </>

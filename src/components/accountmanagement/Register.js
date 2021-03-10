@@ -38,7 +38,7 @@ export function Register(props) {
                     Remember: false
                 });
             })
-            .catch((err) => console.log(error));
+            .catch((err) => console.log(err));
     };
 
     const handleStudentFormSubmit = (newItem) => {
@@ -47,6 +47,7 @@ export function Register(props) {
             ...user,
             IsActive: true
         }
+        console.log(student)
         studentCreate(student, setIsLoading, setError)
             .then(() => {
                 performLogin({
@@ -55,7 +56,7 @@ export function Register(props) {
                     Remember: false
                 });
             })
-            .catch((err) => console.log(error));
+            .catch((err) => console.log(err));
     };
 
     return (

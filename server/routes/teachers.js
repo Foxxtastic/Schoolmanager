@@ -44,8 +44,8 @@ router.get('/:id',
     });
 
 router.post('/',
-    authenticate,
-    authorize(features.CreateTeacher),
+    // authenticate,
+    // authorize(features.CreateTeacher),
     async (req, res, next) => {
         try {
             const teacherDto = req.body;
