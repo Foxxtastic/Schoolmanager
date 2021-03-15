@@ -50,6 +50,59 @@ async function getTeacherById(teacherId) {
     };
 }
 
+async function getTeacherByEmailAddress(teacherEmail) {
+    await sql.connect(databaseConnection);
+    const result = await sql.query`
+        select 
+            t.Id,
+            EmailAddress,
+            FirstName,
+            LastName,
+            BirthDate,
+            Nationality,
+            SecondNationality,
+            City,
+            Address
+                from Persons p
+                inner join Teachers t on p.Id = t.PersonId
+                inner join Users u on u.Id = p.UserId
+        where u.EmailAddress = ${teacherEmail};`;
+
+    const majors = await sql.query`
+        declare @tid int
+        set @tid = 
+        (
+            select t.Id
+                from Teachers t
+                inner join Persons p on p.Id = t.PersonId
+                inner join Users u on u.Id = p.UserId
+            where u.EmailAddress = ${teacherEmail}
+        );
+
+        select t.Id as TeacherId, m.Id as MajorId, m.Name as MajorName
+            from
+             Teachers t
+             inner join MajorTeacher mt on mt.TeacherId = t.Id
+             inner join Majors m on m.Id = mt.MajorId
+            where t.Id = @tid`;
+
+    if (result.recordset.length === 0) {
+        return undefined;
+    }
+
+    if (result.recordset.length !== 1) {
+        throw new Error(`More than one record with email ${teacherEmail}`)
+    }
+
+    const majorsByTeacherId = convertToList(majors.recordset);
+    const item = result.recordset[0];
+
+    return {
+        ...item,
+        Majors: majorsByTeacherId[item.Id.toString()]
+    };
+}
+
 async function getTeachersWithoutSchool() {
     await sql.connect(databaseConnection);
     let result = await sql.query`
@@ -259,6 +312,29 @@ async function createTeacher(teacherDto) {
             ${teacherDto.IsActive},
             null
         );
+        
+        declare @uid int
+        set @uid = 
+        (
+            select top 1 u.Id
+                from Users u
+            order by u.Id desc
+        );
+
+        declare @gid int
+        set @gid = 
+        (
+            select sg.Id
+                from SecurityGroup sg
+            where sg.Name = 'Teacher'
+        );
+        
+        insert into SecurityGroupMember(UserId, GroupId, SchoolId)
+            select 
+                @uid,
+                @gid,
+                NULL;
+        
         insert into Persons(FirstName, LastName, BirthDate, Nationality, SecondNationality, City, Address, UserId)
         select
             ${teacherDto.FirstName},
@@ -281,7 +357,9 @@ async function createTeacher(teacherDto) {
             );
         
         insert into Teachers(PersonId)
-            select @id;`;
+            select @id;
+        
+            `;
 
     let teacherId = await sql.query`
         select t.Id
@@ -396,6 +474,7 @@ async function deleteById(teacherId) {
 
 module.exports = {
     getTeacherById,
+    getTeacherByEmailAddress,
     getTeachersWithoutSchool,
     listAllTeachers,
     listPaged,

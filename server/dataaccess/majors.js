@@ -144,11 +144,11 @@ async function updateMajor(id, majorDto) {
     await sql.connect(databaseConnection);
 
     result = await sql.query`
-    update Majors
-    set
-    Name = ${majorDto.Name}
-    where
-    Id = ${id} `;
+        update Majors
+        set
+            Name = ${majorDto.Name}
+        where
+        Id = ${id} `;
 
     return await getMajorById(id);
 }
@@ -156,10 +156,10 @@ async function updateMajor(id, majorDto) {
 async function deleteById(majorId) {
     await sql.connect(databaseConnection);
     const result = await sql.query`
-    delete m
-    from Majors m
-    left outer join MajorTeacher t on t.MajorId = m.Id
-    where m.Id = ${majorId} and t.MajorId is null`;
+        delete m
+        from Majors m
+            left outer join MajorTeacher t on t.MajorId = m.Id
+        where m.Id = ${majorId} and t.MajorId is null`;
 
     if (result.rowsAffected[0] === 0) {
         const error = new Error(`There is a Teacher with ${majorId} major or, no Major with Id = ${majorId} !`);

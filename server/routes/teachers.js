@@ -43,6 +43,20 @@ router.get('/:id',
         res.json(teacher);
     });
 
+router.get('/email/:email',
+    authenticate,
+    authorize([features.TeacherManagement, features.EditTeacherAssignments, features.TeacherDashboard]),
+    async (req, res) => {
+        const { email } = req.params;
+        const teacher = await dataaccess.getTeacherByEmailAddress(email)
+
+        if (teacher === undefined) {
+            res.sendStatus(404);
+            return;
+        }
+        res.json(teacher);
+    });
+
 router.post('/',
     // authenticate,
     // authorize(features.CreateTeacher),
@@ -58,7 +72,7 @@ router.post('/',
 
 router.put('/:id',
     authenticate,
-    authorize(features.EditTeacher),
+    authorize([features.EditTeacher, features.TeacherDashboard]),
     async (req, res, next) => {
         const teacherDto = req.body;
         const { id } = req.params;

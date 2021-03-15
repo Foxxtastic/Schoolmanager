@@ -240,3 +240,136 @@ BEGIN
 			REFERENCES Schools(Id)
 	);
 END
+
+IF (NOT EXISTS (SELECT * 
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = 'dbo' 
+                AND  TABLE_NAME = 'EducationalProgrammes'))
+BEGIN
+	CREATE TABLE EducationalProgrammes (
+		Id int NOT NULL IDENTITY(1,1)
+			CONSTRAINT PK_EducationalProgrammes PRIMARY KEY,
+		Name nvarchar(100) NOT NULL,
+		IsActive bit NOT NULL,
+		IsAdminManaged bit NOT NULL,
+		MinCredit int NULL,
+		SchoolId int NOT NULL
+			CONSTRAINT FK_EducationalProgrammes_SchoolId
+			REFERENCES Schools(Id)
+	);
+END
+
+IF (NOT EXISTS (SELECT * 
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = 'dbo' 
+                AND  TABLE_NAME = 'CurriculumItemTypes'))
+BEGIN
+	CREATE TABLE CurriculumItemTypes (
+		Id int NOT NULL IDENTITY(1,1)
+			CONSTRAINT PK_CurriculumItemTypes PRIMARY KEY,
+		Name nvarchar(100) NOT NULL,
+		SchoolId int NOT NULL
+			CONSTRAINT FK_CurriculumItemTypes_SchoolId
+			REFERENCES Schools(Id)
+	);
+END
+
+IF (NOT EXISTS (SELECT * 
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = 'dbo' 
+                AND  TABLE_NAME = 'CurriculumItems'))
+BEGIN
+	CREATE TABLE CurriculumItems (
+		Id int NOT NULL IDENTITY(1,1)
+			CONSTRAINT PK_CurriculumItems PRIMARY KEY,
+		ProgrammeId int NOT NULL
+			CONSTRAINT FK_CurriculumItems_ProgrammeId
+			REFERENCES EducationalProgrammes(Id),
+		Name nvarchar(100) NOT NULL,
+		Credit int NULL,
+		TypeId int NOT NULL
+			CONSTRAINT FK_CurriculumItems_SchoolId
+			REFERENCES CurriculumItemTypes(Id)
+	);
+END
+
+IF (NOT EXISTS (SELECT * 
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = 'dbo' 
+                AND  TABLE_NAME = 'CurriculumItemDependency'))
+BEGIN
+	CREATE TABLE CurriculumItemDependency (
+		ItemId int NOT NULL
+			CONSTRAINT FK_CurriculumItemDependency_ItemId
+			REFERENCES CurriculumItems(Id),
+		PrerequisiteId int NOT NULL
+			CONSTRAINT FK_CurriculumItemDependency_PrerequisiteId
+			REFERENCES CurriculumItems(Id)
+	);
+END
+
+IF (NOT EXISTS (SELECT * 
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = 'dbo' 
+                AND  TABLE_NAME = 'Courses'))
+BEGIN
+	CREATE TABLE Courses (
+		Id int NOT NULL IDENTITY(1,1)
+			CONSTRAINT PK_Courses PRIMARY KEY,
+		DayOfWeek int NULL,
+		TeacherId int NOT NULL
+			CONSTRAINT FK_Courses_StudentId
+			REFERENCES Teachers(Id),
+		TypeId int NOT NULL
+			CONSTRAINT FK_Courses_TypeId
+			REFERENCES CurriculumItemTypes(Id),
+		MaxCapacity int NULL,
+		StartTime time NOT NULL,
+		EndTime time NOT NULL,
+		Status int NOT NULL
+	);
+END
+
+IF (NOT EXISTS (SELECT * 
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = 'dbo' 
+                AND  TABLE_NAME = 'StudentCourse'))
+BEGIN
+	CREATE TABLE StudentCourse (
+		StudentId int NOT NULL
+			CONSTRAINT FK_StudentCourse_StudentId
+			REFERENCES Students(Id),
+		CourseId int NOT NULL
+			CONSTRAINT FK_StudentCourse_CourseId
+			REFERENCES Courses(Id)
+	);
+END
+
+IF (NOT EXISTS (SELECT * 
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = 'dbo' 
+                AND  TABLE_NAME = 'Exams'))
+BEGIN
+	CREATE TABLE Exams (
+		Id int NOT NULL IDENTITY(1,1)
+			CONSTRAINT PK_Exams PRIMARY KEY,
+		StartTime datetime2 NOT NULL
+	);
+END
+
+IF (NOT EXISTS (SELECT *
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE TABLE_SCHEMA = 'dbo' 
+                AND  TABLE_NAME = 'ExamResults'))
+BEGIN
+	CREATE TABLE ExamResults (
+		ExamId int NOT NULL
+			CONSTRAINT FK_ExamResults_ExamId
+			REFERENCES Exams(Id),
+		StudentId int NOT NULL
+			CONSTRAINT FK_ExamResults_StudentId
+			REFERENCES Students(Id),
+		Mark int NOT NULL
+	);
+END
+

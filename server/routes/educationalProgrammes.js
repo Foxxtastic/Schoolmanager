@@ -1,21 +1,19 @@
 const express = require('express');
-const dataaccess = require('../dataaccess/majors');
+const dataaccess = require('../dataaccess/educationalProgrammes');
 const features = require('../features');
 const { authenticate } = require('../middlewares/authenticate');
 const { authorize } = require('../middlewares/authorize');
 const router = express.Router();
 
 router.get('/',
-    // authenticate,
-    // authorize(features.MajorManagement),
     async (req, res, next) => {
         try {
             const { pageNumber, pageSize, sorting, isDescending, filterProperty, filterValue } = req.query;
             const isAscending = isDescending && isDescending === 'true' ? false : true;
-            const majors = await (pageNumber && pageSize ?
+            const programmes = await (pageNumber && pageSize ?
                 dataaccess.listPaged(pageNumber, pageSize, sorting, isAscending, filterProperty, filterValue) :
-                dataaccess.listAllMajors(sorting, isAscending, filterProperty, filterValue));
-            res.json(majors);
+                dataaccess.listAllProgrammes(sorting, isAscending, filterProperty, filterValue));
+            res.json(programmes);
         } catch (error) {
             next(error);
         }
@@ -24,28 +22,28 @@ router.get('/',
 
 router.get('/:id',
     authenticate,
-    authorize(features.MajorManagement),
+    authorize(features.ProgramManagement),
     async (req, res) => {
         const { id } = req.params;
-        const major = await dataaccess.getMajorsById(id);
+        const programme = await dataaccess.getProgrammeById(id);
 
-        if (major === undefined) {
+        if (programme === undefined) {
             res.sendStatus(404);
             return;
         }
 
-        res.json(major);
+        res.json(programme);
     }
 );
 
 router.post('/',
     authenticate,
-    authorize(features.CreateMajor),
+    authorize(features.CreateProgramme),
     async (req, res, next) => {
         try {
-            const majorDto = req.body;
-            const major = await dataaccess.createMajor(majorDto);
-            res.json(major);
+            const programmeDto = req.body;
+            const programme = await dataaccess.createProgramme(programmeDto);
+            res.json(programme);
         } catch (error) {
             next(error);
         }
@@ -53,15 +51,15 @@ router.post('/',
 
 router.put('/:id',
     authenticate,
-    authorize(features.EditMajor),
+    authorize(features.EditProgramme),
     async (req, res, next) => {
-        const majorDto = req.body;
+        const programmeDto = req.body;
         const { id } = req.params;
         const idAsNumber = parseInt(id, 10);
 
         try {
-            const major = await dataaccess.updateMajor(idAsNumber, majorDto);
-            res.json(major);
+            const programme = await dataaccess.updateProgramme(idAsNumber, programmeDto);
+            res.json(programme);
         } catch (error) {
             next(error);
         }
@@ -69,7 +67,7 @@ router.put('/:id',
 
 router.delete('/:id',
     authenticate,
-    authorize(features.DeleteMajor),
+    authorize(features.DeleteProgramme),
     async (req, res, next) => {
         const { id } = req.params;
         try {

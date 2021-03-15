@@ -103,6 +103,17 @@ const menuItems = [
         forUsersWith: [appFeatures.ApplyToSchools]
       }
     ]
+  },
+  {
+    text: 'Teacher',
+    forUsersWith: [appFeatures.TeacherDashboard],
+    subItems: [
+      {
+        text: 'Data sheet',
+        link: '/teacher',
+        forUsersWith: [appFeatures.TeacherDashboard]
+      }
+    ]
   }
 ];
 

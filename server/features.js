@@ -32,7 +32,12 @@ const features = {
     StudentDashboard: 'StudentDashboard',
     ApplyToSchools: 'ApplyToSchools',
 
-    TeacherDashboard: 'TeacherDashboard'
+    TeacherDashboard: 'TeacherDashboard',
+
+    ProgramManagement: 'ProgramManagement',
+    CreateProgramme: 'CreateProgramme',
+    EditProgramme: 'EditProgramme',
+    DeleteProgramme: 'DeleteProgramme'
 };
 
 module.exports = features;
