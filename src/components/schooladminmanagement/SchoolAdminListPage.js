@@ -1,15 +1,15 @@
 import { MainContent } from "../shared/MainContent";
 import { MainHeader } from "../shared/MainHeader";
-import { MajorList } from './MajorList';
+import { SchoolAdminList } from './SchoolAdminList';
 
-export function MajorListPage(props) {
+export function SchoolAdminListPage(props) {
     const { error, isLoading, afterPaging, afterDelete, afterCreate, afterUpdate, onDelete, onUpdate, onCreate } = props;
 
     return (
         <>
             <MainHeader text="Majors" />
             <MainContent>
-                <MajorList
+                <SchoolAdminList
                     error={error}
                     isLoading={isLoading}
                     afterPaging={afterPaging}

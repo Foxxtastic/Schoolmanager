@@ -19,6 +19,8 @@ import { StudentRequestManagement } from './components/administrator/StudentRequ
 import appFeatures from './appFeatures';
 import { SchooolDashboardManagement } from './components/schoolstaffmanagement/SchoolDashboardManagement';
 import { StudentDataSheet } from './components/student/StudentDataSheet';
+import { ProgrammeManagement } from './components/programmeManagement/ProgrammeManagement';
+import { SchoolAdminManagement } from './components/schooladminmanagement/SchoolAdminsManagement';
 
 const menuItems = [
   {
@@ -43,7 +45,8 @@ const menuItems = [
       appFeatures.MajorManagement,
       appFeatures.TeacherManagement,
       appFeatures.StudentManagement,
-      appFeatures.StudentRequestAssessment
+      appFeatures.StudentRequestAssessment,
+      appFeatures.ProgramManagement
     ],
     subItems: [
       {
@@ -77,6 +80,10 @@ const menuItems = [
         forUsersWith: [appFeatures.SchoolDashboard]
       },
       {
+        text: 'School Admins',
+        link: '/schooladmins'
+      },
+      {
         text: 'Requests',
         link: '/requests',
         forUsersWith: [appFeatures.StudentRequestAssessment]
@@ -84,6 +91,11 @@ const menuItems = [
       {
         text: 'Staff',
         link: '/staff',
+        forUsersWith: [appFeatures.SchoolDashboard]
+      },
+      {
+        text: 'Programmes',
+        link: '/programmes',
         forUsersWith: [appFeatures.SchoolDashboard]
       }
     ]
@@ -134,9 +146,11 @@ function App() {
           <MajorManagement />
           <TeacherManagement />
           <StudentManagement />
+          <ProgrammeManagement />
           <Login />
           <Register />
           <StudentDataSheet />
+          <SchoolAdminManagement />
           <RequestManagement />
           <StudentRequestManagement />
           <SchooolDashboardManagement

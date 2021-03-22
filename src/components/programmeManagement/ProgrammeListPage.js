@@ -1,17 +1,18 @@
 import { MainContent } from "../shared/MainContent";
 import { MainHeader } from "../shared/MainHeader";
-import { MajorList } from './MajorList';
+import { ProgrammeList } from "./ProgrammeList"
 
-export function MajorListPage(props) {
+export function ProgrammeListPage(props) {
     const { error, isLoading, afterPaging, afterDelete, afterCreate, afterUpdate, onDelete, onUpdate, onCreate } = props;
 
     return (
         <>
-            <MainHeader text="Majors" />
+            <MainHeader text="Educational Programme List" />
             <MainContent>
-                <MajorList
+                <ProgrammeList
                     error={error}
                     isLoading={isLoading}
+                    linkToCreate="/programmes/create"
                     afterPaging={afterPaging}
                     afterUpdate={afterUpdate}
                     afterCreate={afterCreate}

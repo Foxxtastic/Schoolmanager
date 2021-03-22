@@ -10,7 +10,8 @@ const studentRouter = require('./routes/students.js');
 const schoolTeacherRouter = require('./routes/schoolTeacher.js');
 const schoolStudentRouter = require('./routes/schoolStudent.js');
 const studentRequestRouter = require('./routes/StudentRequest.js');
-const programmeRouter = require('./routes/educationalProgrammes.js');
+const schoolAdminRouter = require('./routes/schoolAdmins.js')
+const programmeRouter = require('./routes/programmes.js');
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -32,6 +33,7 @@ app.use('/api/', schoolTeacherRouter);
 app.use('/api/', schoolStudentRouter);
 app.use('/api/request', studentRequestRouter);
 app.use('/api/programme', programmeRouter);
+app.use('/api/schooladmin', schoolAdminRouter);
 
 app.use((error, _req, res, _next) => {
     res.status(error.status || 500).send({

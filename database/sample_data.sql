@@ -1093,7 +1093,11 @@ SELECT g.Id, f.Id FROM SecurityGroup g, Feature f WHERE g.[Name] = 'SchoolAdmin'
 		'SchoolDashboard',
 		'EditStudentAssignments',
 		'EditTeacherAssignments',
-		'StudentRequestAssessment'
+		'StudentRequestAssessment',
+		'ProgramManagement',
+  		'CreateProgramme',
+    	'EditProgramme',
+    	'DeleteProgramme'
 	)
 UNION
 SELECT g.Id, f.Id FROM SecurityGroup g, Feature f WHERE g.[Name] = 'Student'
@@ -1343,4 +1347,10 @@ from
 	inner join Persons p on p.Id = t.PersonId
 	inner join Users u on u.Id = p.UserId
 	left outer join SchoolTeacher sct on sct.TeacherId = t.Id
-where g.[Name] in ('Teacher') and sct.SchoolId is null 
+where g.[Name] in ('Teacher') and sct.SchoolId is null
+
+insert into dbo.SchoolAdmins([SchoolId], [UserId])
+select s.Id, u.Id
+from Schools s
+	cross join Users u
+where s.Name='Neumann János Középiskola' and u.EmailAddress='admin@neumann.hu'

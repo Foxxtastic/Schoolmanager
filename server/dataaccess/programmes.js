@@ -72,7 +72,7 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
     const isAscendingParam = isAscending === true ? 1 : -1;
 
     const pageResult = await sql.query`
-    with programmeWithRowNum AS
+    with programmesWithRowNum AS
         (
             select
                 *,
@@ -89,7 +89,7 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
                     end
                 ) as RowNum
             from
-                Majors
+                EducationalProgrammes
         )   
         select Id, Name, IsActive, IsAdminManaged, MinCredit, SchoolId
         from
@@ -127,7 +127,7 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
             like '%'+${filter}+'%'
         )
         select count(*) as Count
-        from majorsWithFilter`
+        from programmesWithFilter`
 
     const count = countResult.recordset[0].Count;
 
@@ -178,7 +178,7 @@ async function updateProgramme(id, programmeDto) {
     where
     Id = ${id} `;
 
-    return await getMajorById(id);
+    return await getProgrammeById(id);
 }
 
 async function deleteById(programmeId) {

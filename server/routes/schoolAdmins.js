@@ -1,73 +1,75 @@
 const express = require('express');
-const dataaccess = require('../dataaccess/educationalProgrammes');
+const dataaccess = require('../dataaccess/schoolAdmins');
 const features = require('../features');
 const { authenticate } = require('../middlewares/authenticate');
 const { authorize } = require('../middlewares/authorize');
 const router = express.Router();
 
 router.get('/',
+    // authenticate,
+    // authorize(features.MajorManagement),
     async (req, res, next) => {
         try {
             const { pageNumber, pageSize, sorting, isDescending, filterProperty, filterValue } = req.query;
             const isAscending = isDescending && isDescending === 'true' ? false : true;
-            const programmes = await (pageNumber && pageSize ?
+            const admins = await (pageNumber && pageSize ?
                 dataaccess.listPaged(pageNumber, pageSize, sorting, isAscending, filterProperty, filterValue) :
-                dataaccess.listAllProgrammes(sorting, isAscending, filterProperty, filterValue));
-            res.json(programmes);
+                dataaccess.listAllSchoolAdmins(sorting, isAscending, filterProperty, filterValue));
+            res.json(admins);
         } catch (error) {
             next(error);
         }
     }
 );
 
-router.get('/:id',
-    authenticate,
-    authorize(features.ProgramManagement),
+router.get('/:userId',
+    // authenticate,
+    // authorize(features.MajorManagement),
     async (req, res) => {
-        const { id } = req.params;
-        const programme = await dataaccess.getProgrammeById(id);
+        const { id: userId } = req.params;
+        const admin = await dataaccess.getSchoolAdminByUserId(userId);
 
-        if (programme === undefined) {
+        if (admin === undefined) {
             res.sendStatus(404);
             return;
         }
 
-        res.json(programme);
+        res.json(admin);
     }
 );
 
 router.post('/',
-    authenticate,
-    authorize(features.CreateProgramme),
+    // authenticate,
+    // authorize(features.CreateMajor),
     async (req, res, next) => {
         try {
-            const programmeDto = req.body;
-            const programme = await dataaccess.createProgramme(programmeDto);
-            res.json(programme);
+            const adminDto = req.body;
+            const admin = await dataaccess.createSchoolAdmin(adminDto);
+            res.json(admin);
         } catch (error) {
             next(error);
         }
     });
 
 router.put('/:id',
-    authenticate,
-    authorize(features.EditProgramme),
+    // authenticate,
+    // authorize(features.EditMajor),
     async (req, res, next) => {
-        const programmeDto = req.body;
+        const adminDto = req.body;
         const { id } = req.params;
         const idAsNumber = parseInt(id, 10);
 
         try {
-            const programme = await dataaccess.updateProgramme(idAsNumber, programmeDto);
-            res.json(programme);
+            const admin = await dataaccess.updateSchoolAdmin(idAsNumber, adminDto);
+            res.json(admin);
         } catch (error) {
             next(error);
         }
     });
 
 router.delete('/:id',
-    authenticate,
-    authorize(features.DeleteProgramme),
+    // authenticate,
+    // authorize(features.DeleteMajor),
     async (req, res, next) => {
         const { id } = req.params;
         try {
