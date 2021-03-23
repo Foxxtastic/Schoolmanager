@@ -14,6 +14,7 @@ import { Button } from "../shared/Button";
 import { faCheck, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { formatAsDate } from "../../helpers/momentHelpers";
+import { Link } from "react-router-dom";
 
 const headers = [
     { text: 'Email address', propertyName: 'EmailAddress', isSortable: true },
@@ -49,7 +50,7 @@ export function SchoolAdminList(props) {
     let filterValue = useFilterValue();
     filterValue = filterValue === null ? '' : filterValue;
 
-    const { error, afterUpdate, afterCreate, afterDelete, afterPaging, onUpdate, onDelete, onCreate, isLoading } = props;
+    const { error, afterUpdate, afterCreate, afterDelete, afterPaging, onUpdate, onDelete, onCreate, isLoading, linkToCreate } = props;
 
     const setSchoolAdminsFromServer = (listResponse) => {
         setMaxPageNumber(calculateMaxPage(listResponse));
@@ -94,8 +95,6 @@ export function SchoolAdminList(props) {
     if (schoolAdmins === undefined) {
         return 'Loading...';
     }
-
-    console.log(schoolAdmins)
 
     return (
         <div className={`component ${isLoading ? "loading" : ""}`} >
@@ -151,6 +150,9 @@ export function SchoolAdminList(props) {
                     }}
                 />
             </LayoutContent>
+            <Link to={linkToCreate}>
+                <Button customClass="button-withoutmargin" text="Create" />
+            </Link>
         </ div>
     );
 }

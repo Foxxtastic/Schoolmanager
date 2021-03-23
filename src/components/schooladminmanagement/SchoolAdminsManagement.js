@@ -1,7 +1,9 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { pageSize } from '../../config';
+import { history } from '../../history';
 import { useFetch } from '../../hooks/useFetch';
+import { SchoolAdminCreatePage } from './SchoolAdminCreatePage';
 import { SchoolAdminListPage } from './SchoolAdminListPage';
 
 export function SchoolAdminManagement(props) {
@@ -18,6 +20,15 @@ export function SchoolAdminManagement(props) {
             .then(res => res.json())
             .finally(() => {
                 setIsLoading(false);
+            });
+    }, [fetchApi]);
+
+    const getAllSchools = useCallback(() => {
+        setIsLoading(true);
+        return fetchApi('/api/school/')
+            .then(res => res.json())
+            .finally(() => {
+                setIsLoading(false)
             });
     }, [fetchApi]);
 
@@ -98,6 +109,15 @@ export function SchoolAdminManagement(props) {
                     onDelete={handleSchoolAdminDelete}
                     onUpdate={handleSchoolAdminUpdate}
                     onCreate={handleSchoolAdminCreate} />
+            </Route>
+            <Route path="/schooladmins/create" exact>
+                <SchoolAdminCreatePage
+                    error={error}
+                    isLoading={isLoading}
+                    getAllSchools={getAllSchools}
+                    onCreate={handleSchoolAdminCreate}
+                    afterUpdate={() => history.push("/schooladmins")}
+                />
             </Route>
         </Switch>
     )

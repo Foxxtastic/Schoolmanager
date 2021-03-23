@@ -3,7 +3,6 @@ import { createRef, Fragment, useEffect, useState } from "react";
 export function DropDown(props) {
 
     const { label, dropDownList, defaultValue, defaultLabel, onSelect } = props;
-    console.log(dropDownList);
     const length = dropDownList.length;
 
     const [expanded, setExpanded] = useState(false);
@@ -58,7 +57,7 @@ export function DropDown(props) {
                                 value={_ && _.Id}
                             />
                             <label
-                                value={_ &&_.Name}
+                                value={_ && _.Name}
                                 data-text={_ && _.Name}
                                 htmlFor={idx}
                             />

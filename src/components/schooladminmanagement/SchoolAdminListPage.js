@@ -12,6 +12,7 @@ export function SchoolAdminListPage(props) {
                 <SchoolAdminList
                     error={error}
                     isLoading={isLoading}
+                    linkToCreate="/schooladmins/create"
                     afterPaging={afterPaging}
                     afterUpdate={afterUpdate}
                     afterCreate={afterCreate}
@@ -20,6 +21,7 @@ export function SchoolAdminListPage(props) {
                     onUpdate={onUpdate}
                     onCreate={onCreate}
                 />
+
             </MainContent>
         </>
     )

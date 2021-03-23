@@ -141,9 +141,56 @@ async function listPaged(pageNumber, pageSize, sortingProperty = 'Id', isAscendi
     };
 }
 
+async function createSchoolAdmin(schoolAdminDto) {
+    if (schoolAdminDto.IsActive === undefined) {
+        schoolAdminDto['IsActive'] = true;
+    }
+    await sql.connect(databaseConnection);
+    let result = await sql.query`
+    insert into Users(EmailAddress, PasswordHash, IsActive, LastLogin)
+    values 
+    (
+        ${schoolAdminDto.EmailAddress},
+        HASHBYTES('SHA2_512', ${schoolAdminDto.Password}),
+        ${schoolAdminDto.IsActive},
+        ${schoolAdminDto.LastLogin}
+    );
+
+    declare @uid int
+    set @uid = 
+    (
+        select top 1 Id
+            from Users
+        order by Id desc
+    );
+
+    declare @gid int
+    set @gid =
+    (
+        select Id
+            from SecurityGroup
+        where Name='SchoolAdmin'
+    );
+        
+    insert into SecurityGroupMember(UserId, GroupId, SchoolId)
+    values
+    (
+        @uid,
+        @gid,
+        ${schoolAdminDto.SchoolId}
+    )`;
+
+    result = await sql.query`
+        select top 1 UserId, GroupId, SchoolId
+            from SecurityGroupMember;`
+
+    return result.recordset;
+}
+
 module.exports = {
     getSchoolAdminByUserId,
     getSchoolAdminByEmailAddress,
     listAllSchoolAdmins,
-    listPaged
+    listPaged,
+    createSchoolAdmin
 }
