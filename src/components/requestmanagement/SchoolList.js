@@ -74,6 +74,7 @@ export function SchoolList(props) {
                     items={schools}
                     activePageNumber={activePageNumber}
                     maxPageNumber={maxPageNumber}
+                    getRowId={school => school.Id}
                     getRowForItem={(school) => {
                         return (
                             <>

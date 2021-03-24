@@ -149,6 +149,7 @@ export function MajorList(props) {
                     items={majors}
                     activePageNumber={activePageNumber}
                     maxPageNumber={maxPageNumber}
+                    getRowId={major => major.Id}
                     getCreateRowColumns={({ register, errors }) =>
                         <>
                             <td>

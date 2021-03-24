@@ -177,6 +177,7 @@ export function StudentList(props) {
                     items={students}
                     activePageNumber={activePageNumber}
                     maxPageNumber={maxPageNumber}
+                    getRowId={student => student.Id}
                     getRowForItem={(student) => {
                         const isEditing = editor.isEditMode && editor.rowKey === student.Id;
                         return (

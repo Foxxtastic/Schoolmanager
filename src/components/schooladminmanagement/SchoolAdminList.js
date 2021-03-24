@@ -96,6 +96,8 @@ export function SchoolAdminList(props) {
         return 'Loading...';
     }
 
+    console.log(schoolAdmins)
+
     return (
         <div className={`component ${isLoading ? "loading" : ""}`} >
             <ConfirmPopup text="Are you sure?" visible={isModalVisible} onConfirm={handleDeleteModalConfirm} onCancel={handleModalCancel} />
@@ -112,6 +114,7 @@ export function SchoolAdminList(props) {
                     items={schoolAdmins}
                     activePageNumber={activePageNumber}
                     maxPageNumber={maxPageNumber}
+                    getRowId={schoolAdmin => schoolAdmin.UserId}
                     getCreateRowColumns={({ register, errors }) =>
                         <>
                             <td>

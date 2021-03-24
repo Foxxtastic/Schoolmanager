@@ -101,6 +101,7 @@ export function UserList(props) {
                     items={users}
                     activePageNumber={activePageNumber}
                     maxPageNumber={maxPageNumber}
+                    getRowId={user => user.Id}
                     getRowForItem={(user) => {
                         return (
                             <>

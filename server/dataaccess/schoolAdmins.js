@@ -187,10 +187,32 @@ async function createSchoolAdmin(schoolAdminDto) {
     return result.recordset;
 }
 
+async function deleteById(userId) {
+    await sql.connect(databaseConnection);
+    const result = await sql.query`
+        delete
+            from SecurityGroupMember
+        where UserId=${userId};
+        
+        delete u
+            from Users u
+            left outer join Persons p on p.UserId = u.Id
+        where u.Id = ${userId} and p.Id is null;`;
+
+    if (result.rowsAffected[0] === 0) {
+        const error = new Error(`No school admin with user ID= ${userId} !`);
+        error.status = 500;
+        throw error;
+    }
+
+    return result.rowsAffected[0];
+}
+
 module.exports = {
     getSchoolAdminByUserId,
     getSchoolAdminByEmailAddress,
     listAllSchoolAdmins,
     listPaged,
-    createSchoolAdmin
+    createSchoolAdmin,
+    deleteById
 }

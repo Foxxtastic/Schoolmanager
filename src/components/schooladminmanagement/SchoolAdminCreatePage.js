@@ -13,6 +13,7 @@ export function SchoolAdminCreatePage(props) {
                 if (onError) {
                     onError(err);
                 }
+
             });
     };
 
