@@ -1060,7 +1060,10 @@ VALUES
 ('StudentDashboard'),
 ('ApplyToSchools'),
 
-('TeacherDashboard')
+('TeacherDashboard'),
+
+('SchoolAdminManagement'),
+('SchoolAdmin')
 
 INSERT INTO [dbo].[SecurityGroupFeature]([GroupId], [FeatureId])
 SELECT g.Id, f.Id FROM SecurityGroup g, Feature f WHERE g.[Name] = 'ApplicationAdmin'
@@ -1084,7 +1087,8 @@ SELECT g.Id, f.Id FROM SecurityGroup g, Feature f WHERE g.[Name] = 'ApplicationA
 		'StudentManagement',
 		'CreateStudent',
 		'EditStudent',
-		'DeleteStudent'
+		'DeleteStudent',
+		'SchoolAdminManagement'
 	)
 UNION
 SELECT g.Id, f.Id FROM SecurityGroup g, Feature f WHERE g.[Name] = 'SchoolAdmin'
@@ -1097,7 +1101,8 @@ SELECT g.Id, f.Id FROM SecurityGroup g, Feature f WHERE g.[Name] = 'SchoolAdmin'
 		'ProgramManagement',
   		'CreateProgramme',
     	'EditProgramme',
-    	'DeleteProgramme'
+    	'DeleteProgramme',
+		'SchoolAdmin'
 	)
 UNION
 SELECT g.Id, f.Id FROM SecurityGroup g, Feature f WHERE g.[Name] = 'Student'
@@ -1348,9 +1353,3 @@ from
 	inner join Users u on u.Id = p.UserId
 	left outer join SchoolTeacher sct on sct.TeacherId = t.Id
 where g.[Name] in ('Teacher') and sct.SchoolId is null
-
-insert into dbo.SchoolAdmins([SchoolId], [UserId])
-select s.Id, u.Id
-from Schools s
-	cross join Users u
-where s.Name='Neumann János Középiskola' and u.EmailAddress='admin@neumann.hu'

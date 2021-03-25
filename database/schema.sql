@@ -377,22 +377,3 @@ IF (NOT EXISTS (SELECT *
                 FROM INFORMATION_SCHEMA.TABLES 
                 WHERE TABLE_SCHEMA = 'dbo' 
                 AND  TABLE_NAME = 'SchoolAdmins'))
-BEGIN
-	CREATE TABLE SchoolAdmins (
-		SchoolId int NOT NULL
-			CONSTRAINT FK_SchoolAdmins_SchoolId
-			REFERENCES Schools(Id),
-		
-		UserId int NOT NULL
-			CONSTRAINT FK_SchoolAdmins_UserId
-			REFERENCES Users(Id),
-		CONSTRAINT PK_SchoolAdmins PRIMARY KEY NONCLUSTERED (UserId)
-	);    
-END
-
-CREATE OR ALTER VIEW [dbo].[vSchoolAdmins] AS
-SELECT sgm.SchoolId, u.Id as [UserId]
-FROM [dbo].[SecurityGroup] sg
-INNER JOIN [dbo].[SecurityGroupMember] sgm on sgm.GroupId = sg.Id
-INNER JOIN [dbo].[Users] u on u.Id = sgm.UserId
-WHERE sg.[Name] = 'SchoolAdmin'

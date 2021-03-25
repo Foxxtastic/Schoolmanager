@@ -37,7 +37,10 @@ const appFeatures = {
     ProgramManagement: 'ProgramManagement',
     CreateProgramme: 'CreateProgramme',
     EditProgramme: 'EditProgramme',
-    DeleteProgramme: 'DeleteProgramme'
+    DeleteProgramme: 'DeleteProgramme',
+
+    SchoolAdminManagement: 'SchoolAdminManagement',
+    SchoolAdmin: 'SchoolAdmin'
 };
 
 export default appFeatures;

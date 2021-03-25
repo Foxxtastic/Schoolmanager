@@ -20,6 +20,7 @@ import appFeatures from './appFeatures';
 import { SchooolDashboardManagement } from './components/schoolstaffmanagement/SchoolDashboardManagement';
 import { StudentDataSheet } from './components/student/StudentDataSheet';
 import { ProgrammeManagement } from './components/programmeManagement/ProgrammeManagement';
+import { AppAdminManagement } from './components/appadminmanagement/AppAdminManagement';
 import { SchoolAdminManagement } from './components/schooladminmanagement/SchoolAdminsManagement';
 
 const menuItems = [
@@ -75,13 +76,14 @@ const menuItems = [
         forUsersWith: [appFeatures.StudentManagement]
       },
       {
+        text: 'School Admins',
+        link: '/schooladmins',
+        forUsersWith: [appFeatures.SchoolAdminManagement, appFeatures.SchoolAdmin]
+      },
+      {
         text: 'School Data',
         link: '/schooldata',
         forUsersWith: [appFeatures.SchoolDashboard]
-      },
-      {
-        text: 'School Admins',
-        link: '/schooladmins'
       },
       {
         text: 'Requests',
@@ -126,6 +128,10 @@ const menuItems = [
         forUsersWith: [appFeatures.TeacherDashboard]
       }
     ]
+  },
+  {
+    text: 'Application Admins',
+    link: '/appadmins'
   }
 ];
 
@@ -150,6 +156,7 @@ function App() {
           <Login />
           <Register />
           <StudentDataSheet />
+          <AppAdminManagement />
           <SchoolAdminManagement />
           <RequestManagement />
           <StudentRequestManagement />

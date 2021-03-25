@@ -37,7 +37,10 @@ const features = {
     ProgramManagement: 'ProgramManagement',
     CreateProgramme: 'CreateProgramme',
     EditProgramme: 'EditProgramme',
-    DeleteProgramme: 'DeleteProgramme'
+    DeleteProgramme: 'DeleteProgramme',
+
+    SchoolAdminManagement: 'SchoolAdminManagement',
+    SchoolAdmin: 'SchoolAdmin'
 };
 
 module.exports = features;
